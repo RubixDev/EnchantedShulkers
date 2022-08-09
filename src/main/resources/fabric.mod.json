@@ -1,38 +1,40 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "enchanted_shulkers",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Enchanted Shulkers",
+  "description": "Adds the \"Siphon\" and \"Refill\" enchantments to Shulker Boxes",
   "authors": [
-    "Me!"
+    "RubixDev"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/RubixDev/EnchantedShulkers",
+    "sources": "https://github.com/RubixDev/EnchantedShulkers",
+    "issues": "https://github.com/RubixDev/EnchantedShulkers/issues"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "GPL-2.0-only",
+  "icon": "assets/enchanted_shulkers/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "de.rubixdev.enchanted_shulkers.Mod"
+    ],
+    "mm:early_risers": [
+      "de.rubixdev.enchanted_shulkers.asm.EnumInjector"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "enchanted_shulkers.mixins.json"
   ],
+  "accessWidener": "enchanted_shulkers.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.14.6",
     "fabric": "*",
-    "minecraft": "~1.19",
+    "minecraft": ">=1.18.2",
     "java": ">=17"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }
