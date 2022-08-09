@@ -8,8 +8,10 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -32,14 +34,22 @@ public class Utils {
         return out;
     }
 
-    public static DefaultedList<ItemStack> getContainerInventory(ItemStack container) {
+    public static DefaultedList<ItemStack> getContainerInventory(ItemStack container, ServerPlayerEntity player) {
         DefaultedList<ItemStack> inventory = DefaultedList.ofSize(27, ItemStack.EMPTY);
+
+        if (container.isOf(Items.ENDER_CHEST)) {
+            return player.getEnderChestInventory().stacks;
+        }
+
         NbtCompound nbt = container.getSubNbt("BlockEntityTag");
         if (nbt != null && nbt.contains("Items", NbtElement.LIST_TYPE)) Inventories.readNbt(nbt, inventory);
         return inventory;
     }
 
     public static void setContainerInventory(ItemStack container, DefaultedList<ItemStack> inventory) {
+        // No need to write any NBT on ender chests
+        if (container.isOf(Items.ENDER_CHEST)) return;
+
         NbtCompound nbt = container.getOrCreateSubNbt("BlockEntityTag");
         Inventories.writeNbt(nbt, inventory);
     }

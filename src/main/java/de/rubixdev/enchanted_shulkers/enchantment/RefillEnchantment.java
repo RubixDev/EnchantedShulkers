@@ -47,7 +47,9 @@ public class RefillEnchantment extends Enchantment {
         ItemStack currentMainStack = player.getInventory().getMainHandStack();
         ItemStack currentOffStack = player.getInventory().getStack(PlayerInventory.OFF_HAND_SLOT);
 
-        boolean swappedHands = ItemStack.areNbtEqual(previous.mainStack, currentOffStack)
+        boolean swappedHands = ItemStack.areEqual(previous.mainStack, currentOffStack)
+                && ItemStack.areNbtEqual(previous.mainStack, currentOffStack)
+                && ItemStack.areEqual(currentMainStack, previous.offStack)
                 && ItemStack.areNbtEqual(currentMainStack, previous.offStack);
         boolean wasMainEmptied = previous.mainStack.getCount() > 0 && currentMainStack.isEmpty() && !swappedHands;
         boolean wasOffEmptied = previous.offStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
@@ -89,7 +91,7 @@ public class RefillEnchantment extends Enchantment {
         for (Pair<Integer, ItemStack> containerSlot : containerSlots) {
             if (amount <= 0) return;
             ItemStack container = containerSlot.getRight();
-            DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container);
+            DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
 
             boolean updateContainer = false;
             for (ItemStack innerStack : containerInventory) {

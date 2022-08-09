@@ -4,8 +4,10 @@
   "package": "de.rubixdev.enchanted_shulkers.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractBlockMixin",
     "EnchantmentHelperMixin",
     "EnchantmentTargetMixin",
+    "EnderChestBlockEntityMixin",
     "ItemStackMixin",
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
@@ -14,6 +16,7 @@
   ],
   "client": [
     "client.BuiltinModelItemRendererMixin",
+    "client.ChestBlockEntityRendererMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"
   ],
   "injectors": {

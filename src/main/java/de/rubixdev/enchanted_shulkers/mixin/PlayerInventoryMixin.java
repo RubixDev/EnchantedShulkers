@@ -4,6 +4,7 @@ import de.rubixdev.enchanted_shulkers.enchantment.SiphonEnchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,7 +20,8 @@ public class PlayerInventoryMixin {
 
     @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     public void insertStack(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (SiphonEnchantment.onItemPickup(player, stack) && stack.isEmpty()) {
+        if (!(player instanceof ServerPlayerEntity serverPlayer)) return;
+        if (SiphonEnchantment.onItemPickup(serverPlayer, stack) && stack.isEmpty()) {
             cir.setReturnValue(true);
         }
     }

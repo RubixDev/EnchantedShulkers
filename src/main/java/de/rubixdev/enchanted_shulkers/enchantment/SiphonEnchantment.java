@@ -5,8 +5,8 @@ import de.rubixdev.enchanted_shulkers.Utils;
 import java.util.List;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -32,7 +32,7 @@ public class SiphonEnchantment extends Enchantment {
         return true;
     }
 
-    public static boolean onItemPickup(PlayerEntity player, ItemStack stack) {
+    public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
         List<Pair<Integer, ItemStack>> containerSlots =
                 Utils.getContainers(player.getInventory(), Mod.SIPHON_ENCHANTMENT);
 
@@ -40,7 +40,7 @@ public class SiphonEnchantment extends Enchantment {
         for (Pair<Integer, ItemStack> containerSlot : containerSlots) {
             if (stack.isEmpty()) return usedSiphon;
             ItemStack container = containerSlot.getRight();
-            DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container);
+            DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
 
             boolean updateContainer = false;
             for (ItemStack innerStack : containerInventory) {

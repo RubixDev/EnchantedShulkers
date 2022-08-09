@@ -1,6 +1,6 @@
 package de.rubixdev.enchanted_shulkers.mixin.client;
 
-import de.rubixdev.enchanted_shulkers.EnchantedBlockEntity;
+import de.rubixdev.enchanted_shulkers.EnchantableBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -36,7 +36,7 @@ public class BuiltinModelItemRendererMixin {
             Item item,
             Block block,
             BlockEntity blockEntity) {
-        if (!(blockEntity instanceof EnchantedBlockEntity enchantedBlockEntity)) return;
-        enchantedBlockEntity.setEnchantments(stack.getEnchantments());
+        if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
+        enchantableBlockEntity.setEnchantments(stack.getEnchantments());
     }
 }

@@ -5,6 +5,8 @@ import de.rubixdev.enchanted_shulkers.enchantment.RefillEnchantment;
 import de.rubixdev.enchanted_shulkers.enchantment.SiphonEnchantment;
 import java.util.Arrays;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -51,6 +53,16 @@ public class Mod implements ModInitializer {
         EnchantmentTarget[] newTargets = Arrays.copyOf(currentTargets, currentTargets.length + 1);
         newTargets[newTargets.length - 1] = PORTABLE_CONTAINER_TARGET;
         ItemGroup.DECORATIONS.setEnchantments(newTargets);
+
+        // Add enchanted_ender_chest data pack when enabled in config
+        if (Config.enchantableEnderChest()) {
+            FabricLoader.getInstance()
+                    .getModContainer(MOD_ID)
+                    .ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(
+                            new Identifier(MOD_ID, "enchanted_ender_chest"),
+                            modContainer,
+                            ResourcePackActivationType.ALWAYS_ENABLED));
+        }
 
         LOGGER.info(MOD_NAME + " v" + MOD_VERSION.getFriendlyString() + " loaded");
     }

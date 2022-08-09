@@ -2,12 +2,12 @@ package de.rubixdev.enchanted_shulkers.mixin.client;
 
 import de.rubixdev.enchanted_shulkers.EnchantableBlockEntity;
 import java.util.function.Function;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.SpriteTexturedVertexConsumer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.ShulkerBoxBlockEntityRenderer;
+import net.minecraft.client.render.block.entity.ChestBlockEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
@@ -15,11 +15,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ShulkerBoxBlockEntityRenderer.class)
-public class ShulkerBoxBlockEntityRendererMixin {
+@Mixin(ChestBlockEntityRenderer.class)
+public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
     @Redirect(
             method =
-                    "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
+                    "render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
             at =
                     @At(
                             value = "INVOKE",
@@ -29,13 +29,13 @@ public class ShulkerBoxBlockEntityRendererMixin {
             SpriteIdentifier instance,
             VertexConsumerProvider vertexConsumers,
             Function<Identifier, RenderLayer> layerFactory,
-            ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+            T chestBlockEntity) {
         return new SpriteTexturedVertexConsumer(
                 ItemRenderer.getDirectItemGlintConsumer(
                         vertexConsumers,
                         instance.getRenderLayer(layerFactory),
                         false,
-                        shulkerBoxBlockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
+                        chestBlockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
                                 && !enchantableBlockEntity.getEnchantments().isEmpty()),
                 instance.getSprite());
     }

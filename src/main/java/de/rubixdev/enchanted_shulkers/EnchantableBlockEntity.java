@@ -3,7 +3,7 @@ package de.rubixdev.enchanted_shulkers;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
-public interface EnchantedBlockEntity {
+public interface EnchantableBlockEntity {
     NbtList getEnchantments();
 
     void setEnchantments(NbtList enchantments);

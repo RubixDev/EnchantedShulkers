@@ -39,8 +39,13 @@ public class Config {
         return inner.refill_non_stackables;
     }
 
+    public static boolean enchantableEnderChest() {
+        return inner.enchantable_ender_chest;
+    }
+
     private static class InnerConfig {
         boolean refill_offhand = true;
         boolean refill_non_stackables = false;
+        boolean enchantable_ender_chest = false;
     }
 }
