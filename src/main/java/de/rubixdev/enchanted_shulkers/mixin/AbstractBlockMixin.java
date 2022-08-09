@@ -40,8 +40,19 @@ public class AbstractBlockMixin {
             if (!Utils.canEnchant(blockItem)) continue;
             NbtCompound existing = drop.getNbt();
             if (existing == null) {
+                // Don't set empty Enchantments
+                if (enchantments.isEmpty()) continue;
                 drop.setNbt(nbt.copy());
             } else {
+                // Remove `Enchantments` tags, when enchantments are empty
+                if (enchantments.isEmpty()) {
+                    drop.removeSubNbt("Enchantments");
+                    NbtCompound existingBlockEntityTag = drop.getSubNbt("BlockEntityTag");
+                    if (existingBlockEntityTag == null) continue;
+                    existingBlockEntityTag.remove("Enchantments");
+                    if (existingBlockEntityTag.isEmpty()) drop.removeSubNbt("BlockEntityTag");
+                    continue;
+                }
                 drop.setNbt(nbt.copyFrom(existing));
             }
         }
