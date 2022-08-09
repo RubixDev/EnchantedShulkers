@@ -9,11 +9,14 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 
 public class Mod implements ModInitializer {
     public static final String MOD_ID = "enchanted_shulkers";
@@ -43,6 +46,12 @@ public class Mod implements ModInitializer {
     public void onInitialize() {
         Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), SIPHON_ENCHANTMENT);
         Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "refill"), REFILL_ENCHANTMENT);
+
+        // Add enchantments to DECORATIONS ItemGroup
+        EnchantmentTarget[] currentTargets = ItemGroup.DECORATIONS.getEnchantments();
+        EnchantmentTarget[] newTargets = Arrays.copyOf(currentTargets, currentTargets.length + 1);
+        newTargets[newTargets.length - 1] = PORTABLE_CONTAINER_TARGET;
+        ItemGroup.DECORATIONS.setEnchantments(newTargets);
 
         LOGGER.info(MOD_NAME + " v" + MOD_VERSION.getFriendlyString() + " loaded");
     }
