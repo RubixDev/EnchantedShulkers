@@ -1,5 +1,6 @@
 package de.rubixdev.enchanted_shulkers.enchantment;
 
+import de.rubixdev.enchanted_shulkers.Config;
 import de.rubixdev.enchanted_shulkers.Mod;
 import de.rubixdev.enchanted_shulkers.Utils;
 import java.util.List;
@@ -50,24 +51,26 @@ public class RefillEnchantment extends Enchantment {
                 && ItemStack.areNbtEqual(currentMainStack, previous.offStack);
         boolean wasMainEmptied = previous.mainStack.getCount() > 0 && currentMainStack.isEmpty() && !swappedHands;
         boolean wasOffEmptied = previous.offStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
+        boolean shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previous.mainStack))
+                && currentMainStack.getCount() < previous.mainStack.getCount();
+        boolean shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previous.offStack))
+                && currentOffStack.getCount() < previous.offStack.getCount()
+                && Config.refillOffhand();
 
-        if (currentSlot != previous.slot
-                || swappedHands
-                || !(wasMainEmptied || ItemStack.canCombine(currentMainStack, previous.mainStack))
-                || !(wasOffEmptied || ItemStack.canCombine(currentOffStack, previous.offStack))) {
+        if (currentSlot != previous.slot || swappedHands || !(shouldRefillMain || shouldRefillOff)) {
             previous.slot = currentSlot;
             previous.mainStack = currentMainStack.copy();
             previous.offStack = currentOffStack.copy();
             return;
         }
 
-        if (currentMainStack.getCount() < previous.mainStack.getCount()) {
+        if (shouldRefillMain) {
             refill(
                     player,
                     currentSlot,
                     previous.mainStack,
                     previous.mainStack.getCount() - currentMainStack.getCount());
-        } else if (currentOffStack.getCount() < previous.offStack.getCount()) {
+        } else {
             refill(
                     player,
                     PlayerInventory.OFF_HAND_SLOT,
