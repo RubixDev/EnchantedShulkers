@@ -43,9 +43,14 @@ public class Config {
         return inner.enchantable_ender_chest;
     }
 
+    public static boolean colorizeContainerNames() {
+        return inner.colorize_container_names;
+    }
+
     private static class InnerConfig {
         boolean refill_offhand = true;
         boolean refill_non_stackables = false;
         boolean enchantable_ender_chest = false;
+        boolean colorize_container_names = false;
     }
 }

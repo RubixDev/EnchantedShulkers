@@ -49,8 +49,6 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
         nbt.put("Enchantments", this.enchantments);
     }
 
-    // TODO: show name in aqua color
-
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return this.toClientNbt();

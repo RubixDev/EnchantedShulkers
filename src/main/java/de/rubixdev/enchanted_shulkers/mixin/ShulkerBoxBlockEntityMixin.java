@@ -1,5 +1,6 @@
 package de.rubixdev.enchanted_shulkers.mixin;
 
+import de.rubixdev.enchanted_shulkers.Config;
 import de.rubixdev.enchanted_shulkers.EnchantableBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -11,12 +12,17 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ShulkerBoxBlockEntity.class)
@@ -51,8 +57,6 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
         nbt.put("Enchantments", this.enchantments);
     }
 
-    // TODO: show name in aqua color
-
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return this.toClientNbt();
@@ -62,5 +66,20 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Redirect(
+            method = "getContainerName",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/text/Text;translatable(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
+    public MutableText getContainerName(String key) {
+        MutableText text = Text.translatable(key);
+        if (Config.colorizeContainerNames() && !enchantments.isEmpty()) {
+            text.setStyle(Style.EMPTY.withFormatting(Formatting.AQUA));
+        }
+        return text;
     }
 }
