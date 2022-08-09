@@ -35,7 +35,12 @@ public class Config {
         return inner.refill_offhand;
     }
 
+    public static boolean refillNonStackables() {
+        return inner.refill_non_stackables;
+    }
+
     private static class InnerConfig {
         boolean refill_offhand = true;
+        boolean refill_non_stackables = false;
     }
 }

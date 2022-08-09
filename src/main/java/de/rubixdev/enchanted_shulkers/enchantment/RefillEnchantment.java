@@ -52,9 +52,11 @@ public class RefillEnchantment extends Enchantment {
         boolean wasMainEmptied = previous.mainStack.getCount() > 0 && currentMainStack.isEmpty() && !swappedHands;
         boolean wasOffEmptied = previous.offStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
         boolean shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previous.mainStack))
-                && currentMainStack.getCount() < previous.mainStack.getCount();
+                && currentMainStack.getCount() < previous.mainStack.getCount()
+                && (Config.refillNonStackables() || previous.mainStack.isStackable());
         boolean shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previous.offStack))
                 && currentOffStack.getCount() < previous.offStack.getCount()
+                && (Config.refillNonStackables() || previous.offStack.isStackable())
                 && Config.refillOffhand();
 
         if (currentSlot != previous.slot || swappedHands || !(shouldRefillMain || shouldRefillOff)) {
