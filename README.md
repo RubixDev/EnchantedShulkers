@@ -1,12 +1,19 @@
 # EnchantedShulkers
+
+---
+
+**Note: This mod is for [Fabric](https://fabricmc.net/) only. If you are looking for a Forge mod with similar functionality, have a look at [Shulker Enchantments](https://github.com/Ephys/mc-shulker-enchantments)**
+
+---
+
 Adds the "Siphon" and "Refill" enchantments to Shulker Boxes
 
 [![Requires Fabric API](https://raw.githubusercontent.com/RubixDev/Rug/1.17/fabric-api.png)](https://modrinth.com/mod/fabric-api)
 
 ## Inspiration
 I was inspired to create this mod after watching [Xisumavoid's video about inventory improvements](https://www.youtube.com/watch?v=zJtJ90Vl03M&t=491s).
-In that video a Forge mod called [Shulker Enchantments](https://www.curseforge.com/minecraft/mc-mods/shulker-enchantments) was presented.
-This mod now tries to provide similar functionality for Fabric, as the only other Fabric mod with these enchantments that I could find (i.e. [BetterShulkers](https://www.curseforge.com/minecraft/mc-mods/fabric-bettershulkers)) only supports Minecraft 1.16.
+In that video a Forge mod called [Shulker Enchantments](https://github.com/Ephys/mc-shulker-enchantments) was presented.
+This mod now tries to provide similar functionality for Fabric, as the only other Fabric mod with these enchantments that I could find (i.e. [BetterShulkers](https://github.com/arxenix/better-shulkers)) only supports Minecraft 1.16.
 
 ## Features
 This mod adds the "Siphon" and "Refill" enchantments to the game. They can be obtained just like Mending and other treasure enchantments.
@@ -48,4 +55,6 @@ To do that, create the file `portable_container.json` inside the `src/main/resou
 ```
 
 If your container does not extend the vanilla Shulker Box class, you might have to manually implement the [`EnchantableBlockEntity`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/EnchantableBlockEntity.java) interface and support rendering the enchantment glint and display name colorizer.
-For more information have a look at [`ShulkerBoxBlockEntityRendererMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/client/ShulkerBoxBlockEntityRendererMixin.java) and [`ShulkerBoxBlockEntityMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/ShulkerBoxBlockEntityMixin.java)
+For more information have a look at [`ShulkerBoxBlockEntityRendererMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/client/ShulkerBoxBlockEntityRendererMixin.java) and [`ShulkerBoxBlockEntityMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/ShulkerBoxBlockEntityMixin.java).
+
+On any further questions or issues, please open an issue on [GitHub](https://github.com/RubixDev/EnchantedShulkers/issues/new).
