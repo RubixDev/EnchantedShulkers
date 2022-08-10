@@ -1,6 +1,6 @@
-package de.rubixdev.enchanted_shulkers.mixin;
+package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchanted_shulkers.enchantment.RefillEnchantment;
+import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -25,7 +25,7 @@ This mod does actually work as a server-only mod, but it is not recommended.
 Players without the mod on their client cannot see these enchantments on enchanted books and enchanted containers.
 
 ## Configuration
-A few aspects of the mod can be configured in the `config/enchanted_shulkers.toml` config file. On first launch a default file is generated. Below is a list of available options.
+A few aspects of the mod can be configured in the `config/enchantedshulkers.toml` config file. On first launch a default file is generated. Below is a list of available options.
 
 | **Option**                 | **Possible Values** | **Default Value** | **Description**                                             |
 |----------------------------|---------------------|-------------------|-------------------------------------------------------------|
@@ -35,8 +35,8 @@ A few aspects of the mod can be configured in the `config/enchanted_shulkers.tom
 | `colorize_container_names` | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color |
 
 ## For Mod Developers
-If your Mod adds a new container that should support these enchantments, you must simply add the container to the `enchanted_shulkers:portable_container` item tag.
-To do that, create the file `portable_container.json` inside the `src/main/resources/data/enchanted_shulkers/tags/items/` folder of your mod with following contents:
+If your Mod adds a new container that should support these enchantments, you must simply add the container to the `enchantedshulkers:portable_container` item tag.
+To do that, create the file `portable_container.json` inside the `src/main/resources/data/enchantedshulkers/tags/items/` folder of your mod with following contents:
 
 ```json
 {
@@ -47,5 +47,5 @@ To do that, create the file `portable_container.json` inside the `src/main/resou
 }
 ```
 
-If your container does not extend the vanilla Shulker Box class, you might have to manually implement the [`EnchantableBlockEntity`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchanted_shulkers/EnchantableBlockEntity.java) interface and support rendering the enchantment glint and display name colorizer.
-For more information have a look at [`ShulkerBoxBlockEntityRendererMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchanted_shulkers/mixin/client/ShulkerBoxBlockEntityRendererMixin.java) and [`ShulkerBoxBlockEntityMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchanted_shulkers/mixin/ShulkerBoxBlockEntityMixin.java)
+If your container does not extend the vanilla Shulker Box class, you might have to manually implement the [`EnchantableBlockEntity`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/EnchantableBlockEntity.java) interface and support rendering the enchantment glint and display name colorizer.
+For more information have a look at [`ShulkerBoxBlockEntityRendererMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/client/ShulkerBoxBlockEntityRendererMixin.java) and [`ShulkerBoxBlockEntityMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/ShulkerBoxBlockEntityMixin.java)

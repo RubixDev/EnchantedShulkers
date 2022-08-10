@@ -1,6 +1,6 @@
-package de.rubixdev.enchanted_shulkers.mixin.client;
+package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchanted_shulkers.EnchantableBlockEntity;
+import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
 import java.util.function.Function;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.render.RenderLayer;

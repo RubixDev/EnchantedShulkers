@@ -1,6 +1,6 @@
-package de.rubixdev.enchanted_shulkers.mixin;
+package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchanted_shulkers.Utils;
+import de.rubixdev.enchantedshulkers.Utils;
 import java.util.Map;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;

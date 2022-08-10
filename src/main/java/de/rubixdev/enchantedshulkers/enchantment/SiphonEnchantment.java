@@ -1,7 +1,7 @@
-package de.rubixdev.enchanted_shulkers.enchantment;
+package de.rubixdev.enchantedshulkers.enchantment;
 
-import de.rubixdev.enchanted_shulkers.Mod;
-import de.rubixdev.enchanted_shulkers.Utils;
+import de.rubixdev.enchantedshulkers.Mod;
+import de.rubixdev.enchantedshulkers.Utils;
 import java.util.List;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;

@@ -1,7 +1,7 @@
-package de.rubixdev.enchanted_shulkers.mixin;
+package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchanted_shulkers.EnchantableBlockEntity;
-import de.rubixdev.enchanted_shulkers.Utils;
+import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
+import de.rubixdev.enchantedshulkers.Utils;
 import java.util.List;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;

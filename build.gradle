@@ -19,7 +19,7 @@ repositories {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/enchanted_shulkers.accesswidener")
+    accessWidenerPath = file("src/main/resources/enchantedshulkers.accesswidener")
 }
 
 dependencies {

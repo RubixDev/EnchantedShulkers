@@ -1,6 +1,6 @@
-package de.rubixdev.enchanted_shulkers.mixin;
+package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchanted_shulkers.EnchantableBlockEntity;
+import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ShulkerBoxBlock.class)
 public class ShulkerBoxBlockMixin {
     /**
-     * Only for creative mode, for all other means of breaking see {@link de.rubixdev.enchanted_shulkers.mixin.AbstractBlockMixin#getDroppedStacks(BlockState, LootContext.Builder, CallbackInfoReturnable)}
+     * Only for creative mode, for all other means of breaking see {@link de.rubixdev.enchantedshulkers.mixin.AbstractBlockMixin#getDroppedStacks(BlockState, LootContext.Builder, CallbackInfoReturnable)}
      */
     @Inject(
             method = "onBreak",

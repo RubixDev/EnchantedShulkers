@@ -1,4 +1,4 @@
-package de.rubixdev.enchanted_shulkers;
+package de.rubixdev.enchantedshulkers;
 
 import static java.nio.file.StandardOpenOption.*;
 

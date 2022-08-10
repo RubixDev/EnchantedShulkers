@@ -1,6 +1,6 @@
-package de.rubixdev.enchanted_shulkers.mixin;
+package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchanted_shulkers.enchantment.SiphonEnchantment;
+import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;

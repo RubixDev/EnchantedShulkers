@@ -1,0 +1,6 @@
+{
+  "enchantment.enchantedshulkers.siphon": "Siphon",
+  "enchantment.enchantedshulkers.siphon.desc": "Picked up items go in the storage if it already contains a similar item.",
+  "enchantment.enchantedshulkers.refill": "Refill",
+  "enchantment.enchantedshulkers.refill.desc": "Refills your held item from its inventory after use."
+}

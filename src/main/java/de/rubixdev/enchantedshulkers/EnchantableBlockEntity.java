@@ -1,4 +1,4 @@
-package de.rubixdev.enchanted_shulkers;
+package de.rubixdev.enchantedshulkers;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;

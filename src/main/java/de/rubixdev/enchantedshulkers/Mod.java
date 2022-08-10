@@ -1,8 +1,8 @@
-package de.rubixdev.enchanted_shulkers;
+package de.rubixdev.enchantedshulkers;
 
 import com.chocohead.mm.api.ClassTinkerers;
-import de.rubixdev.enchanted_shulkers.enchantment.RefillEnchantment;
-import de.rubixdev.enchanted_shulkers.enchantment.SiphonEnchantment;
+import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
+import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
 import java.util.Arrays;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Mod implements ModInitializer {
-    public static final String MOD_ID = "enchanted_shulkers";
+    public static final String MOD_ID = "enchantedshulkers";
     public static final String MOD_NAME;
     public static final Version MOD_VERSION;
 
