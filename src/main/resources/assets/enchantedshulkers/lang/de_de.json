@@ -1,0 +1,6 @@
+{
+  "enchantment.enchantedshulkers.siphon": "Saugen",
+  "enchantment.enchantedshulkers.refill": "Wiederbefüllung",
+  "commands.enchantedshulkers.get": "Die Option %s ist derzeit \u201a%s\u2018",
+  "commands.enchantedshulkers.set": "Option %s wurde auf \u201a%s\u2018 gesetzt"
+}
