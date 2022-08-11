@@ -59,14 +59,12 @@ public class Mod implements ModInitializer {
         ItemGroup.DECORATIONS.setEnchantments(newTargets);
 
         // Add enchanted_ender_chest data pack when enabled in config
-        if (WorldConfig.enchantableEnderChest()) {
-            FabricLoader.getInstance()
-                    .getModContainer(MOD_ID)
-                    .ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(
-                            new Identifier(MOD_ID, "enchanted_ender_chest"),
-                            modContainer,
-                            ResourcePackActivationType.ALWAYS_ENABLED));
-        }
+        FabricLoader.getInstance()
+                .getModContainer(MOD_ID)
+                .ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(
+                        new Identifier(MOD_ID, "enchanted_ender_chest"),
+                        modContainer,
+                        ResourcePackActivationType.NORMAL));
 
         // Register event hooks and command
         ServerLifecycleEvents.SERVER_STARTED.register(WorldConfig::attachServer);
