@@ -1,8 +1,8 @@
 package de.rubixdev.enchantedshulkers.enchantment;
 
-import de.rubixdev.enchantedshulkers.Config;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import java.util.List;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
@@ -55,11 +55,11 @@ public class RefillEnchantment extends Enchantment {
         boolean wasOffEmptied = previous.offStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
         boolean shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previous.mainStack))
                 && currentMainStack.getCount() < previous.mainStack.getCount()
-                && (Config.refillNonStackables() || previous.mainStack.isStackable());
+                && (WorldConfig.refillNonStackables() || previous.mainStack.isStackable());
         boolean shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previous.offStack))
                 && currentOffStack.getCount() < previous.offStack.getCount()
-                && (Config.refillNonStackables() || previous.offStack.isStackable())
-                && Config.refillOffhand();
+                && (WorldConfig.refillNonStackables() || previous.offStack.isStackable())
+                && WorldConfig.refillOffhand();
 
         if (currentSlot != previous.slot || swappedHands || !(shouldRefillMain || shouldRefillOff)) {
             previous.slot = currentSlot;

@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchantedshulkers.Config;
 import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EnderChestBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -28,7 +28,7 @@ public abstract class EnderChestBlockMixin {
     private Text colorizeName(BlockState state, World world, BlockPos pos) {
         Text original = EnderChestBlock.CONTAINER_NAME;
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(Config.colorizeContainerNames()
+        if (!(WorldConfig.colorizeContainerNames()
                 && blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
                 && !enchantableBlockEntity.getEnchantments().isEmpty())) return original;
 

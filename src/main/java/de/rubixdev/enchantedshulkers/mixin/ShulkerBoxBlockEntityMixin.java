@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchantedshulkers.Config;
 import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -77,7 +77,7 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
                                     "Lnet/minecraft/text/Text;translatable(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
     public MutableText getContainerName(String key) {
         MutableText text = Text.translatable(key);
-        if (Config.colorizeContainerNames() && !enchantments.isEmpty()) {
+        if (WorldConfig.colorizeContainerNames() && !enchantments.isEmpty()) {
             text.setStyle(Style.EMPTY.withFormatting(Formatting.AQUA));
         }
         return text;

@@ -1,10 +1,14 @@
 package de.rubixdev.enchantedshulkers;
 
 import com.chocohead.mm.api.ClassTinkerers;
+import de.rubixdev.enchantedshulkers.config.ConfigCommand;
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
 import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
 import java.util.Arrays;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -55,7 +59,7 @@ public class Mod implements ModInitializer {
         ItemGroup.DECORATIONS.setEnchantments(newTargets);
 
         // Add enchanted_ender_chest data pack when enabled in config
-        if (Config.enchantableEnderChest()) {
+        if (WorldConfig.enchantableEnderChest()) {
             FabricLoader.getInstance()
                     .getModContainer(MOD_ID)
                     .ifPresent(modContainer -> ResourceManagerHelper.registerBuiltinResourcePack(
@@ -63,6 +67,12 @@ public class Mod implements ModInitializer {
                             modContainer,
                             ResourcePackActivationType.ALWAYS_ENABLED));
         }
+
+        // Register event hooks and command
+        ServerLifecycleEvents.SERVER_STARTED.register(WorldConfig::attachServer);
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> WorldConfig.detachServer());
+        CommandRegistrationCallback.EVENT.register(
+                (dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
 
         LOGGER.info(MOD_NAME + " v" + MOD_VERSION.getFriendlyString() + " loaded");
     }
