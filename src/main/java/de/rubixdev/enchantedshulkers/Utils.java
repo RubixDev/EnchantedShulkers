@@ -55,6 +55,7 @@ public class Utils {
         Inventories.writeNbt(nbt, inventory);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static <T extends BlockEntity> boolean shouldGlint(T blockEntity) {
         return blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
                 && !enchantableBlockEntity.getEnchantments().isEmpty();

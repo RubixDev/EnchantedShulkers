@@ -3,10 +3,13 @@ package de.rubixdev.enchantedshulkers;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.stream.Stream;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class SpriteAtlasStorage {
     public static final Identifier CLOSED_CONTAINERS_ATLAS_TEXTURE_ID =
             new Identifier("enchantedshulkers:textures/atlas/closed_containers.png");

@@ -1,8 +1,8 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
 import de.rubixdev.enchantedshulkers.SpriteAtlasStorage;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import java.util.function.Function;
 import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.Block;
@@ -42,13 +42,11 @@ public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
             VertexConsumerProvider vertexConsumers,
             Function<Identifier, RenderLayer> layerFactory,
             T chestBlockEntity) {
+        if (!ClientConfig.get().glintWhenPlaced() || !Utils.shouldGlint(chestBlockEntity))
+            return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return new SpriteTexturedVertexConsumer(
                 ItemRenderer.getDirectItemGlintConsumer(
-                        vertexConsumers,
-                        instance.getRenderLayer(layerFactory),
-                        false,
-                        chestBlockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
-                                && !enchantableBlockEntity.getEnchantments().isEmpty()),
+                        vertexConsumers, instance.getRenderLayer(layerFactory), false, true),
                 instance.getSprite());
     }
 
@@ -98,7 +96,10 @@ public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
             DoubleBlockProperties.PropertySource<?> propertySource,
             float g,
             int i) {
-        if (!(entity instanceof EnderChestBlockEntity) || !Utils.shouldGlint(entity) || g > 0.01f) return;
+        if (!ClientConfig.get().customModels()
+                || !(entity instanceof EnderChestBlockEntity)
+                || !Utils.shouldGlint(entity)
+                || g > 0.01f) return;
 
         SpriteIdentifier spriteIdentifier = SpriteAtlasStorage.CLOSED_ENDER_TEXTURE_ID;
         VertexConsumer vertexConsumer = SpriteAtlasStorage.closedContainersAtlasTexture

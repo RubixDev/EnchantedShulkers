@@ -64,10 +64,10 @@ public class WorldConfig {
     private static void read() {
         try (BufferedReader reader = Files.newBufferedReader(getConfigPath())) {
             inner = new Toml().read(reader).to(Inner.class);
+            Mod.LOGGER.info("Loaded settings from " + Mod.MOD_ID + ".toml");
         } catch (Throwable e) {
             Mod.LOGGER.warn("Could not read config, using default settings: " + e);
         }
-        Mod.LOGGER.info("Loaded settings from " + Mod.MOD_ID + ".toml");
     }
 
     private static void write() {

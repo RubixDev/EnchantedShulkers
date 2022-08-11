@@ -14,8 +14,10 @@ group = project.maven_group
 repositories {
     maven {
         name = "jitpack"
-        url = 'https://jitpack.io'
+        url = "https://jitpack.io"
     }
+    maven { url = "https://maven.shedaniel.me"}
+    maven { url = "https://maven.terraformersmc.com"}
 }
 
 loom {
@@ -38,6 +40,14 @@ dependencies {
     include modApi("com.moandjiezana.toml:toml4j:${project.toml4j_version}") {
         exclude(module: "gson")
     }
+
+    // Cloth Config: Client side configuration screen
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    // Mod Menu
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

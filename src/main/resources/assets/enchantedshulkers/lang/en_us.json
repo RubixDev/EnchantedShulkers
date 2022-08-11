@@ -4,5 +4,15 @@
   "enchantment.enchantedshulkers.refill": "Refill",
   "enchantment.enchantedshulkers.refill.desc": "Refills your held item from its inventory after use.",
   "commands.enchantedshulkers.get": "Option %s is currently set to: %s",
-  "commands.enchantedshulkers.set": "Option %s is now set to: %s"
+  "commands.enchantedshulkers.set": "Option %s is now set to: %s",
+  "text.autoconfig.enchantedshulkers.title": "Enchanted Shulkers Client Settings",
+  "text.autoconfig.enchantedshulkers.option.glintWhenPlaced": "Apply glint to placed containers",
+  "text.autoconfig.enchantedshulkers.option.glintWhenPlaced.@Tooltip[0]": "Applies the enchantment glint to enchanted shulker boxes",
+  "text.autoconfig.enchantedshulkers.option.glintWhenPlaced.@Tooltip[1]": "and ender chests that are placed in the world",
+  "text.autoconfig.enchantedshulkers.option.customModels": "Prevent glint overlap with custom models",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[0]": "Uses different block models and textures for closed containers",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[1]": "to prevent overlapping glint. This does not change the look",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[2]": "of closed containers, but always uses the vanilla textures,",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[3]": "so you should disable this when using a custom resource pack.",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[4]": "This option only has effect when the above option is on"
 }

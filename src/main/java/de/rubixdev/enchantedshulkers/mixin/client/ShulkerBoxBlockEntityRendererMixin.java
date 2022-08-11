@@ -5,6 +5,7 @@ import static de.rubixdev.enchantedshulkers.SpriteAtlasStorage.CLOSED_SHULKER_TE
 
 import de.rubixdev.enchantedshulkers.SpriteAtlasStorage;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import java.util.function.Function;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.model.*;
@@ -39,12 +40,11 @@ public class ShulkerBoxBlockEntityRendererMixin {
             VertexConsumerProvider vertexConsumers,
             Function<Identifier, RenderLayer> layerFactory,
             ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+        if (!ClientConfig.get().glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
+            return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
                 .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
-                        vertexConsumers,
-                        instance.getRenderLayer(layerFactory),
-                        false,
-                        Utils.shouldGlint(shulkerBoxBlockEntity)));
+                        vertexConsumers, instance.getRenderLayer(layerFactory), false, true));
     }
 
     @Unique
@@ -77,7 +77,9 @@ public class ShulkerBoxBlockEntityRendererMixin {
             int i,
             int j,
             CallbackInfo ci) {
-        if (!Utils.shouldGlint(shulkerBoxBlockEntity) || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) return;
+        if (!ClientConfig.get().customModels()
+                || !Utils.shouldGlint(shulkerBoxBlockEntity)
+                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) return;
 
         DyeColor dyeColor;
         SpriteIdentifier spriteIdentifier = (dyeColor = shulkerBoxBlockEntity.getColor()) == null

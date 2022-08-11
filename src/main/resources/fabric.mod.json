@@ -22,8 +22,14 @@
     "main": [
       "de.rubixdev.enchantedshulkers.Mod"
     ],
+    "client": [
+      "de.rubixdev.enchantedshulkers.ClientMod"
+    ],
     "mm:early_risers": [
       "de.rubixdev.enchantedshulkers.asm.EnumInjector"
+    ],
+    "modmenu": [
+      "de.rubixdev.enchantedshulkers.ModMenuInit"
     ]
   },
   "mixins": [
@@ -36,6 +42,10 @@
     "fabric": "*",
     "minecraft": ">=1.18.2",
     "java": ">=17"
+  },
+  "suggests": {
+    "cloth-config": "*",
+    "modmenu": "*"
   },
 
   "custom": {
