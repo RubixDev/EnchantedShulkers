@@ -2,6 +2,7 @@ package de.rubixdev.enchantedshulkers;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.Inventories;
@@ -52,5 +53,10 @@ public class Utils {
 
         NbtCompound nbt = container.getOrCreateSubNbt("BlockEntityTag");
         Inventories.writeNbt(nbt, inventory);
+    }
+
+    public static <T extends BlockEntity> boolean shouldGlint(T blockEntity) {
+        return blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
+                && !enchantableBlockEntity.getEnchantments().isEmpty();
     }
 }

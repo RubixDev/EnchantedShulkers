@@ -16,6 +16,7 @@
     "ShulkerBoxBlockMixin"
   ],
   "client": [
+    "client.ModelLoaderMixin",
     "client.BuiltinModelItemRendererMixin",
     "client.ChestBlockEntityRendererMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"
