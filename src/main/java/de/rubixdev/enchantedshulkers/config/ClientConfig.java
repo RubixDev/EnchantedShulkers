@@ -27,10 +27,6 @@ public class ClientConfig {
         return inner.glintWhenPlaced && inner.customModels;
     }
 
-    public static boolean coloredNames() {
-        return inner.coloredNames;
-    }
-
     @Config(name = Mod.MOD_ID)
     public static class Inner implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 2)
@@ -38,8 +34,5 @@ public class ClientConfig {
 
         @ConfigEntry.Gui.Tooltip(count = 5)
         boolean customModels = true;
-
-        @ConfigEntry.Gui.Tooltip(count = 4)
-        boolean coloredNames = false;
     }
 }

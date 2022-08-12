@@ -116,9 +116,14 @@ public class WorldConfig {
         return inner.refillNonStackables;
     }
 
+    public static boolean coloredNames() {
+        return inner.coloredNames;
+    }
+
     private static class Inner {
         boolean refillOffhand = true;
         boolean refillNonStackables = false;
         boolean enchantableEnderChest = false;
+        boolean coloredNames = false;
     }
 }

@@ -8,6 +8,7 @@
     "EnchantmentHelperMixin",
     "EnchantmentTargetMixin",
     "EnderChestBlockEntityMixin",
+    "EnderChestBlockMixin",
     "ItemStackMixin",
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
@@ -17,9 +18,7 @@
   "client": [
     "client.BuiltinModelItemRendererMixin",
     "client.ChestBlockEntityRendererMixin",
-    "client.EnderChestBlockMixin",
     "client.ModelLoaderMixin",
-    "client.ShulkerBoxBlockEntityMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"
   ],
   "injectors": {
