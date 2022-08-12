@@ -14,5 +14,10 @@
   "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[1]": "to prevent overlapping glint. This does not change the look",
   "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[2]": "of closed containers, but always uses the vanilla textures,",
   "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[3]": "so you should disable this when using a custom resource pack.",
-  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[4]": "This option only has effect when the above option is on"
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[4]": "This option only has effect when the above option is on",
+  "text.autoconfig.enchantedshulkers.option.coloredNames": "Show container names in aqua color",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[0]": "Displays the names of enchanted containers in aqua color",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[1]": "inside their inventory, just like enchanted items always",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[2]": "have an aqua name in the tooltip. This usually looks bad",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[3]": "on light inventory backgrounds like the default one"
 }

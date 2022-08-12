@@ -12,5 +12,10 @@
   "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[1]": "um überlappende Schimmereffekte zu verhindern. Dies behält das normale",
   "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[2]": "aussehen bei, benutzt aber immer die Standardtexturen. Du solltest",
   "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[3]": "dies also ausschalten, wenn du ein anderes Ressourcenpaket benutzt.",
-  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[4]": "Diese Einstellung hat keinen Effekt, wenn die obige Einstellung aus ist."
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[4]": "Diese Einstellung hat keinen Effekt, wenn die obige Einstellung aus ist.",
+  "text.autoconfig.enchantedshulkers.option.coloredNames": "Färbe Kistennamen türkis",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[0]": "Färbt die Namen verzauberten von Kisten türkis in deren",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[1]": "Inventaren, genau wie verzauberte Gegenstände immer einen",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[2]": "türkis gefärbten Namen in ihrer Kurzinfo haben. Das sieht",
+  "text.autoconfig.enchantedshulkers.option.coloredNames.@Tooltip[3]": "auf hellen Inventarhintergründen, wie dem Normalen, schlecht aus."
 }

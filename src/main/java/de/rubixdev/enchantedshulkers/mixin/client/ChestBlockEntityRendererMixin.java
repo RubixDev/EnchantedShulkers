@@ -42,7 +42,7 @@ public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
             VertexConsumerProvider vertexConsumers,
             Function<Identifier, RenderLayer> layerFactory,
             T chestBlockEntity) {
-        if (!ClientConfig.get().glintWhenPlaced() || !Utils.shouldGlint(chestBlockEntity))
+        if (!ClientConfig.glintWhenPlaced() || !Utils.shouldGlint(chestBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return new SpriteTexturedVertexConsumer(
                 ItemRenderer.getDirectItemGlintConsumer(
@@ -96,7 +96,7 @@ public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
             DoubleBlockProperties.PropertySource<?> propertySource,
             float g,
             int i) {
-        if (!ClientConfig.get().customModels()
+        if (!ClientConfig.customModels()
                 || !(entity instanceof EnderChestBlockEntity)
                 || !Utils.shouldGlint(entity)
                 || g > 0.01f) return;

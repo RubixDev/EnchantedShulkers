@@ -10,34 +10,36 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-@Config(name = Mod.MOD_ID)
 @Environment(EnvType.CLIENT)
-public class ClientConfig implements ConfigData {
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    boolean glintWhenPlaced = true;
-
-    @ConfigEntry.Gui.Tooltip(count = 5)
-    boolean customModels = true;
-
-    // TODO: move colorizeContainerNames to client side (as coloredNames)
-
-    @ConfigEntry.Gui.Excluded
-    private static ClientConfig instance;
+public class ClientConfig {
+    private static Inner inner;
 
     public static void init() {
-        AutoConfig.register(ClientConfig.class, Toml4jConfigSerializer::new);
-        instance = AutoConfig.getConfigHolder(ClientConfig.class).getConfig();
+        AutoConfig.register(ClientConfig.Inner.class, Toml4jConfigSerializer::new);
+        inner = AutoConfig.getConfigHolder(ClientConfig.Inner.class).getConfig();
     }
 
-    public static ClientConfig get() {
-        return instance;
+    public static boolean glintWhenPlaced() {
+        return inner.glintWhenPlaced;
     }
 
-    public boolean glintWhenPlaced() {
-        return this.glintWhenPlaced;
+    public static boolean customModels() {
+        return inner.glintWhenPlaced && inner.customModels;
     }
 
-    public boolean customModels() {
-        return this.glintWhenPlaced && this.customModels;
+    public static boolean coloredNames() {
+        return inner.coloredNames;
+    }
+
+    @Config(name = Mod.MOD_ID)
+    public static class Inner implements ConfigData {
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        boolean glintWhenPlaced = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 5)
+        boolean customModels = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 4)
+        boolean coloredNames = false;
     }
 }

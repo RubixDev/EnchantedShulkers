@@ -40,7 +40,7 @@ public class ShulkerBoxBlockEntityRendererMixin {
             VertexConsumerProvider vertexConsumers,
             Function<Identifier, RenderLayer> layerFactory,
             ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
-        if (!ClientConfig.get().glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
+        if (!ClientConfig.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
                 .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
@@ -77,7 +77,7 @@ public class ShulkerBoxBlockEntityRendererMixin {
             int i,
             int j,
             CallbackInfo ci) {
-        if (!ClientConfig.get().customModels()
+        if (!ClientConfig.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)
                 || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) return;
 
