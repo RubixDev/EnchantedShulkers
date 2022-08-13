@@ -9,7 +9,6 @@ import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @Environment(EnvType.CLIENT)
 public class ClientConfig {
     private static Inner inner;
@@ -19,20 +18,16 @@ public class ClientConfig {
         inner = AutoConfig.getConfigHolder(ClientConfig.Inner.class).getConfig();
     }
 
-    public static boolean glintWhenPlaced() {
-        return inner.glintWhenPlaced;
-    }
-
-    public static boolean customModels() {
-        return inner.glintWhenPlaced && inner.customModels;
+    public static Inner getInner() {
+        return inner;
     }
 
     @Config(name = Mod.MOD_ID)
     public static class Inner implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 2)
-        boolean glintWhenPlaced = true;
+        public boolean glintWhenPlaced = true;
 
         @ConfigEntry.Gui.Tooltip(count = 5)
-        boolean customModels = true;
+        public boolean customModels = true;
     }
 }
