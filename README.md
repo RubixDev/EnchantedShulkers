@@ -2,7 +2,7 @@
 
 ---
 
-**Note: This mod is for [Fabric](https://fabricmc.net/) only. If you are looking for a Forge mod with similar functionality, have a look at [Shulker Enchantments](https://github.com/Ephys/mc-shulker-enchantments)**
+**Note: This mod is for [Fabric](https://fabricmc.net/) only. If you are looking for a Forge mod with similar functionality, have a look at [Shulker Enchantments](https://modrinth.com/mod/shulker-enchantments)**
 
 ---
 
@@ -12,8 +12,8 @@ Adds the "Siphon" and "Refill" enchantments to Shulker Boxes
 
 ## Inspiration
 I was inspired to create this mod after watching [Xisumavoid's video about inventory improvements](https://www.youtube.com/watch?v=zJtJ90Vl03M&t=491s).
-In that video a Forge mod called [Shulker Enchantments](https://github.com/Ephys/mc-shulker-enchantments) was presented.
-This mod now tries to provide similar functionality for Fabric, as the only other Fabric mod with these enchantments that I could find (i.e. [BetterShulkers](https://github.com/arxenix/better-shulkers)) only supports Minecraft 1.16.
+In that video a Forge mod called [Shulker Enchantments](https://modrinth.com/mod/shulker-enchantments) was presented.
+This mod now tries to provide similar functionality for Fabric, as the only other Fabric mod with these enchantments that I could find (i.e. [BetterShulkers](https://www.curseforge.com/minecraft/mc-mods/fabric-bettershulkers)) only supports Minecraft 1.16.
 
 ## Features
 This mod adds the "Siphon" and "Refill" enchantments to the game. They can be obtained just like Mending and other treasure enchantments.
@@ -29,17 +29,28 @@ Again, the container must be inside your inventory.
 
 ## Server/Client
 This mod does actually work as a server-only mod, but it is not recommended.
-Players without the mod on their client cannot see these enchantments on enchanted books and enchanted containers.
+Players without the mod on their client cannot see these enchantments on enchanted books and containers.
 
 ## Configuration
-A few aspects of the mod can be configured in the `config/enchantedshulkers.toml` config file. On first launch a default file is generated. Below is a list of available options.
+### Client
+To configure client side settings, you must have [Cloth Config API](https://modrinth.com/mod/cloth-config) and [Mod Menu](https://modrinth.com/mod/modmenu) installed alongside EnchantedShulkers.
+You can then open the settings by opening the mod menu, selecting EnchantedShulkers and clicking the settings button on the right side.
 
-| **Option**                 | **Possible Values** | **Default Value** | **Description**                                             |
-|----------------------------|---------------------|-------------------|-------------------------------------------------------------|
-| `refill_offhand`           | `true`, `false`     | `true`            | Allow refilling stacks in the offhand                       |
-| `refill_non_stackables`    | `true`, `false`     | `false`           | Allow refilling non-stackable items like Totems of Undying  |
-| `enchantable_ender_chest`  | `true`, `false`     | `false`           | Allows Ender Chests to also be enchanted                    |
-| `colorize_container_names` | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color |
+The following options are available:
+| **Option**                               | **Default** | **Description**                                                                                                                                                                                                                                                                                                   |
+|------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Apply glint to placed containers         | Yes         | Applies the enchantment glint to enchanted shulker boxes and ender chests that are placed in the world                                                                                                                                                                                                            |
+| Prevent glint overlap with custom models | Yes         | Uses different block models and textures for closed containers to prevent overlapping glint. This does not change the look of closed containers, but always uses the vanilla textures, so you should disable this when using a custom resource pack. This option only has effect when the above option is on |
+
+### Server
+The behavior of the mod can be tweaked per world in the `enchantedshulkers.toml` config file inside you world save folder, or with the `/enchantedshulkers` command in game. Below is a list of available options.
+
+| **Option**              | **Possible Values** | **Default Value** | **Description**                                                                          |
+|-------------------------|---------------------|-------------------|------------------------------------------------------------------------------------------|
+| `refillOffhand`         | `true`, `false`     | `true`            | Allow refilling stacks in the offhand                                                    |
+| `refillNonStackables`   | `true`, `false`     | `false`           | Allow refilling non-stackable items like Totems of Undying                               |
+| `enchantableEnderChest` | `true`, `false`     | `false`           | Allows Ender Chests to also be enchanted                                                 |
+| `coloredNames`          | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color. This applies to all players |
 
 ## For Mod Developers
 If your Mod adds a new container that should support these enchantments, you must simply add the container to the `enchantedshulkers:portable_container` item tag.
