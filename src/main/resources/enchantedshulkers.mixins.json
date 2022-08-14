@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.rubixdev.enchantedshulkers.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AbstractBlockMixin",
+    "EnchantmentHelperMixin",
+    "EnchantmentTargetMixin",
+    "EnderChestBlockEntityMixin",
+    "EnderChestBlockMixin",
+    "ItemStackMixin",
+    "PlayerInventoryMixin",
+    "ServerPlayerEntityMixin",
+    "ShulkerBoxBlockEntityMixin",
+    "ShulkerBoxBlockMixin"
+  ],
+  "client": [
+    "client.BuiltinModelItemRendererMixin",
+    "client.ChestBlockEntityRendererMixin",
+    "client.ModelLoaderMixin",
+    "client.ShulkerBoxBlockEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "enchanted_shulkers",
+  "id": "enchantedshulkers",
   "version": "${version}",
 
   "name": "Enchanted Shulkers",
@@ -15,26 +15,43 @@
   },
 
   "license": "GPL-2.0-only",
-  "icon": "assets/enchanted_shulkers/icon.png",
+  "icon": "assets/enchantedshulkers/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "de.rubixdev.enchanted_shulkers.Mod"
+      "de.rubixdev.enchantedshulkers.Mod"
+    ],
+    "client": [
+      "de.rubixdev.enchantedshulkers.ClientMod"
     ],
     "mm:early_risers": [
-      "de.rubixdev.enchanted_shulkers.asm.EnumInjector"
+      "de.rubixdev.enchantedshulkers.asm.EnumInjector"
+    ],
+    "modmenu": [
+      "de.rubixdev.enchantedshulkers.ModMenuInit"
     ]
   },
   "mixins": [
-    "enchanted_shulkers.mixins.json"
+    "enchantedshulkers.mixins.json"
   ],
-  "accessWidener": "enchanted_shulkers.accesswidener",
+  "accessWidener": "enchantedshulkers.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.14.6",
     "fabric": "*",
-    "minecraft": ">=1.18.2",
+    "minecraft": ">=1.19",
     "java": ">=17"
+  },
+  "suggests": {
+    "cloth-config": "*",
+    "modmenu": "*"
+  },
+
+  "custom": {
+    "mc-publish": {
+      "curseforge": 657667,
+      "modrinth": "vUi6HFie"
+    }
   }
 }

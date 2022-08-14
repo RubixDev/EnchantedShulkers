@@ -1,0 +1,5 @@
+accessWidener   v1  named
+
+extendable class net/minecraft/enchantment/EnchantmentTarget
+
+accessible field net/minecraft/block/EnderChestBlock CONTAINER_NAME Lnet/minecraft/text/Text;
