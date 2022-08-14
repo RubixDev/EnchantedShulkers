@@ -7,7 +7,7 @@ import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
 import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
 import java.util.Arrays;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -69,8 +69,7 @@ public class Mod implements ModInitializer {
         // Register event hooks and command
         ServerLifecycleEvents.SERVER_STARTED.register(WorldConfig::attachServer);
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> WorldConfig.detachServer());
-        CommandRegistrationCallback.EVENT.register(
-                (dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> ConfigCommand.register(dispatcher));
 
         LOGGER.info(MOD_NAME + " v" + MOD_VERSION.getFriendlyString() + " loaded");
     }

@@ -22,8 +22,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ShulkerBoxBlockEntity.class)
 public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockEntity
@@ -68,18 +68,12 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
-    @Redirect(
-            method = "getContainerName",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/text/Text;translatable(Ljava/lang/String;)Lnet/minecraft/text/MutableText;"))
-    public MutableText getContainerName(String key) {
-        MutableText text = Text.translatable(key);
+    @Inject(method = "getContainerName", at = @At("RETURN"), cancellable = true)
+    public void getContainerName(CallbackInfoReturnable<Text> cir) {
+        MutableText text = cir.getReturnValue().copy();
         if (WorldConfig.coloredNames() && !enchantments.isEmpty()) {
             text.setStyle(Style.EMPTY.withFormatting(Formatting.AQUA));
         }
-        return text;
+        cir.setReturnValue(text);
     }
 }
