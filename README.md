@@ -27,6 +27,12 @@ The container must be inside your inventory.
 With the Refill enchantment, any item or item stack you use up will be refilled from an enchanted container as long as the used stack was held in one of the hands (see [configuration](#configuration)).
 Again, the container must be inside your inventory.
 
+## A note on Resource Packs
+When using EnchantedShulkers with a resource pack that alters the look of Shulker Boxes and/or Ender Chests, the enchanted versions of those items and blocks will still use the vanilla texture while closed.
+This had to be done to fix overlapping glint effects on said blocks.
+
+You can patch your resource pack to include the necessary textures for this mod at https://enchantedshulkers.rubixdev.de.
+
 ## Server/Client
 This mod does actually work as a server-only mod, but it is not recommended.
 Players without the mod on their client cannot see these enchantments on enchanted books and containers.
