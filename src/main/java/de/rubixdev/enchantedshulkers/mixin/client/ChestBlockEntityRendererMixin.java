@@ -3,7 +3,6 @@ package de.rubixdev.enchantedshulkers.mixin.client;
 import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.SpriteAtlasStorage;
 import de.rubixdev.enchantedshulkers.Utils;
-import java.util.function.Function;
 import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,37 +16,88 @@ import net.minecraft.client.render.block.entity.ChestBlockEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ChestBlockEntityRenderer.class)
-public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
-    @Redirect(
+public abstract class ChestBlockEntityRendererMixin<T extends BlockEntity> {
+    @Shadow
+    protected abstract void render(
+            MatrixStack matrices,
+            VertexConsumer vertices,
+            ModelPart lid,
+            ModelPart latch,
+            ModelPart base,
+            float openFactor,
+            int light,
+            int overlay);
+
+    @Shadow
+    @Final
+    private ModelPart singleChestLid;
+
+    @Shadow
+    @Final
+    private ModelPart singleChestLatch;
+
+    @Shadow
+    @Final
+    private ModelPart singleChestBase;
+
+    @Inject(
             method =
                     "render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
             at =
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"))
-    private VertexConsumer getVertexConsumer(
-            SpriteIdentifier instance,
+                                    "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"),
+            locals = LocalCapture.CAPTURE_FAILEXCEPTION,
+            cancellable = true)
+    private void renderGlint(
+            T entity,
+            float tickDelta,
+            MatrixStack matrices,
             VertexConsumerProvider vertexConsumers,
-            Function<Identifier, RenderLayer> layerFactory,
-            T chestBlockEntity) {
-        if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(chestBlockEntity))
-            return instance.getVertexConsumer(vertexConsumers, layerFactory);
-        return new SpriteTexturedVertexConsumer(
+            int light,
+            int overlay,
+            CallbackInfo ci,
+            World world,
+            boolean bl,
+            BlockState blockState,
+            ChestType chestType,
+            Block block,
+            AbstractChestBlock<?> abstractChestBlock,
+            boolean bl2,
+            float f,
+            DoubleBlockProperties.PropertySource<?> propertySource,
+            float g,
+            int i,
+            SpriteIdentifier spriteIdentifier) {
+        if (!ClientMod.glintWhenPlaced() || !(entity instanceof EnderChestBlockEntity) || !Utils.shouldGlint(entity))
+            return;
+        VertexConsumer vertexConsumer = new SpriteTexturedVertexConsumer(
                 ItemRenderer.getDirectItemGlintConsumer(
-                        vertexConsumers, instance.getRenderLayer(layerFactory), false, true),
-                instance.getSprite());
+                        vertexConsumers, spriteIdentifier.getRenderLayer(RenderLayer::getEntityCutout), false, true),
+                spriteIdentifier.getSprite());
+        this.render(
+                matrices,
+                vertexConsumer,
+                this.singleChestLid,
+                this.singleChestLatch,
+                this.singleChestBase,
+                g,
+                i,
+                overlay);
+        matrices.pop();
+        ci.cancel();
     }
 
     @Unique
@@ -77,7 +127,7 @@ public class ChestBlockEntityRendererMixin<T extends BlockEntity> {
                                     "Lnet/minecraft/client/render/TexturedRenderLayers;getChestTexture(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/block/enums/ChestType;Z)Lnet/minecraft/client/util/SpriteIdentifier;"),
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true)
-    private void renderGlint(
+    private void renderGlintWhenClosed(
             T entity,
             float tickDelta,
             MatrixStack matrices,
