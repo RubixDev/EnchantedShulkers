@@ -34,55 +34,39 @@ public class RefillEnchantment extends Enchantment {
         return true;
     }
 
-    private static final Previous previous = new Previous();
-
-    private static class Previous {
-        int slot = -1;
-        ItemStack mainStack = ItemStack.EMPTY;
-        ItemStack offStack = ItemStack.EMPTY;
-    }
-
-    public static void onPlayerTick(ServerPlayerEntity player) {
-        int currentSlot = player.getInventory().selectedSlot;
-        ItemStack currentMainStack = player.getInventory().getMainHandStack();
-        ItemStack currentOffStack = player.getInventory().getStack(PlayerInventory.OFF_HAND_SLOT);
-
-        boolean swappedHands = ItemStack.areEqual(previous.mainStack, currentOffStack)
-                && ItemStack.areNbtEqual(previous.mainStack, currentOffStack)
-                && ItemStack.areEqual(currentMainStack, previous.offStack)
-                && ItemStack.areNbtEqual(currentMainStack, previous.offStack);
-        boolean wasMainEmptied = previous.mainStack.getCount() > 0 && currentMainStack.isEmpty() && !swappedHands;
-        boolean wasOffEmptied = previous.offStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
-        boolean shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previous.mainStack))
-                && currentMainStack.getCount() < previous.mainStack.getCount()
-                && (WorldConfig.refillNonStackables() || previous.mainStack.isStackable());
-        boolean shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previous.offStack))
-                && currentOffStack.getCount() < previous.offStack.getCount()
-                && (WorldConfig.refillNonStackables() || previous.offStack.isStackable())
+    public static void onPlayerTick(
+            ServerPlayerEntity player,
+            int currentSlot,
+            ItemStack currentMainStack,
+            ItemStack currentOffStack,
+            int previousSlot,
+            ItemStack previousMainStack,
+            ItemStack previousOffStack) {
+        boolean swappedHands = ItemStack.areEqual(previousMainStack, currentOffStack)
+                && ItemStack.areNbtEqual(previousMainStack, currentOffStack)
+                && ItemStack.areEqual(currentMainStack, previousOffStack)
+                && ItemStack.areNbtEqual(currentMainStack, previousOffStack);
+        boolean wasMainEmptied = previousMainStack.getCount() > 0 && currentMainStack.isEmpty() && !swappedHands;
+        boolean wasOffEmptied = previousOffStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
+        boolean shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previousMainStack))
+                && currentMainStack.getCount() < previousMainStack.getCount()
+                && (WorldConfig.refillNonStackables() || previousMainStack.isStackable());
+        boolean shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previousOffStack))
+                && currentOffStack.getCount() < previousOffStack.getCount()
+                && (WorldConfig.refillNonStackables() || previousOffStack.isStackable())
                 && WorldConfig.refillOffhand();
 
-        if (currentSlot != previous.slot || swappedHands || !(shouldRefillMain || shouldRefillOff)) {
-            previous.slot = currentSlot;
-            previous.mainStack = currentMainStack.copy();
-            previous.offStack = currentOffStack.copy();
-            return;
-        }
+        if (currentSlot != previousSlot || swappedHands || !(shouldRefillMain || shouldRefillOff)) return;
 
         if (shouldRefillMain) {
-            refill(
-                    player,
-                    currentSlot,
-                    previous.mainStack,
-                    previous.mainStack.getCount() - currentMainStack.getCount());
+            refill(player, currentSlot, previousMainStack, previousMainStack.getCount() - currentMainStack.getCount());
         } else {
             refill(
                     player,
                     PlayerInventory.OFF_HAND_SLOT,
-                    previous.offStack,
-                    previous.offStack.getCount() - currentOffStack.getCount());
+                    previousOffStack,
+                    previousOffStack.getCount() - currentOffStack.getCount());
         }
-        previous.mainStack = currentMainStack.copy();
-        previous.offStack = currentOffStack.copy();
     }
 
     static void refill(ServerPlayerEntity player, int slot, ItemStack itemType, int amount) {
