@@ -57,6 +57,8 @@ The behavior of the mod can be tweaked per world in the `enchantedshulkers.toml`
 | `refillNonStackables`   | `true`, `false`     | `false`           | Allow refilling non-stackable items like Totems of Undying                               |
 | `enchantableEnderChest` | `true`, `false`     | `false`           | Allows Ender Chests to also be enchanted                                                 |
 | `coloredNames`          | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color. This applies to all players |
+| `creativeSiphon`        | `true`, `false`     | `false`           | Enable the Siphon enchantment for creative players                                       |
+| `creativeRefill`        | `true`, `false`     | `false`           | Enable the Refill enchantment for creative players                                       |
 
 ## For Mod Developers
 If your Mod adds a new container that should support these enchantments, you must simply add the container to the `enchantedshulkers:portable_container` item tag.

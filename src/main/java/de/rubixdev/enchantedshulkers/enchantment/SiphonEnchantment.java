@@ -2,6 +2,7 @@ package de.rubixdev.enchantedshulkers.enchantment;
 
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import java.util.List;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
@@ -33,6 +34,8 @@ public class SiphonEnchantment extends Enchantment {
     }
 
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
+        if (player.isCreative() && !WorldConfig.creativeSiphon()) return false;
+
         List<Pair<Integer, ItemStack>> containerSlots =
                 Utils.getContainers(player.getInventory(), Mod.SIPHON_ENCHANTMENT);
 
