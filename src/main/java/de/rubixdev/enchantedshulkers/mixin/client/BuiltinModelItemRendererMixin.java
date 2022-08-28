@@ -1,6 +1,6 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
+import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;

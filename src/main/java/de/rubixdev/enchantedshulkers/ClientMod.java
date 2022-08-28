@@ -27,4 +27,9 @@ public class ClientMod implements ClientModInitializer {
         if (!hasCloth) return true;
         return glintWhenPlaced() && ClientConfig.getInner().customModels;
     }
+
+    public static boolean refillInInventory() {
+        if (!hasCloth) return false;
+        return ClientConfig.getInner().refillInInventory;
+    }
 }

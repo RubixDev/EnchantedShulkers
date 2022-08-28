@@ -29,5 +29,7 @@ public class ClientConfig {
 
         @ConfigEntry.Gui.Tooltip(count = 5)
         public boolean customModels = true;
+
+        public boolean refillInInventory = false;
     }
 }

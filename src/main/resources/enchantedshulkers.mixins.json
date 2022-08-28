@@ -18,6 +18,7 @@
   "client": [
     "client.BuiltinModelItemRendererMixin",
     "client.ChestBlockEntityRendererMixin",
+    "client.MinecraftClientMixin",
     "client.ModelLoaderMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"
   ],

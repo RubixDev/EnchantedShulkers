@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers;
 
+import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.entity.BlockEntity;
