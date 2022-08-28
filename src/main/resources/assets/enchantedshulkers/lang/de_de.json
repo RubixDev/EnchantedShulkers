@@ -1,6 +1,6 @@
 {
   "enchantment.enchantedshulkers.siphon": "Saugen",
-  "enchantment.enchantedshulkers.refill": "Wiederbefüllung",
+  "enchantment.enchantedshulkers.refill": "Nachfüllen",
   "commands.enchantedshulkers.get": "Die Option %s ist derzeit \u201a%s\u2018",
   "commands.enchantedshulkers.set": "Option %s wurde auf \u201a%s\u2018 gesetzt",
   "text.autoconfig.enchantedshulkers.title": "Enchanted Shulkers Client Einstellungen",
