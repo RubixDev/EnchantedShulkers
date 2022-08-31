@@ -18,6 +18,7 @@
   ],
   "client": [
     "client.BuiltinModelItemRendererMixin",
+    "client.BuiltinModelItemRendererMixin_optifabric",
     "client.ChestBlockEntityRendererMixin",
     "client.MinecraftClientMixin",
     "client.ModelLoaderMixin",

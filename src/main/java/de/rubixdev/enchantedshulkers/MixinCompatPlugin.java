@@ -1,9 +1,6 @@
 package de.rubixdev.enchantedshulkers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -27,6 +24,16 @@ public class MixinCompatPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        String[] classNameParts = mixinClassName.split("\\.");
+        String lastPart = classNameParts[classNameParts.length - 1];
+        if (lastPart.contains("_")) {
+            String modId = lastPart.replaceFirst("^.*?_", "");
+            String mixinClass = mixinClassName.replaceFirst("_.*$", "");
+            if (incompatibilities.containsKey(mixinClass)
+                    && Arrays.asList(incompatibilities.get(mixinClass)).contains(modId))
+                return FabricLoader.getInstance().isModLoaded(modId);
+        }
+
         String[] mods = incompatibilities.get(mixinClassName);
         if (mods == null) return true;
         for (String modId : mods) {
