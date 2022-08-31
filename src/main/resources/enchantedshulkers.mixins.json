@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "de.rubixdev.enchantedshulkers.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "de.rubixdev.enchantedshulkers.MixinCompatPlugin",
   "mixins": [
     "AbstractBlockMixin",
     "EnchantmentHelperMixin",
