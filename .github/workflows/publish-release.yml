@@ -48,7 +48,7 @@ jobs:
         id: processmatrix
         run: |
           if ! ${{ steps.properties.outputs.release_extra_branch }}; then
-            echo "::set-output name=matrix-to-exclude::Extra"
+            echo "::set-output name=matrix-to-exclude::extra"
           fi
 
   build-and-publish:
@@ -56,14 +56,14 @@ jobs:
     needs: [get-properties]
     strategy:
       matrix:
-        branch: [Main, Extra]
+        branch: [main, extra]
         exclude:
           - branch: ${{ needs.get-properties.outputs.matrix-exclude-branch }}
     steps:
       - name: Get info from branch to run
         id: getbranchinfo
         run: |
-          if ${{ matrix.branch == 'Extra'}}; then
+          if ${{ matrix.branch == 'xxtra'}}; then
             echo "::set-output name=branchname::${{ needs.get-properties.outputs.extra-branch-name }}"
             echo "::set-output name=display-version::${{ needs.get-properties.outputs.extra-branch-display-version }}"
             echo "::set-output name=curse-versions::${{ needs.get-properties.outputs.extra-branch-curse-versions }}"
@@ -98,7 +98,7 @@ jobs:
           echo "::set-output name=jarname::$output"
 
       - name: Save build artifacts in the action
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Artifacts for ${{ steps.getbranchinfo.outputs.display-version }}
           path: build/libs
@@ -108,7 +108,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: "${{ github.event.release.upload_url }}"
           asset_path: build/libs/${{ steps.findjar.outputs.jarname }}
           asset_name: ${{ steps.findjar.outputs.jarname }}
           asset_content_type: application/java-archive
@@ -121,20 +121,20 @@ jobs:
           game_endpoint: minecraft
           file_path: build/libs/${{ steps.findjar.outputs.jarname }}
           changelog_type: markdown
-          changelog: ${{ github.event.release.body }}
-          display_name: [${{ steps.getbranchinfo.outputs.display-version }}] EnchantedShulkers v${{ needs.get-properties.outputs.mod-version }}
+          changelog: "${{ github.event.release.body }}"
+          display_name: "[${{ steps.getbranchinfo.outputs.display-version }}] EnchantedShulkers v${{ needs.get-properties.outputs.mod-version }}"
           # Fabric,[version(s) for the branch]
           game_versions: 7499,${{ steps.getbranchinfo.outputs.curse-versions }}
           release_type: ${{ needs.get-properties.outputs.release-type }}
 
       - name: Upload to Modrinth
-        uses: RubixDev/modrinth-upload@v1
+        uses: RubixDev/modrinth-upload@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           file_path: build/libs/${{ steps.findjar.outputs.jarname }}
-          name: [${{ steps.getbranchinfo.outputs.display-version }}] EnchantedShulkers v${{ needs.get-properties.outputs.mod-version }}
+          name: "[${{ steps.getbranchinfo.outputs.display-version }}] EnchantedShulkers v${{ needs.get-properties.outputs.mod-version }}"
           version: ${{ needs.get-properties.outputs.mod-version }}+${{ steps.getbranchinfo.outputs.display-version }}
-          changelog: ${{ github.event.release.body }}
+          changelog: "${{ github.event.release.body }}"
           relations: P7dR8mSH:required,9s6osm5g:optional,mOgUt4GM:optional
           game_versions: ${{ steps.getbranchinfo.outputs.modrinth-versions }}
           release_type: ${{ needs.get-properties.outputs.release-type }}
