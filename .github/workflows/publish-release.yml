@@ -63,7 +63,7 @@ jobs:
       - name: Get info from branch to run
         id: getbranchinfo
         run: |
-          if ${{ matrix.branch == 'xxtra'}}; then
+          if ${{ matrix.branch == 'extra'}}; then
             echo "::set-output name=branchname::${{ needs.get-properties.outputs.extra-branch-name }}"
             echo "::set-output name=display-version::${{ needs.get-properties.outputs.extra-branch-display-version }}"
             echo "::set-output name=curse-versions::${{ needs.get-properties.outputs.extra-branch-curse-versions }}"
