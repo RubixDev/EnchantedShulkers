@@ -5,10 +5,12 @@ import de.rubixdev.enchantedshulkers.config.ConfigCommand;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
 import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
+import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
 import java.util.Arrays;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -47,6 +49,9 @@ public class Mod implements ModInitializer {
     public static final SiphonEnchantment SIPHON_ENCHANTMENT = new SiphonEnchantment();
     public static final RefillEnchantment REFILL_ENCHANTMENT = new RefillEnchantment();
 
+    public static final Identifier INVENTORY_OPEN_PACKET_ID = new Identifier(MOD_ID, "inventory_open");
+    public static final Identifier INVENTORY_CLOSE_PACKET_ID = new Identifier(MOD_ID, "inventory_close");
+
     @Override
     public void onInitialize() {
         Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), SIPHON_ENCHANTMENT);
@@ -70,6 +75,14 @@ public class Mod implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(WorldConfig::attachServer);
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> WorldConfig.detachServer());
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> ConfigCommand.register(dispatcher));
+
+        // Register packet listeners
+        ServerPlayNetworking.registerGlobalReceiver(
+                INVENTORY_OPEN_PACKET_ID,
+                (server, player, handler, buf, responseSender) -> ((InventoryState) player).setOpen());
+        ServerPlayNetworking.registerGlobalReceiver(
+                INVENTORY_CLOSE_PACKET_ID,
+                (server, player, handler, buf, responseSender) -> ((InventoryState) player).setClosed());
 
         LOGGER.info(MOD_NAME + " v" + MOD_VERSION.getFriendlyString() + " loaded");
     }

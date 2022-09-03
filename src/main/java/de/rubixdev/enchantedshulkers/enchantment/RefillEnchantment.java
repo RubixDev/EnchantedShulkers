@@ -36,12 +36,14 @@ public class RefillEnchantment extends Enchantment {
 
     public static void onPlayerTick(
             ServerPlayerEntity player,
+            boolean inventoryOpen,
             int currentSlot,
             ItemStack currentMainStack,
             ItemStack currentOffStack,
             int previousSlot,
             ItemStack previousMainStack,
             ItemStack previousOffStack) {
+        boolean allowsRefill = (!player.isCreative() || WorldConfig.creativeRefill()) && !inventoryOpen;
         boolean swappedHands = ItemStack.areEqual(previousMainStack, currentOffStack)
                 && ItemStack.areNbtEqual(previousMainStack, currentOffStack)
                 && ItemStack.areEqual(currentMainStack, previousOffStack)
@@ -55,9 +57,10 @@ public class RefillEnchantment extends Enchantment {
                 && currentOffStack.getCount() < previousOffStack.getCount()
                 && (WorldConfig.refillNonStackables() || previousOffStack.isStackable())
                 && WorldConfig.refillOffhand();
+        boolean doRefill =
+                allowsRefill && currentSlot == previousSlot && !swappedHands && (shouldRefillMain || shouldRefillOff);
 
-        if (currentSlot != previousSlot || swappedHands || !(shouldRefillMain || shouldRefillOff)) return;
-
+        if (!doRefill) return;
         if (shouldRefillMain) {
             refill(player, currentSlot, previousMainStack, previousMainStack.getCount() - currentMainStack.getCount());
         } else {

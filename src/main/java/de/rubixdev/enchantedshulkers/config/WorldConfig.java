@@ -120,10 +120,20 @@ public class WorldConfig {
         return inner.coloredNames;
     }
 
+    public static boolean creativeSiphon() {
+        return inner.creativeSiphon;
+    }
+
+    public static boolean creativeRefill() {
+        return inner.creativeRefill;
+    }
+
     private static class Inner {
         boolean refillOffhand = true;
         boolean refillNonStackables = false;
         boolean enchantableEnderChest = false;
         boolean coloredNames = false;
+        boolean creativeSiphon = false;
+        boolean creativeRefill = false;
     }
 }

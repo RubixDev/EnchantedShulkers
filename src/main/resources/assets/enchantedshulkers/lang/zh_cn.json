@@ -1,0 +1,19 @@
+{
+  "enchantment.enchantedshulkers.siphon": "虹吸",
+  "enchantment.enchantedshulkers.siphon.desc": "如果被拾起的物品已经包含在潜影盒中，那么它会直接进入潜影盒",
+  "enchantment.enchantedshulkers.refill": "补充",
+  "enchantment.enchantedshulkers.refill.desc": "手上的物品用完时，背包中的潜影盒内如果有相同的物品，就将之自动补充到手里",
+  "commands.enchantedshulkers.get": "选项%s当前设置为：%s",
+  "commands.enchantedshulkers.set": "选项%s已被设置为：%s",
+  "text.autoconfig.enchantedshulkers.title": "附魔潜影盒 - 客户端设置",
+  "text.autoconfig.enchantedshulkers.option.glintWhenPlaced": "对被放置的容器应用附魔光效",
+  "text.autoconfig.enchantedshulkers.option.glintWhenPlaced.@Tooltip[0]": "对被放置于世界中的潜影",
+  "text.autoconfig.enchantedshulkers.option.glintWhenPlaced.@Tooltip[1]": "盒和末影箱应用附魔光效",
+  "text.autoconfig.enchantedshulkers.option.customModels": "防止闪烁与自定义模型重叠",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[0]": "对封闭的容器使用不同的方块模型和纹",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[1]": "理，以防止重叠闪烁这并不会改变封闭",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[2]": "容器的外观，但始终使用原版纹理。因",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[3]": "此在使用自定义资源包时禁用此功能。",
+  "text.autoconfig.enchantedshulkers.option.customModels.@Tooltip[4]": "此选项只在上述选项打开的情况下生效。",
+  "text.autoconfig.enchantedshulkers.option.refillInInventory": "在物品栏打开时补充"
+}

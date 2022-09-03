@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
-import de.rubixdev.enchantedshulkers.EnchantableBlockEntity;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
+import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EnderChestBlock;
 import net.minecraft.block.entity.BlockEntity;

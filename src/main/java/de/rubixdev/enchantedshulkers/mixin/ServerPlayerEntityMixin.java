@@ -1,9 +1,14 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
+import com.mojang.authlib.GameProfile;
 import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
+import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public class ServerPlayerEntityMixin {
+public abstract class ServerPlayerEntityMixin extends PlayerEntity implements InventoryState {
     @Unique
     private int previousSlot = -1;
 
@@ -20,6 +25,23 @@ public class ServerPlayerEntityMixin {
 
     @Unique
     private ItemStack previousOffStack = ItemStack.EMPTY;
+
+    @Unique
+    private boolean hasOpenInventory = false;
+
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
+        super(world, pos, yaw, profile);
+    }
+
+    @Override
+    public void setOpen() {
+        hasOpenInventory = true;
+    }
+
+    @Override
+    public void setClosed() {
+        hasOpenInventory = false;
+    }
 
     @Inject(
             method = "playerTick",
@@ -33,6 +55,7 @@ public class ServerPlayerEntityMixin {
 
         RefillEnchantment.onPlayerTick(
                 (ServerPlayerEntity) (Object) this,
+                hasOpenInventory,
                 currentSlot,
                 currentMainStack,
                 currentOffStack,
