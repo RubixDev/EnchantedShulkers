@@ -103,7 +103,7 @@ jobs:
           name: Artifacts for ${{ steps.getbranchinfo.outputs.display-version }}
           path: build/libs
 
-      - name: Upload to the Github release
+      - name: Upload to the GitHub release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -130,7 +130,7 @@ jobs:
       - name: Upload to Modrinth
         uses: RubixDev/modrinth-upload@v1.0.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MODRINTH_TOKEN }}
           file_path: build/libs/${{ steps.findjar.outputs.jarname }}
           name: "[${{ steps.getbranchinfo.outputs.display-version }}] EnchantedShulkers v${{ needs.get-properties.outputs.mod-version }}"
           version: ${{ needs.get-properties.outputs.mod-version }}+${{ steps.getbranchinfo.outputs.display-version }}
