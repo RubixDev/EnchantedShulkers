@@ -143,9 +143,20 @@ jobs:
           name: "[${{ steps.getbranchinfo.outputs.display-version }}] EnchantedShulkers v${{ needs.get-properties.outputs.mod-version }}"
           version: ${{ needs.get-properties.outputs.mod-version }}+${{ steps.getbranchinfo.outputs.display-version }}
           changelog: "${{ github.event.release.body }}"
+          # fabric-api:required, cloth-config:optional, modmenu:optional
           relations: P7dR8mSH:required,9s6osm5g:optional,mOgUt4GM:optional
           game_versions: ${{ steps.getbranchinfo.outputs.modrinth-versions }}
           release_type: ${{ needs.get-properties.outputs.release-type }}
           loaders: fabric
           featured: true
+          project_id: vUi6HFie
+
+  update-featured:
+    runs-on: ubuntu-latest
+    needs: [build-and-publish]
+    steps:
+      - name: 'Update featured versions on Modrinth'
+        uses: RubixDev/modrinth-auto-feature@v1
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
           project_id: vUi6HFie
