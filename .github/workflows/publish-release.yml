@@ -36,13 +36,21 @@ jobs:
 
       - name: Read fields from gradle.properties
         id: properties
-        run: | # From christian-draeger/read-properties, use the action once christian-draeger/read-properties#5 is merged
-          for property in mod_version release_curse_versions release_modrinth_versions release_display_version release_modrinth_mc_version release_extra_branch release_extra_branch_name release_extra_curse_versions release_extra_modrinth_versions release_extra_display_version release_extra_modrinth_mc_version
-          do
-            result=$(sed -n "/^[[:space:]]*$property[[:space:]]*=[[:space:]]*/s/^[[:space:]]*$property[[:space:]]*=[[:space:]]*//p" "./gradle.properties")
-            echo "$property: $result"
-            echo ::set-output name=$property::"$result"
-          done
+        uses: RubixDev/read-properties@v1
+        with:
+          path: './gradle.properties'
+          properties: |
+            mod_version
+            release_curse_versions
+            release_modrinth_versions
+            release_display_version
+            release_modrinth_mc_version
+            release_extra_branch
+            release_extra_branch_name
+            release_extra_curse_versions
+            release_extra_modrinth_versions
+            release_extra_display_version
+            release_extra_modrinth_mc_version
 
       - name: Process property for matrix
         id: processmatrix
