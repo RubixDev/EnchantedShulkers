@@ -21,8 +21,8 @@ public class MinecraftClientMixin {
     public Screen currentScreen;
 
     @Inject(method = "setScreen", at = @At("HEAD"))
-    private void printScreen(Screen screen, CallbackInfo ci) {
-        if (ClientMod.refillInInventory()) return;
+    private void sendScreenChangePacket(Screen screen, CallbackInfo ci) {
+        if (ClientMod.refillInInventory() || MinecraftClient.getInstance().getNetworkHandler() == null) return;
         if (screen != null) {
             if (!(screen instanceof AbstractInventoryScreen<?>)) return;
             ClientPlayNetworking.send(Mod.INVENTORY_OPEN_PACKET_ID, PacketByteBufs.empty());
