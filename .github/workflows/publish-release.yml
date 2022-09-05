@@ -13,7 +13,7 @@ jobs:
       curse-versions: ${{ steps.properties.outputs.release_curse_versions }}
       modrinth-versions: ${{ steps.properties.outputs.release_modrinth_versions }}
       display-version: ${{ steps.properties.outputs.release_display_version }}
-      modrinth-mc-version: ${{ steps.properties.outputs.release_modrinth_mc_version }}
+      modrinth-mc-version: ${{ steps.properties.outputs.minecraft_minimum_version }}
 
       matrix-exclude-branch: ${{ steps.processmatrix.outputs.matrix-to-exclude }}
       extra-branch-name: ${{ steps.properties.outputs.release_extra_branch_name }}
@@ -44,7 +44,7 @@ jobs:
             release_curse_versions
             release_modrinth_versions
             release_display_version
-            release_modrinth_mc_version
+            minecraft_minimum_version
             release_extra_branch
             release_extra_branch_name
             release_extra_curse_versions
