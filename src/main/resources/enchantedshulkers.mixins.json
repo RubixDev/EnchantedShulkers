@@ -21,7 +21,6 @@
     "client.BuiltinModelItemRendererMixin_optifabric",
     "client.ChestBlockEntityRendererMixin",
     "client.MinecraftClientMixin",
-    "client.ModelLoaderMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"
   ],
   "injectors": {

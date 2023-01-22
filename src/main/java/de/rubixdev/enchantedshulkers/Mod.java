@@ -6,7 +6,6 @@ import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
 import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
 import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
-import java.util.Arrays;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -18,10 +17,11 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class Mod implements ModInitializer {
     }
 
     public static final TagKey<Item> PORTABLE_CONTAINER_TAG =
-            TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "portable_container"));
+            TagKey.of(RegistryKeys.ITEM, new Identifier(MOD_ID, "portable_container"));
     public static final EnchantmentTarget PORTABLE_CONTAINER_TARGET =
             ClassTinkerers.getEnum(EnchantmentTarget.class, "PORTABLE_CONTAINER");
 
@@ -54,14 +54,8 @@ public class Mod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), SIPHON_ENCHANTMENT);
-        Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "refill"), REFILL_ENCHANTMENT);
-
-        // Add enchantments to DECORATIONS ItemGroup
-        EnchantmentTarget[] currentTargets = ItemGroup.DECORATIONS.getEnchantments();
-        EnchantmentTarget[] newTargets = Arrays.copyOf(currentTargets, currentTargets.length + 1);
-        newTargets[newTargets.length - 1] = PORTABLE_CONTAINER_TARGET;
-        ItemGroup.DECORATIONS.setEnchantments(newTargets);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), SIPHON_ENCHANTMENT);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "refill"), REFILL_ENCHANTMENT);
 
         // Add enchanted_ender_chest data pack when enabled in config
         FabricLoader.getInstance()

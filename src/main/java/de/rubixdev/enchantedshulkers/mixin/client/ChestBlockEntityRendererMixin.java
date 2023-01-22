@@ -1,7 +1,8 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
+import static de.rubixdev.enchantedshulkers.ClientMod.CLOSED_ENDER_TEXTURE_ID;
+
 import de.rubixdev.enchantedshulkers.ClientMod;
-import de.rubixdev.enchantedshulkers.SpriteAtlasStorage;
 import de.rubixdev.enchantedshulkers.Utils;
 import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.Block;
@@ -151,9 +152,9 @@ public abstract class ChestBlockEntityRendererMixin<T extends BlockEntity> {
                 || !Utils.shouldGlint(entity)
                 || g > 0.01f) return;
 
-        SpriteIdentifier spriteIdentifier = SpriteAtlasStorage.CLOSED_ENDER_TEXTURE_ID;
-        VertexConsumer vertexConsumer = SpriteAtlasStorage.closedContainersAtlasTexture
-                .getSprite(spriteIdentifier.getTextureId())
+        SpriteIdentifier spriteIdentifier = CLOSED_ENDER_TEXTURE_ID;
+        VertexConsumer vertexConsumer = spriteIdentifier
+                .getSprite()
                 .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
                         vertexConsumers, spriteIdentifier.getRenderLayer(RenderLayer::getEntityCutout), false, true));
         CLOSED_CHEST.render(matrices, vertexConsumer, i, overlay, 1.0f, 1.0f, 1.0f, 1.0f);

@@ -1,10 +1,9 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import static de.rubixdev.enchantedshulkers.SpriteAtlasStorage.CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS;
-import static de.rubixdev.enchantedshulkers.SpriteAtlasStorage.CLOSED_SHULKER_TEXTURE_ID;
+import static de.rubixdev.enchantedshulkers.ClientMod.CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS;
+import static de.rubixdev.enchantedshulkers.ClientMod.CLOSED_SHULKER_TEXTURE_ID;
 
 import de.rubixdev.enchantedshulkers.ClientMod;
-import de.rubixdev.enchantedshulkers.SpriteAtlasStorage;
 import de.rubixdev.enchantedshulkers.Utils;
 import java.util.function.Function;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
@@ -86,8 +85,8 @@ public class ShulkerBoxBlockEntityRendererMixin {
                 ? CLOSED_SHULKER_TEXTURE_ID
                 : CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS.get(dyeColor.getId());
 
-        VertexConsumer vertexConsumer = SpriteAtlasStorage.closedContainersAtlasTexture
-                .getSprite(spriteIdentifier.getTextureId())
+        VertexConsumer vertexConsumer = spriteIdentifier
+                .getSprite()
                 .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
                         vertexConsumerProvider,
                         spriteIdentifier.getRenderLayer(RenderLayer::getEntityCutout),
