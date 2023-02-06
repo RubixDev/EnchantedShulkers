@@ -63,7 +63,7 @@ public class WorldConfig {
         write();
     }
 
-    private static final String ENCHANTED_ENDER_CHEST_ID = "enchantedshulkers/enchanted_ender_chest";
+    private static final String ENCHANTED_ENDER_CHEST_ID = "enchantedshulkers:enchanted_ender_chest";
 
     private static void updateResources() {
         ResourcePackManager manager = server.getDataPackManager();

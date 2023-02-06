@@ -25,5 +25,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "server": [
+    "server.ServerPlayerEntity_Anonymous1Mixin",
+    "server.ServerPlayerEntityMixin"
+  ]
 }

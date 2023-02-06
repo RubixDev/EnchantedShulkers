@@ -34,8 +34,8 @@ This had to be done to fix overlapping glint effects on said blocks.
 You can patch your resource pack to include the necessary textures for this mod at https://enchantedshulkers.rubixdev.de.
 
 ## Server/Client
-This mod does actually work as a server-only mod, but it is not recommended.
-Players without the mod on their client cannot see these enchantments on enchanted books and containers.
+This mod does actually work as a server-only mod, but it recommended to be used on both client and server.
+Players without the mod on their client do not see an enchantment glint on enchanted containers.
 
 ## Configuration
 ### Client
@@ -76,4 +76,4 @@ To do that, create the file `portable_container.json` inside the `src/main/resou
 If your container does not extend the vanilla Shulker Box class, you might have to manually implement the [`EnchantableBlockEntity`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/EnchantableBlockEntity.java) interface and support rendering the enchantment glint and display name colorizer.
 For more information have a look at [`ShulkerBoxBlockEntityRendererMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/client/ShulkerBoxBlockEntityRendererMixin.java) and [`ShulkerBoxBlockEntityMixin.java`](https://github.com/RubixDev/EnchantedShulkers/blob/1.19/src/main/java/de/rubixdev/enchantedshulkers/mixin/ShulkerBoxBlockEntityMixin.java).
 
-On any further questions or issues, please open an issue on [GitHub](https://github.com/RubixDev/EnchantedShulkers/issues/new).
+For any further questions or issues, please open an issue on [GitHub](https://github.com/RubixDev/EnchantedShulkers/issues/new).
