@@ -1,9 +1,7 @@
-package de.rubixdev.enchantedshulkers.mixin.server;
+package de.rubixdev.enchantedshulkers.mixin;
 
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.interfaces.HasClientMod;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.EnchantedBookItem;
@@ -18,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(targets = "net.minecraft.server.network.ServerPlayerEntity$1")
-@Environment(EnvType.SERVER)
 public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
     private boolean hasClientMod;
 

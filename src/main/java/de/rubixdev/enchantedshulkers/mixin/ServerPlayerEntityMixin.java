@@ -2,21 +2,29 @@ package de.rubixdev.enchantedshulkers.mixin;
 
 import com.mojang.authlib.GameProfile;
 import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
+import de.rubixdev.enchantedshulkers.interfaces.HasClientMod;
 import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandlerSyncHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin extends PlayerEntity implements InventoryState {
+public abstract class ServerPlayerEntityMixin extends PlayerEntity implements InventoryState, HasClientMod {
+    @Shadow
+    @Final
+    private ScreenHandlerSyncHandler screenHandlerSyncHandler;
+
     @Unique
     private int previousSlot = -1;
 
@@ -41,6 +49,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
     @Override
     public void setClosed() {
         hasOpenInventory = false;
+    }
+
+    @Override
+    public void set(boolean hasClientMod) {
+        ((HasClientMod) this.screenHandlerSyncHandler).set(hasClientMod);
     }
 
     @Inject(

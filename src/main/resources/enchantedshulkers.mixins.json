@@ -12,6 +12,7 @@
     "EnderChestBlockMixin",
     "ItemStackMixin",
     "PlayerInventoryMixin",
+    "ServerPlayerEntity_Anonymous1Mixin",
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin"
@@ -25,9 +26,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "server": [
-    "server.ServerPlayerEntity_Anonymous1Mixin",
-    "server.ServerPlayerEntityMixin"
-  ]
+  }
 }
