@@ -125,7 +125,7 @@ public abstract class ChestBlockEntityRendererMixin<T extends BlockEntity> {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/render/TexturedRenderLayers;getChestTexture(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/block/enums/ChestType;Z)Lnet/minecraft/client/util/SpriteIdentifier;"),
+                                    "Lnet/minecraft/client/render/TexturedRenderLayers;getChestTextureId(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/block/enums/ChestType;Z)Lnet/minecraft/client/util/SpriteIdentifier;"),
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true)
     private void renderGlintWhenClosed(
