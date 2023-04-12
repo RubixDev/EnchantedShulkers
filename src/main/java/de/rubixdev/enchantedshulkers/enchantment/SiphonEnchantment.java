@@ -33,6 +33,16 @@ public class SiphonEnchantment extends Enchantment {
         return true;
     }
 
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return WorldConfig.generateBooks();
+    }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return WorldConfig.generateBooks();
+    }
+
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
         if (player.isCreative() && !WorldConfig.creativeSiphon()) return false;
 

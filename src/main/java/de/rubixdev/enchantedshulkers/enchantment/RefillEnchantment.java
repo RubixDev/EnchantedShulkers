@@ -34,6 +34,16 @@ public class RefillEnchantment extends Enchantment {
         return true;
     }
 
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return WorldConfig.generateBooks();
+    }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return WorldConfig.generateBooks();
+    }
+
     public static void onPlayerTick(
             ServerPlayerEntity player,
             boolean inventoryOpen,

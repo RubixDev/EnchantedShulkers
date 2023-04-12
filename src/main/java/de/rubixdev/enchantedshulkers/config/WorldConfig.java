@@ -128,6 +128,10 @@ public class WorldConfig {
         return inner.creativeRefill;
     }
 
+    public static boolean generateBooks() {
+        return inner.generateBooks;
+    }
+
     private static class Inner {
         boolean refillOffhand = true;
         boolean refillNonStackables = false;
@@ -135,5 +139,6 @@ public class WorldConfig {
         boolean coloredNames = false;
         boolean creativeSiphon = false;
         boolean creativeRefill = false;
+        boolean generateBooks = true;
     }
 }
