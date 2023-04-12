@@ -132,6 +132,10 @@ public class WorldConfig {
         return inner.generateBooks;
     }
 
+    public static boolean nestedContainers() {
+        return inner.nestedContainers;
+    }
+
     private static class Inner {
         boolean refillOffhand = true;
         boolean refillNonStackables = false;
@@ -140,5 +144,6 @@ public class WorldConfig {
         boolean creativeSiphon = false;
         boolean creativeRefill = false;
         boolean generateBooks = true;
+        boolean nestedContainers = true;
     }
 }

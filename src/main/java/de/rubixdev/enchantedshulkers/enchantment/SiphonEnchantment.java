@@ -8,7 +8,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 
 public class SiphonEnchantment extends Enchantment {
@@ -46,13 +45,11 @@ public class SiphonEnchantment extends Enchantment {
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
         if (player.isCreative() && !WorldConfig.creativeSiphon()) return false;
 
-        List<Pair<Integer, ItemStack>> containerSlots =
-                Utils.getContainers(player.getInventory(), Mod.SIPHON_ENCHANTMENT);
+        List<ItemStack> containerSlots = Utils.getContainers(player, Mod.SIPHON_ENCHANTMENT);
 
         boolean usedSiphon = false;
-        for (Pair<Integer, ItemStack> containerSlot : containerSlots) {
+        for (ItemStack container : containerSlots) {
             if (stack.isEmpty()) return usedSiphon;
-            ItemStack container = containerSlot.getRight();
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
 
             boolean updateContainer = false;

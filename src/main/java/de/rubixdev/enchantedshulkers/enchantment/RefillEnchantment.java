@@ -9,7 +9,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 
 public class RefillEnchantment extends Enchantment {
@@ -83,11 +82,9 @@ public class RefillEnchantment extends Enchantment {
     }
 
     static void refill(ServerPlayerEntity player, int slot, ItemStack itemType, int amount) {
-        List<Pair<Integer, ItemStack>> containerSlots =
-                Utils.getContainers(player.getInventory(), Mod.REFILL_ENCHANTMENT);
-        for (Pair<Integer, ItemStack> containerSlot : containerSlots) {
+        List<ItemStack> containerSlots = Utils.getContainers(player, Mod.REFILL_ENCHANTMENT);
+        for (ItemStack container : containerSlots) {
             if (amount <= 0) return;
-            ItemStack container = containerSlot.getRight();
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
 
             boolean updateContainer = false;

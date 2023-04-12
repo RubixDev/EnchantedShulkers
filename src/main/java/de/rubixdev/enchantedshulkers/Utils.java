@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers;
 
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +8,12 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 
 public class Utils {
@@ -27,11 +26,31 @@ public class Utils {
         return stack.isIn(Mod.PORTABLE_CONTAINER_TAG);
     }
 
-    public static List<Pair<Integer, ItemStack>> getContainers(Inventory inventory, Enchantment enchantment) {
-        List<Pair<Integer, ItemStack>> out = new ArrayList<>();
-        for (int i = 0; i <= inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (canEnchant(stack) && EnchantmentHelper.getLevel(enchantment, stack) > 0) out.add(new Pair<>(i, stack));
+    public static List<ItemStack> getContainers(ServerPlayerEntity player, Enchantment enchantment) {
+        visitedEnderChest = false;
+        List<ItemStack> playerInventory = new ArrayList<>();
+        for (int i = 0; i <= player.getInventory().size(); i++) {
+            playerInventory.add(player.getInventory().getStack(i));
+        }
+        return getContainers(playerInventory, player, enchantment, 0);
+    }
+
+    private static boolean visitedEnderChest;
+
+    private static List<ItemStack> getContainers(
+            List<ItemStack> inventory, ServerPlayerEntity player, Enchantment enchantment, int recursionDepth) {
+        List<ItemStack> out = new ArrayList<>();
+        for (ItemStack stack : inventory) {
+            if (canEnchant(stack)
+                    && EnchantmentHelper.getLevel(enchantment, stack) > 0
+                    && !(visitedEnderChest && stack.isOf(Items.ENDER_CHEST))) {
+                out.add(stack);
+                if (stack.isOf(Items.ENDER_CHEST)) visitedEnderChest = true;
+                if (recursionDepth < (WorldConfig.nestedContainers() ? 255 : 0)) {
+                    out.addAll(getContainers(
+                            getContainerInventory(stack, player), player, enchantment, recursionDepth + 1));
+                }
+            }
         }
         return out;
     }
