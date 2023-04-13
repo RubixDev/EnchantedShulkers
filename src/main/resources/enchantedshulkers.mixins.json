@@ -21,6 +21,7 @@
     "client.BuiltinModelItemRendererMixin",
     "client.BuiltinModelItemRendererMixin_optifabric",
     "client.ChestBlockEntityRendererMixin",
+    "client.ClientPlayNetworkHandlerMixin",
     "client.MinecraftClientMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"
   ],

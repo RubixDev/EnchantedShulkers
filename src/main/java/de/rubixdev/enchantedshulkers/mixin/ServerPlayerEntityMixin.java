@@ -52,8 +52,13 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
     }
 
     @Override
-    public void set(boolean hasClientMod) {
-        ((HasClientMod) this.screenHandlerSyncHandler).set(hasClientMod);
+    public void setTrue() {
+        ((HasClientMod) this.screenHandlerSyncHandler).setTrue();
+    }
+
+    @Override
+    public void submit() {
+        ((HasClientMod) this.screenHandlerSyncHandler).submit();
     }
 
     @Inject(

@@ -17,18 +17,24 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(targets = "net.minecraft.server.network.ServerPlayerEntity$1")
 public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
-    private boolean hasClientMod;
+    private boolean hasClientMod = false;
+    private boolean inInitPhase = true;
 
     @Override
-    public void set(boolean hasClientMod) {
-        this.hasClientMod = hasClientMod;
+    public void setTrue() {
+        this.hasClientMod = true;
+    }
+
+    @Override
+    public void submit() {
+        this.inInitPhase = false;
     }
 
     //////////////////////////////////////////////
 
     @ModifyVariable(method = "updateState", at = @At("HEAD"), index = 2, argsOnly = true)
     private DefaultedList<ItemStack> updateStateStacks(DefaultedList<ItemStack> stacks) {
-        if (this.hasClientMod) return stacks;
+        if (this.hasClientMod || this.inInitPhase) return stacks;
 
         DefaultedList<ItemStack> newStacks = DefaultedList.ofSize(stacks.size(), ItemStack.EMPTY);
         for (int i = 0; i < stacks.size(); ++i) {
@@ -39,19 +45,19 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
 
     @ModifyVariable(method = "updateState", at = @At("HEAD"), index = 3, argsOnly = true)
     private ItemStack updateStateCursorStack(ItemStack stack) {
-        if (this.hasClientMod) return stack;
+        if (this.hasClientMod || this.inInitPhase) return stack;
         return setLore(stack.copy());
     }
 
     @ModifyVariable(method = "updateSlot", at = @At("HEAD"), index = 3, argsOnly = true)
     private ItemStack updateSlot(ItemStack stack) {
-        if (this.hasClientMod) return stack;
+        if (this.hasClientMod || this.inInitPhase) return stack;
         return setLore(stack.copy());
     }
 
     @ModifyVariable(method = "updateCursorStack", at = @At("HEAD"), index = 2, argsOnly = true)
     private ItemStack updateCursorStack(ItemStack stack) {
-        if (this.hasClientMod) return stack;
+        if (this.hasClientMod || this.inInitPhase) return stack;
         return setLore(stack.copy());
     }
 

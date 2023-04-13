@@ -7,8 +7,6 @@ import java.util.stream.Stream;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -47,9 +45,6 @@ public class ClientMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientPlayConnectionEvents.JOIN.register(
-                (handler, sender, client) -> sender.sendPacket(Mod.CLIENT_INSTALLED_PACKET_ID, PacketByteBufs.empty()));
-
         if (!FabricLoader.getInstance().isModLoaded("cloth-config")) return;
         hasCloth = true;
         ClientConfig.init();

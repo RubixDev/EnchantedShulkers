@@ -18,6 +18,7 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.Item;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
@@ -76,7 +77,11 @@ public class Mod implements ModInitializer {
         // Register packet listeners
         ServerPlayNetworking.registerGlobalReceiver(
                 CLIENT_INSTALLED_PACKET_ID,
-                (server, player, handler, buf, responseSender) -> ((HasClientMod) player).set(true));
+                (server, player, handler, buf, responseSender) -> ((HasClientMod) player).setTrue());
+        ServerPlayNetworking.registerGlobalReceiver(
+                CustomPayloadC2SPacket.BRAND,
+                // at this point a modded client would have sent a `CLIENT_INSTALLED_PACKET_ID` packet
+                (server, player, handler, buf, responseSender) -> ((HasClientMod) player).submit());
         ServerPlayNetworking.registerGlobalReceiver(
                 INVENTORY_OPEN_PACKET_ID,
                 (server, player, handler, buf, responseSender) -> ((InventoryState) player).setOpen());
