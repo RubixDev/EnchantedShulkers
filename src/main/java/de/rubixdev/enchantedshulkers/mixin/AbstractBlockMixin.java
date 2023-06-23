@@ -8,7 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class AbstractBlockMixin {
     @Inject(method = "getDroppedStacks", at = @At("RETURN"))
     public void getDroppedStacks(
-            BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> cir) {
-        BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+            BlockState state, LootContextParameterSet.Builder builder, CallbackInfoReturnable<List<ItemStack>> cir) {
+        BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         List<ItemStack> drops = cir.getReturnValue();
 
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;

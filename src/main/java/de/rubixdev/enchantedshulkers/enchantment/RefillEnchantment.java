@@ -54,9 +54,9 @@ public class RefillEnchantment extends Enchantment {
             ItemStack previousOffStack) {
         boolean allowsRefill = (!player.isCreative() || WorldConfig.creativeRefill()) && !inventoryOpen;
         boolean swappedHands = ItemStack.areEqual(previousMainStack, currentOffStack)
-                && ItemStack.areNbtEqual(previousMainStack, currentOffStack)
+                && ItemStack.canCombine(previousMainStack, currentOffStack)
                 && ItemStack.areEqual(currentMainStack, previousOffStack)
-                && ItemStack.areNbtEqual(currentMainStack, previousOffStack);
+                && ItemStack.canCombine(currentMainStack, previousOffStack);
         boolean wasMainEmptied = previousMainStack.getCount() > 0 && currentMainStack.isEmpty() && !swappedHands;
         boolean wasOffEmptied = previousOffStack.getCount() > 0 && currentOffStack.isEmpty() && !swappedHands;
         boolean shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previousMainStack))
