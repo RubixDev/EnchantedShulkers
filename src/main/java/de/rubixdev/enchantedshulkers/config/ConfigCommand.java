@@ -31,7 +31,8 @@ public class ConfigCommand {
             // unable to fail, because `option` was provided by `getOptions()`
             throw new RuntimeException(e);
         }
-        context.getSource().sendFeedback(Text.translatable("commands.enchantedshulkers.get", option, value), false);
+        context.getSource()
+                .sendFeedback(() -> Text.translatable("commands.enchantedshulkers.get", option, value), false);
         return 1;
     }
 
@@ -44,7 +45,8 @@ public class ConfigCommand {
             // unable to fail, because `option` was provided by `getOptions()`
             throw new RuntimeException(e);
         }
-        context.getSource().sendFeedback(Text.translatable("commands.enchantedshulkers.set", option, value), true);
+        context.getSource()
+                .sendFeedback(() -> Text.translatable("commands.enchantedshulkers.set", option, value), true);
 
         return 1;
     }
