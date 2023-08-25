@@ -8,8 +8,12 @@ import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+//#if MC >= 11800
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
+//#else
+//$$ import de.rubixdev.enchantedshulkers.Mod;
+//#endif
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -26,12 +30,12 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
     }
 
     @Override
-    public NbtList getEnchantments() {
+    public NbtList enchantedShulkers$getEnchantments() {
         return this.enchantments;
     }
 
     @Override
-    public void setEnchantments(NbtList enchantments) {
+    public void enchantedShulkers$setEnchantments(NbtList enchantments) {
         this.enchantments = enchantments;
     }
 
@@ -39,24 +43,38 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         if (nbt.contains("Enchantments", NbtElement.LIST_TYPE)) {
-            setEnchantments(nbt.getList("Enchantments", NbtElement.COMPOUND_TYPE));
+            enchantedShulkers$setEnchantments(nbt.getList("Enchantments", NbtElement.COMPOUND_TYPE));
         }
     }
 
     @Override
+    //#if MC >= 11800
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.put("Enchantments", this.enchantments);
     }
+    //#else
+    //$$ public NbtCompound writeNbt(NbtCompound nbt) {
+    //$$     super.writeNbt(nbt);
+    //$$     nbt.put("Enchantments", this.enchantments);
+    //$$     return nbt;
+    //$$ }
+    //#endif
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
-        return this.toClientNbt();
+        return this.enchantedShulkers$toClientNbt();
     }
 
     @Nullable
     @Override
+    //#if MC >= 11800
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
     }
+    //#else
+    //$$ public BlockEntityUpdateS2CPacket toUpdatePacket() {
+    //$$     return new BlockEntityUpdateS2CPacket(this.getPos(), Mod.BLOCK_ENTITY_TYPE_ENDER_CHEST, this.toInitialChunkDataNbt());
+    //$$ }
+    //#endif
 }

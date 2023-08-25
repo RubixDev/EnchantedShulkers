@@ -2,12 +2,11 @@
   "required": true,
   "minVersion": "0.8",
   "package": "de.rubixdev.enchantedshulkers.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "${compatibility_level}",
   "plugin": "de.rubixdev.enchantedshulkers.MixinCompatPlugin",
   "mixins": [
     "AbstractBlockMixin",
     "EnchantmentHelperMixin",
-    "EnchantmentTargetMixin",
     "EnderChestBlockEntityMixin",
     "EnderChestBlockMixin",
     "ItemStackMixin",

@@ -17,9 +17,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 
 public class Utils {
-    @SuppressWarnings("deprecation")
     public static boolean canEnchant(Item item) {
-        return item.getRegistryEntry().isIn(Mod.PORTABLE_CONTAINER_TAG);
+        return canEnchant(item.getDefaultStack());
     }
 
     public static boolean canEnchant(ItemStack stack) {
@@ -35,6 +34,7 @@ public class Utils {
         return getContainers(playerInventory, player, enchantment, 0);
     }
 
+    // TODO: does this break with multiple players?
     private static boolean visitedEnderChest;
 
     private static List<ItemStack> getContainers(
@@ -78,6 +78,6 @@ public class Utils {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static <T extends BlockEntity> boolean shouldGlint(T blockEntity) {
         return blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
-                && !enchantableBlockEntity.getEnchantments().isEmpty();
+                && !enchantableBlockEntity.enchantedShulkers$getEnchantments().isEmpty();
     }
 }

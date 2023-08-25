@@ -1,0 +1,26 @@
+enchantment.enchantedshulkers:
+  siphon: Saugen
+  siphon.desc: Aufgesammelte Gegenstände werden gelagert wenn Gegenstände der selben Art bereits vorhanden sind.
+
+  refill: Nachfüllen
+  refill.desc: Gehaltene Gegenstände werden nach Benutzung automatisch nachgefüllt.
+
+commands.enchantedshulkers:
+  get: Die Option %s ist derzeit ‚%s‘
+  set: Option %s wurde auf ‚%s‘ gesetzt
+
+text.autoconfig.enchantedshulkers:
+  title: Enchanted Shulkers Client Einstellungen
+  option:
+    glintWhenPlaced: Animiere platzierte Kisten
+    glintWhenPlaced.@Tooltip[0]: Lässt platzierte Shulker-Kisten und Endertruhen so
+    glintWhenPlaced.@Tooltip[1]: schimmern, wie verzauberte Gegenstände im Inventar
+
+    customModels: Verhindere Überlappen der Schimmereffekte
+    customModels.@Tooltip[0]: Verwendet andere Block Modelle und Texturen für geschlossene Kisten
+    customModels.@Tooltip[1]: um überlappende Schimmereffekte zu verhindern. Dies behält das normale
+    customModels.@Tooltip[2]: aussehen bei, benutzt aber immer die Standardtexturen. Du solltest
+    customModels.@Tooltip[3]: dies also ausschalten, wenn du ein anderes Ressourcenpaket benutzt.
+    customModels.@Tooltip[4]: Diese Einstellung hat keinen Effekt, wenn die obige Einstellung aus ist.
+
+    refillInInventory: Nachfüllen bei offenem Inventar

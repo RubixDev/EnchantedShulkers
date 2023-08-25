@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.interfaces;
 
 public interface InventoryState {
-    void setOpen();
+    void enchantedShulkers$setOpen();
 
-    void setClosed();
+    void enchantedShulkers$setClosed();
 }

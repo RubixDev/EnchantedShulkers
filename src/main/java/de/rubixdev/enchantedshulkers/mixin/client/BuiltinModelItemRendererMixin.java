@@ -37,6 +37,6 @@ public class BuiltinModelItemRendererMixin {
             Block block,
             BlockEntity blockEntity) {
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
-        enchantableBlockEntity.setEnchantments(stack.getEnchantments());
+        enchantableBlockEntity.enchantedShulkers$setEnchantments(stack.getEnchantments());
     }
 }

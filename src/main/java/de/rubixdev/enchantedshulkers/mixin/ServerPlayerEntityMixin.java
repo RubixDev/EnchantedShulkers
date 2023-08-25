@@ -42,25 +42,26 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
     }
 
     @Override
-    public void setOpen() {
+    public void enchantedShulkers$setOpen() {
         hasOpenInventory = true;
     }
 
     @Override
-    public void setClosed() {
+    public void enchantedShulkers$setClosed() {
         hasOpenInventory = false;
     }
 
     @Override
-    public void setTrue() {
-        ((HasClientMod) this.screenHandlerSyncHandler).setTrue();
+    public void enchantedShulkers$setTrue() {
+        ((HasClientMod) this.screenHandlerSyncHandler).enchantedShulkers$setTrue();
     }
 
     @Override
-    public void submit() {
-        ((HasClientMod) this.screenHandlerSyncHandler).submit();
+    public void enchantedShulkers$submit() {
+        ((HasClientMod) this.screenHandlerSyncHandler).enchantedShulkers$submit();
     }
 
+    @SuppressWarnings("DataFlowIssue") // cast to ServerPlayerEntity isn't invalid
     @Inject(
             method = "playerTick",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;tick()V"))

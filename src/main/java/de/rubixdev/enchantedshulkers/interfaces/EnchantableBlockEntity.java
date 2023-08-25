@@ -4,14 +4,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
 public interface EnchantableBlockEntity {
-    NbtList getEnchantments();
+    NbtList enchantedShulkers$getEnchantments();
 
-    void setEnchantments(NbtList enchantments);
+    void enchantedShulkers$setEnchantments(NbtList enchantments);
 
-    default NbtCompound toClientNbt() {
+    default NbtCompound enchantedShulkers$toClientNbt() {
         // Only send the enchantments to the client to reduce packet size
         NbtCompound nbt = new NbtCompound();
-        nbt.put("Enchantments", getEnchantments());
+        nbt.put("Enchantments", enchantedShulkers$getEnchantments());
         return nbt;
     }
 }

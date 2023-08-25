@@ -1,0 +1,6 @@
+accessWidener v2 named
+
+extendable class net/minecraft/enchantment/EnchantmentTarget
+
+accessible field net/minecraft/block/EnderChestBlock CONTAINER_NAME Lnet/minecraft/text/Text;
+accessible field net/minecraft/inventory/SimpleInventory stacks Lnet/minecraft/util/collection/DefaultedList;

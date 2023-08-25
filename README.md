@@ -12,6 +12,9 @@ Adds the "Siphon" and "Refill" enchantments to Shulker Boxes
 
 [![Requires Fabric API](https://raw.githubusercontent.com/RubixDev/Rug/1.17/fabric-api.png)](https://modrinth.com/mod/fabric-api)
 
+The project setup is based off of (Fallen-Breath's
+template)[https://github.com/Fallen-Breath/fabric-mod-template/tree/b2352030438790d71d586f6654a6ea31a394906a].
+
 ## Inspiration
 
 I was inspired to create this mod after watching
@@ -52,13 +55,13 @@ blocks will still use the vanilla texture while closed. This had to be done to
 fix overlapping glint effects on said blocks.
 
 You can patch your resource pack to include the necessary textures for this mod
-at https://enchantedshulkers.rubixdev.de.
+at <https://enchantedshulkers.rubixdev.de>.
 
 ## Server/Client
 
-This mod does actually work as a server-only mod, but it recommended to be used
-on both client and server. Players without the mod on their client do not see an
-enchantment glint on enchanted containers.
+This mod does actually work as a server-only mod, but it is recommended to be
+used on both client and server. Players without the mod on their client do not
+see an enchantment glint on enchanted containers.
 
 ## Configuration
 

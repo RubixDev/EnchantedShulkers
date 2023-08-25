@@ -12,21 +12,24 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(targets = "net.minecraft.server.network.ServerPlayerEntity$1")
 public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
+    @Unique
     private boolean hasClientMod = false;
+    @Unique
     private boolean inInitPhase = true;
 
     @Override
-    public void setTrue() {
+    public void enchantedShulkers$setTrue() {
         this.hasClientMod = true;
     }
 
     @Override
-    public void submit() {
+    public void enchantedShulkers$submit() {
         this.inInitPhase = false;
     }
 
@@ -63,7 +66,8 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
 
     //////////////////////////////////////////////
 
-    private ItemStack setLore(ItemStack stack) {
+    @Unique
+    private static ItemStack setLore(ItemStack stack) {
         NbtList lore = new NbtList();
         if (EnchantmentHelper.getLevel(Mod.SIPHON_ENCHANTMENT, stack) > 0
                 || storesEnchantment(Mod.SIPHON_ENCHANTMENT, stack)) {
@@ -82,11 +86,13 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
         return stack;
     }
 
-    private String enchantmentText(String name) {
+    @Unique
+    private static String enchantmentText(String name) {
         return "{\"text\": \"" + name + "\", \"italic\": false, \"color\": \"gray\"}";
     }
 
-    private boolean storesEnchantment(Enchantment enchantment, ItemStack stack) {
+    @Unique
+    private static boolean storesEnchantment(Enchantment enchantment, ItemStack stack) {
         if (stack.isEmpty()) return false;
         Identifier identifier = EnchantmentHelper.getEnchantmentId(enchantment);
         NbtList nbtList = EnchantedBookItem.getEnchantmentNbt(stack);

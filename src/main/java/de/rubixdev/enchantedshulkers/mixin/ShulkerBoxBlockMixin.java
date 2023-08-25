@@ -36,6 +36,6 @@ public class ShulkerBoxBlockMixin {
             ShulkerBoxBlockEntity shulkerBoxBlockEntity,
             ItemStack itemStack) {
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
-        itemStack.setSubNbt("Enchantments", enchantableBlockEntity.getEnchantments());
+        itemStack.setSubNbt("Enchantments", enchantableBlockEntity.enchantedShulkers$getEnchantments());
     }
 }

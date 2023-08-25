@@ -61,7 +61,7 @@ public class BuiltinModelItemRendererMixin_optifabric {
             return;
         }
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
-        enchantableBlockEntity.setEnchantments(stack.getEnchantments());
+        enchantableBlockEntity.enchantedShulkers$setEnchantments(stack.getEnchantments());
         this.blockEntityRenderDispatcher.renderEntity(blockEntity, matrices, vertexConsumers, light, overlay);
         ci.cancel();
     }

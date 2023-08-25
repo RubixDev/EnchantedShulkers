@@ -1,0 +1,5 @@
+net.minecraft.registry.Registries net.minecraft.util.registry.Registry
+net.minecraft.registry.RegistryKeys net.minecraft.util.registry.Registry
+net.minecraft.registry.RegistryKeys ITEM ITEM_KEY
+
+net.minecraft.client.render.model.json.ModelTransformationMode net.minecraft.client.render.model.json.ModelTransformation.Mode

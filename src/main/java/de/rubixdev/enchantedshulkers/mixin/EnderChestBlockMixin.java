@@ -30,7 +30,7 @@ public abstract class EnderChestBlockMixin {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!(WorldConfig.coloredNames()
                 && blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
-                && !enchantableBlockEntity.getEnchantments().isEmpty())) return original;
+                && !enchantableBlockEntity.enchantedShulkers$getEnchantments().isEmpty())) return original;
 
         MutableText text = original.copy();
         text.setStyle(Style.EMPTY.withFormatting(Formatting.AQUA));

@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.interfaces;
 
 public interface HasClientMod {
-    void setTrue();
+    void enchantedShulkers$setTrue();
 
-    void submit();
+    void enchantedShulkers$submit();
 }

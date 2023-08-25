@@ -82,9 +82,9 @@ public class RefillEnchantment extends Enchantment {
     }
 
     static void refill(ServerPlayerEntity player, int slot, ItemStack itemType, int amount) {
+        if (amount <= 0) return;
         List<ItemStack> containerSlots = Utils.getContainers(player, Mod.REFILL_ENCHANTMENT);
         for (ItemStack container : containerSlots) {
-            if (amount <= 0) return;
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
 
             boolean updateContainer = false;

@@ -22,12 +22,16 @@ public class AbstractBlockMixin {
     @Inject(method = "getDroppedStacks", at = @At("RETURN"))
     public void getDroppedStacks(
             BlockState state, LootContextParameterSet.Builder builder, CallbackInfoReturnable<List<ItemStack>> cir) {
+        //#if MC >= 12000
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
+        //#else
+        //$$ BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+        //#endif
         List<ItemStack> drops = cir.getReturnValue();
 
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
 
-        NbtList enchantments = enchantableBlockEntity.getEnchantments();
+        NbtList enchantments = enchantableBlockEntity.enchantedShulkers$getEnchantments();
 
         NbtCompound nbt = new NbtCompound();
         NbtCompound blockEntityTag = new NbtCompound();

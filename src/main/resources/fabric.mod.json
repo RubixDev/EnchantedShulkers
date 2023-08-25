@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "enchantedshulkers",
+  "id": "${id}",
   "version": "${version}",
 
   "name": "Enchanted Shulkers",
@@ -14,8 +14,8 @@
     "issues": "https://github.com/RubixDev/EnchantedShulkers/issues"
   },
 
-  "license": "GPL-2.0-only",
-  "icon": "assets/enchantedshulkers/icon.png",
+  "license": "GPL-3.0-only",
+  "icon": "assets/${id}/icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -35,13 +35,12 @@
   "mixins": [
     "enchantedshulkers.mixins.json"
   ],
-  "accessWidener": "enchantedshulkers.accesswidener",
+  "accessWidener": "${id}.accesswidener",
 
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "fabric": "*",
-    "minecraft": ">=1.20.1",
-    "java": ">=17"
+    "fabricloader": ">=${fabric_loader}",
+    "${fabric_api_mod_id}": "*",
+    "minecraft": "${minecraft_dependency}"
   },
   "suggests": {
     "cloth-config": "*",
