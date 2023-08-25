@@ -12,8 +12,8 @@ Adds the "Siphon" and "Refill" enchantments to Shulker Boxes
 
 [![Requires Fabric API](https://raw.githubusercontent.com/RubixDev/Rug/1.17/fabric-api.png)](https://modrinth.com/mod/fabric-api)
 
-The project setup is based off of (Fallen-Breath's
-template)[https://github.com/Fallen-Breath/fabric-mod-template/tree/b2352030438790d71d586f6654a6ea31a394906a].
+The project setup is based off of
+[Fallen-Breath's template](https://github.com/Fallen-Breath/fabric-mod-template/tree/b2352030438790d71d586f6654a6ea31a394906a).
 
 ## Inspiration
 
