@@ -63,6 +63,29 @@ This mod does actually work as a server-only mod, but it is recommended to be
 used on both client and server. Players without the mod on their client do not
 see an enchantment glint on enchanted containers.
 
+## I just wanna quickly try 'em out
+
+If you just want to quickly test the enchantments in a creative world, there are
+multiple options to do so.
+
+**Option one**: You can search for the enchanted books in the creative inventory
+and apply them with an anvil.
+
+**Option two**: You can give yourself the enchanted books with a command and
+apply them with an anvil. Note that the IDs begin with `enchantedshulkers:` and
+not `minecraft:`.
+
+- Command for Siphon:
+  `/give @s minecraft:enchanted_book{StoredEnchantments:[{id:"enchantedshulkers:siphon",lvl:1}]}`
+- Command for Refill:
+  `/give @s minecraft:enchanted_book{StoredEnchantments:[{id:"enchantedshulkers:refill",lvl:1}]}`
+
+**Option three**: You can enchant the item you're holding with the `/enchant`
+command.
+
+- Command for Siphon: `/enchant @s enchantedshulkers:siphon`
+- Command for Refill: `/enchant @s enchantedshulkers:refill`
+
 ## Configuration
 
 ### Client
