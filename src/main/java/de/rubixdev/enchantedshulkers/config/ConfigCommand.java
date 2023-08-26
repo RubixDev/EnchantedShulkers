@@ -9,11 +9,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import de.rubixdev.enchantedshulkers.Mod;
 import net.minecraft.server.command.ServerCommandSource;
-//#if MC >= 11900
 import net.minecraft.text.Text;
-//#else
-//$$ import net.minecraft.text.TranslatableText;
-//#endif
 
 public class ConfigCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -26,18 +22,11 @@ public class ConfigCommand {
     }
 
     private static void sendFeedback(ServerCommandSource source, String trKey, Object... args) {
-        // TODO: send literal english if the receiver doesn't have this mod
         source.sendFeedback(
                 //#if MC >= 12000
                 () ->
                 //#endif
-                //#if MC >= 11900
-                Text.translatable(
-                //#else
-                //$$ new TranslatableText(
-                //#endif
-                        trKey, args
-                ),
+                Text.translatableWithFallback(trKey, Mod.EN_US_TRANSLATIONS.get(trKey), args),
                 false
         );
     }

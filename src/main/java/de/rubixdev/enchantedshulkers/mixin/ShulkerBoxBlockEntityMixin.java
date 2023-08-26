@@ -9,12 +9,8 @@ import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-//#if MC >= 11800
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
-//#else
-//$$ import de.rubixdev.enchantedshulkers.Mod;
-//#endif
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -57,14 +53,7 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
     }
 
     @Inject(method = "writeNbt", at = @At("TAIL"))
-    public void writeNbt(
-            NbtCompound nbt,
-            //#if MC >= 11800
-            CallbackInfo ci
-            //#else
-            //$$ CallbackInfoReturnable<NbtCompound> cir
-            //#endif
-    ) {
+    public void writeNbt(NbtCompound nbt, CallbackInfo ci) {
         nbt.put("Enchantments", this.enchantments);
     }
 
@@ -75,15 +64,9 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
 
     @Nullable
     @Override
-    //#if MC >= 11800
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
     }
-    //#else
-    //$$ public BlockEntityUpdateS2CPacket toUpdatePacket() {
-    //$$     return new BlockEntityUpdateS2CPacket(this.getPos(), Mod.BLOCK_ENTITY_TYPE_SHULKER_BOX, this.toInitialChunkDataNbt());
-    //$$ }
-    //#endif
 
     @Inject(method = "getContainerName", at = @At(value = "RETURN"), cancellable = true)
     public void getContainerName(CallbackInfoReturnable<Text> cir) {
