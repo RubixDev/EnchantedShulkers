@@ -6,8 +6,23 @@ enchantment.enchantedshulkers:
   refill.desc: 手上的物品用完时，背包中的潜影盒内如果有相同的物品，就将之自动补充到手里
 
 commands.enchantedshulkers:
-  get: '选项%s当前设置为：%s'
+  # all_options_title: 'All EnchantedShulkers options:'
+  # current_value: 'Current value: '
+  # options: 'Options: '
+  # refresh: refresh
   set: '选项%s已被设置为：%s'
+  # switch_to: Switch to %s
+  # unknown_option: 'Unknown option: %s'
+
+enchantedshulkers.options:
+  # coloredNames.desc: Show the names of placed enchanted containers in aqua color. This applies to all players.
+  # creativeRefill.desc: Enable the Refill enchantment for creative players.
+  # creativeSiphon.desc: Enable the Siphon enchantment for creative players.
+  # enchantableEnderChest.desc: Allows Ender Chests to also be enchanted.
+  # generateBooks.desc: Make the enchantments obtainable in survival by allowing enchanted books to generate with them.
+  # nestedContainers.desc: Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest).
+  # refillNonStackables.desc: Allow refilling non-stackable items like Totems of Undying.
+  # refillOffhand.desc: Allow refilling stacks in the offhand.
 
 text.autoconfig.enchantedshulkers:
   title: 附魔潜影盒 - 客户端设置

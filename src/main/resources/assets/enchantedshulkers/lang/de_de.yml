@@ -6,8 +6,23 @@ enchantment.enchantedshulkers:
   refill.desc: Gehaltene Gegenstände werden nach Benutzung automatisch nachgefüllt.
 
 commands.enchantedshulkers:
-  get: Die Option %s ist derzeit ‚%s‘
+  all_options_title: 'Alle EnchantedShulkers Einstellungen:'
+  current_value: 'Aktueller Wert: '
+  options: 'Mögliche Werte: '
+  refresh: neu laden
   set: Option %s wurde auf ‚%s‘ gesetzt
+  switch_to: Wechsel zu ‚%s‘
+  unknown_option: Unbekannte Option ‚%s‘
+
+enchantedshulkers.options:
+  coloredNames.desc: Färbe die Namen von platzierten verzauberten Kisten aqua. Diese option ist global für alle Spieler.
+  creativeRefill.desc: Aktiviere die Nachfüllen Verzauberung für Spieler im Kreativmodus.
+  creativeSiphon.desc: Aktiviere die Saugen Verzauberung für Spieler im Kreativmodus.
+  enchantableEnderChest.desc: Endertruhen können auch verzaubert werden.
+  generateBooks.desc: Macht die Verzauberungen verfügbar im Überlebensmodus indem verzauberte Bücher mit diesen generieren können.
+  nestedContainers.desc: Suche rekursiv in Kisten bis zu 256 Stufen tief (z.B. suche durch Schulker-Kisten die sich in der Endertruhe befinden).
+  refillNonStackables.desc: Erlaube das Nachfüllen von nicht stapelbaren Gegenständen wie z.B. Totems der Unsterblichkeit.
+  refillOffhand.desc: Erlaube das Nachfüllen von Stapeln in der Zweithand.
 
 text.autoconfig.enchantedshulkers:
   title: Enchanted Shulkers Client Einstellungen

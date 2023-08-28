@@ -38,29 +38,47 @@ public class WorldConfig {
         return Arrays.stream(Inner.class.getDeclaredFields()).map(Field::getName);
     }
 
-    public static boolean getOption(String option) throws NoSuchFieldException {
-        Field optionField = Inner.class.getDeclaredField(option);
-        optionField.setAccessible(true);
+    public static boolean getOption(String option) {
+        Field optionField = getField(option);
         try {
             return optionField.getBoolean(inner);
         } catch (IllegalAccessException e) {
-            // unable to fail after `setAccessible(true)` call
+            // shouldn't fail after `setAccessible(true)` call
             throw new RuntimeException(e);
         }
     }
 
-    public static void setOption(String option, boolean value) throws NoSuchFieldException {
-        Field optionField = Inner.class.getDeclaredField(option);
-        optionField.setAccessible(true);
+    public static boolean getOptionDefault(String option) {
+        Field optionField = getField(option);
+        try {
+            return optionField.getBoolean(new Inner());
+        } catch (IllegalAccessException e) {
+            // shouldn't fail after `setAccessible(true)` call
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setOption(String option, boolean value) {
+        Field optionField = getField(option);
         try {
             if (optionField.getBoolean(inner) == value) return;
             optionField.set(inner, value);
             updateResources();
         } catch (IllegalAccessException e) {
-            // unable to fail after `setAccessible(true)`
+            // shouldn't fail after `setAccessible(true)`
             throw new RuntimeException(e);
         }
         write();
+    }
+
+    private static Field getField(String name) {
+        try {
+            Field field =  Inner.class.getDeclaredField(name);
+            field.setAccessible(true);
+            return field;
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static final String ENCHANTED_ENDER_CHEST_ID = "enchantedshulkers:enchanted_ender_chest";

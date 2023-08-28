@@ -14,6 +14,8 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 
 public class Utils {
@@ -79,5 +81,9 @@ public class Utils {
     public static <T extends BlockEntity> boolean shouldGlint(T blockEntity) {
         return blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
                 && !enchantableBlockEntity.enchantedShulkers$getEnchantments().isEmpty();
+    }
+
+    public static MutableText translatableText(String trKey, Object... args) {
+        return Text.translatableWithFallback(trKey, Mod.EN_US_TRANSLATIONS.get(trKey), args);
     }
 }
