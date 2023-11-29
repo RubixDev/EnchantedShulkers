@@ -146,8 +146,20 @@ public class WorldConfig {
         return inner.creativeRefill;
     }
 
-    public static boolean generateBooks() {
-        return inner.generateBooks;
+    public static boolean creativeVacuum() {
+        return inner.creativeVacuum;
+    }
+
+    public static boolean generateRefill() {
+        return inner.generateRefill;
+    }
+
+    public static boolean generateSiphon() {
+        return inner.generateSiphon;
+    }
+
+    public static boolean generateVacuum() {
+        return inner.generateVacuum;
     }
 
     public static boolean nestedContainers() {
@@ -161,7 +173,10 @@ public class WorldConfig {
         boolean coloredNames = false;
         boolean creativeSiphon = false;
         boolean creativeRefill = false;
-        boolean generateBooks = true;
+        boolean creativeVacuum = false;
+        boolean generateRefill = true;
+        boolean generateSiphon = true;
+        boolean generateVacuum = false;
         boolean nestedContainers = true;
     }
 }

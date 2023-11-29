@@ -5,6 +5,9 @@ enchantment.enchantedshulkers:
   refill: 补充
   refill.desc: 手上的物品用完时，背包中的潜影盒内如果有相同的物品，就将之自动补充到手里
 
+  # vacuum: Vacuum
+  # vacuum.desc: Picked up items go in the storage if they fit anywhere.
+
 commands.enchantedshulkers:
   # all_options_title: 'All EnchantedShulkers options:'
   # current_value: 'Current value: '
@@ -18,8 +21,11 @@ enchantedshulkers.options:
   # coloredNames.desc: Show the names of placed enchanted containers in aqua color. This applies to all players.
   # creativeRefill.desc: Enable the Refill enchantment for creative players.
   # creativeSiphon.desc: Enable the Siphon enchantment for creative players.
+  # creativeVacuum.desc: Enable the Vacuum enchantment for creative players.
   # enchantableEnderChest.desc: Allows Ender Chests to also be enchanted.
-  # generateBooks.desc: Make the enchantments obtainable in survival by allowing enchanted books to generate with them.
+  # generateSiphon.desc: Make the Siphon enchantment obtainable in survival by allowing enchanted books to generate with it.
+  # generateVacuum.desc: Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it.
+  # generateRefill.desc: Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it.
   # nestedContainers.desc: Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest).
   # refillNonStackables.desc: Allow refilling non-stackable items like Totems of Undying.
   # refillOffhand.desc: Allow refilling stacks in the offhand.

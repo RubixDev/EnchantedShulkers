@@ -35,12 +35,12 @@ public class RefillEnchantment extends Enchantment {
 
     @Override
     public boolean isAvailableForEnchantedBookOffer() {
-        return WorldConfig.generateBooks();
+        return WorldConfig.generateRefill();
     }
 
     @Override
     public boolean isAvailableForRandomSelection() {
-        return WorldConfig.generateBooks();
+        return WorldConfig.generateRefill();
     }
 
     public static void onPlayerTick(

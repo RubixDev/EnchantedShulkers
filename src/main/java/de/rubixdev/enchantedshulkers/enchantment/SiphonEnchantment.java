@@ -34,18 +34,21 @@ public class SiphonEnchantment extends Enchantment {
 
     @Override
     public boolean isAvailableForEnchantedBookOffer() {
-        return WorldConfig.generateBooks();
+        return WorldConfig.generateSiphon();
     }
 
     @Override
     public boolean isAvailableForRandomSelection() {
-        return WorldConfig.generateBooks();
+        return WorldConfig.generateSiphon();
     }
 
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
         if (player.isCreative() && !WorldConfig.creativeSiphon()) return false;
+        return onItemPickup(player, stack, Mod.SIPHON_ENCHANTMENT, true);
+    }
 
-        List<ItemStack> containerSlots = Utils.getContainers(player, Mod.SIPHON_ENCHANTMENT);
+    public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack, Enchantment enchantment, boolean requireStack) {
+        List<ItemStack> containerSlots = Utils.getContainers(player, enchantment);
 
         boolean usedSiphon = false;
         for (ItemStack container : containerSlots) {
@@ -53,9 +56,10 @@ public class SiphonEnchantment extends Enchantment {
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
 
             boolean updateContainer = false;
-            for (ItemStack innerStack : containerInventory) {
-                if (innerStack.isEmpty()) continue;
-                if (trySiphonStack(stack, innerStack)) {
+            for (int i = 0; i < containerInventory.toArray().length; i++) {
+                ItemStack innerStack = containerInventory.get(i);
+                if (innerStack.isEmpty() && requireStack) continue;
+                if (trySiphonStack(stack, innerStack, containerInventory, i)) {
                     updateContainer = true;
                     if (stack.isEmpty()) break;
                 }
@@ -68,7 +72,12 @@ public class SiphonEnchantment extends Enchantment {
         return usedSiphon;
     }
 
-    static boolean trySiphonStack(ItemStack from, ItemStack to) {
+    static boolean trySiphonStack(ItemStack from, ItemStack to, DefaultedList<ItemStack> containerInventory, int toIndex) {
+        if (to.isEmpty()) {
+            containerInventory.set(toIndex, from.copyAndEmpty());
+            return true;
+        }
+
         if (!ItemStack.canCombine(from, to)) return false;
         int transferCount = Math.min(to.getMaxCount() - to.getCount(), from.getCount());
         if (transferCount <= 0) return false;

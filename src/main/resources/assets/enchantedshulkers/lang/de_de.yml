@@ -5,6 +5,9 @@ enchantment.enchantedshulkers:
   refill: Nachfüllen
   refill.desc: Gehaltene Gegenstände werden nach Benutzung automatisch nachgefüllt.
 
+  vacuum: Vakuum
+  vacuum.desc: Aufgesammelte Gegenstände werden gelagert wenn noch Platz ist.
+
 commands.enchantedshulkers:
   all_options_title: 'Alle EnchantedShulkers Einstellungen:'
   current_value: 'Aktueller Wert: '
@@ -18,8 +21,11 @@ enchantedshulkers.options:
   coloredNames.desc: Färbe die Namen von platzierten verzauberten Kisten aqua. Diese option ist global für alle Spieler.
   creativeRefill.desc: Aktiviere die Nachfüllen Verzauberung für Spieler im Kreativmodus.
   creativeSiphon.desc: Aktiviere die Saugen Verzauberung für Spieler im Kreativmodus.
+  creativeVacuum.desc: Aktiviere die Vakuum Verzauberung für Spieler im Kreativmodus.
   enchantableEnderChest.desc: Endertruhen können auch verzaubert werden.
-  generateBooks.desc: Macht die Verzauberungen verfügbar im Überlebensmodus indem verzauberte Bücher mit diesen generieren können.
+  generateSiphon.desc: Macht die Saugen Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
+  generateVacuum.desc: Macht die Vakuum Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
+  generateRefill.desc: Macht die Nachfüllen Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
   nestedContainers.desc: Suche rekursiv in Kisten bis zu 256 Stufen tief (z.B. suche durch Schulker-Kisten die sich in der Endertruhe befinden).
   refillNonStackables.desc: Erlaube das Nachfüllen von nicht stapelbaren Gegenständen wie z.B. Totems der Unsterblichkeit.
   refillOffhand.desc: Erlaube das Nachfüllen von Stapeln in der Zweithand.

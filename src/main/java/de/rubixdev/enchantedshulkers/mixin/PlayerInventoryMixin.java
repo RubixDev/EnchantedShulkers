@@ -1,6 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
 import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
+import de.rubixdev.enchantedshulkers.enchantment.VacuumEnchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ public class PlayerInventoryMixin {
     public void insertStack(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (!(player instanceof ServerPlayerEntity serverPlayer)) return;
         if (SiphonEnchantment.onItemPickup(serverPlayer, stack) && stack.isEmpty()) {
+            cir.setReturnValue(true);
+        } else if (VacuumEnchantment.onItemPickup(serverPlayer, stack) && stack.isEmpty()) {
             cir.setReturnValue(true);
         }
     }

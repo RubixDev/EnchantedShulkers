@@ -43,6 +43,8 @@ public class Utils {
             List<ItemStack> inventory, ServerPlayerEntity player, Enchantment enchantment, int recursionDepth) {
         List<ItemStack> out = new ArrayList<>();
         for (ItemStack stack : inventory) {
+            // TODO: technically a vacuum shulker box inside a siphon ender chest should also be returned here,
+            // but unless someone complains i can't be bothered :P
             if (canEnchant(stack)
                     && EnchantmentHelper.getLevel(enchantment, stack) > 0
                     && !(visitedEnderChest && stack.isOf(Items.ENDER_CHEST))) {

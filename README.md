@@ -47,6 +47,16 @@ from an enchanted container as long as the used stack was held in one of the
 hands (see [configuration](#configuration)). Again, the container must be inside
 your inventory.
 
+### Vacuum
+
+The Vacuum enchantment doesn't generate by default making it unobtainable in
+survival. To change that, set the `generateVacuum` option to `true` (and
+optionally disable Siphon by setting `generateSiphon` to `false`). Its behavior
+is very similar to that of the Siphon enchantment, with the key difference that
+it doesn't require the same item to already be present in the enchanted
+container. This means a container enchanted with Vacuum will take all items you
+pick up as long as it has space to do so.
+
 ## A note on Resource Packs
 
 When using EnchantedShulkers with a resource pack that alters the look of
@@ -118,7 +128,10 @@ command in game. Below is a list of available options.
 | `coloredNames`          | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color. This applies to all players                  |
 | `creativeSiphon`        | `true`, `false`     | `false`           | Enable the Siphon enchantment for creative players                                                        |
 | `creativeRefill`        | `true`, `false`     | `false`           | Enable the Refill enchantment for creative players                                                        |
-| `generateBooks`         | `true`, `false`     | `true`            | Make the enchantments obtainable in survival by allowing enchanted books to generate with them            |
+| `creativeVacuum`        | `true`, `false`     | `false`           | Enable the Vacuum enchantment for creative players                                                        |
+| `generateSiphon`        | `true`, `false`     | `true`            | Make the Siphon enchantment obtainable in survival by allowing enchanted books to generate with it        |
+| `generateRefill`        | `true`, `false`     | `true`            | Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it        |
+| `generateVacuum`        | `true`, `false`     | `false`           | Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it        |
 | `nestedContainers`      | `true`, `false`     | `true`            | Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest) |
 
 ## For Mod Developers
