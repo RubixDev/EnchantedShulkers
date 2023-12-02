@@ -9,6 +9,13 @@ repositories {
 	maven { url 'https://jitpack.io' }
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
+	maven {
+		url "https://raw.githubusercontent.com/Aton-Kish/mcmod/maven"
+	}
+	maven { url 'https://maven.kyrptonaught.dev/' }
+	maven {
+		url "https://maven.misterpemodder.com/libs-release"
+	}
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783
@@ -37,6 +44,8 @@ dependencies {
     include modApi("io.hotmoka:toml4j:${project.toml4j_version}") {
         exclude(module: "gson")
     }
+	modImplementation "atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}"
+	modImplementation "atonkish.reinfcore:reinforced-core:${project.reinfcore_version}"
 }
 
 String MIXIN_CONFIG_PATH = 'enchantedshulkers.mixins.json'
