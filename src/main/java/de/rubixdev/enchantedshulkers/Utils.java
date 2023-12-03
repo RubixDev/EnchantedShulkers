@@ -6,6 +6,7 @@ import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -71,10 +72,10 @@ public class Utils {
         }
 
         int size = 27;
-        if (container.getItem() instanceof BlockItem blockItem) {
-            if (Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
+        if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
+                container.getItem() instanceof BlockItem blockItem &&
+                Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
                 size = reinforcedShulkerBoxBlock.getMaterial().getSize();
-            }
         }
         DefaultedList<ItemStack> inventory = DefaultedList.ofSize(size, ItemStack.EMPTY);
 
