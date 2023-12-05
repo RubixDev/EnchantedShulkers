@@ -37,6 +37,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
     @Unique
     private boolean hasOpenInventory = false;
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    @Unique
+    private boolean hasClientMod = false;
+
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
     }
@@ -53,13 +57,17 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
 
     @Override
     public void enchantedShulkers$setTrue() {
+        this.hasClientMod = true;
         ((HasClientMod) this.screenHandlerSyncHandler).enchantedShulkers$setTrue();
     }
 
-    @Override
-    public void enchantedShulkers$submit() {
-        ((HasClientMod) this.screenHandlerSyncHandler).enchantedShulkers$submit();
-    }
+    //#if MC < 12002
+    //$$ @Override
+    //$$ public void enchantedShulkers$submit() {
+    //$$     de.rubixdev.enchantedshulkers.Mod.LOGGER.info("Player " + this.getEntityName() + " has logged in with" + (this.hasClientMod ? "" : "out") + " the client-side mod.");
+    //$$     ((HasClientMod) this.screenHandlerSyncHandler).enchantedShulkers$submit();
+    //$$ }
+    //#endif
 
     @SuppressWarnings("DataFlowIssue") // cast to ServerPlayerEntity isn't invalid
     @Inject(

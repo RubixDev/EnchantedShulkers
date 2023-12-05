@@ -74,7 +74,8 @@ public class SiphonEnchantment extends Enchantment {
 
     static boolean trySiphonStack(ItemStack from, ItemStack to, DefaultedList<ItemStack> containerInventory, int toIndex) {
         if (to.isEmpty()) {
-            containerInventory.set(toIndex, from.copyAndEmpty());
+            containerInventory.set(toIndex, from.copy());
+            from.setCount(0);
             return true;
         }
 

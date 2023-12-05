@@ -18,20 +18,26 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(targets = "net.minecraft.server.network.ServerPlayerEntity$1")
 public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
-    @Unique
-    private boolean hasClientMod = false;
-    @Unique
-    private boolean inInitPhase = true;
+    @Unique private boolean hasClientMod = false;
+    @SuppressWarnings("FieldMayBeFinal")
+    @Unique private boolean inInitPhase =
+    //#if MC >= 12002
+        false;
+    //#else
+    //$$     true;
+    //#endif
 
     @Override
     public void enchantedShulkers$setTrue() {
         this.hasClientMod = true;
     }
 
-    @Override
-    public void enchantedShulkers$submit() {
-        this.inInitPhase = false;
-    }
+    //#if MC < 12002
+    //$$ @Override
+    //$$ public void enchantedShulkers$submit() {
+    //$$     this.inInitPhase = false;
+    //$$ }
+    //#endif
 
     //////////////////////////////////////////////
 

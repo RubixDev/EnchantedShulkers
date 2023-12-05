@@ -22,7 +22,11 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.Item;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+//#if MC >= 12002
+import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
+//#else
+//$$ import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+//#endif
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -94,13 +98,19 @@ public class Mod implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
 
         // Register packet listeners
-        ServerPlayNetworking.registerGlobalReceiver(
+        //#if MC >= 12002
+        ServerConfigurationNetworking.registerGlobalReceiver(
                 CLIENT_INSTALLED_PACKET_ID,
-                (server, player, handler, buf, responseSender) -> ((HasClientMod) player).enchantedShulkers$setTrue());
-        ServerPlayNetworking.registerGlobalReceiver(
-                CustomPayloadC2SPacket.BRAND,
-                // at this point a modded client would have sent a `CLIENT_INSTALLED_PACKET_ID` packet
-                (server, player, handler, buf, responseSender) -> ((HasClientMod) player).enchantedShulkers$submit());
+                (server, handler, buf, responseSender) -> ((HasClientMod) handler).enchantedShulkers$setTrue());
+        //#else
+        //$$ ServerPlayNetworking.registerGlobalReceiver(
+        //$$         CLIENT_INSTALLED_PACKET_ID,
+        //$$         (server, player, handler, buf, responseSender) -> ((HasClientMod) player).enchantedShulkers$setTrue());
+        //$$ ServerPlayNetworking.registerGlobalReceiver(
+        //$$         CustomPayloadC2SPacket.BRAND,
+        //$$         // at this point a modded client would have sent a `CLIENT_INSTALLED_PACKET_ID` packet
+        //$$         (server, player, handler, buf, responseSender) -> ((HasClientMod) player).enchantedShulkers$submit());
+        //#endif
         ServerPlayNetworking.registerGlobalReceiver(
                 INVENTORY_OPEN_PACKET_ID,
                 (server, player, handler, buf, responseSender) -> ((InventoryState) player).enchantedShulkers$setOpen());

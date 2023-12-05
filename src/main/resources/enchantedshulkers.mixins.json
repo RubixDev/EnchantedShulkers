@@ -11,6 +11,7 @@
     "EnderChestBlockMixin",
     "ItemStackMixin",
     "PlayerInventoryMixin",
+    "ServerConfigurationNetworkHandlerMixin",
     "ServerPlayerEntity_Anonymous1Mixin",
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
@@ -20,6 +21,7 @@
     "client.BuiltinModelItemRendererMixin",
     "client.BuiltinModelItemRendererMixin_optifabric",
     "client.ChestBlockEntityRendererMixin",
+    "client.ClientLoginNetworkHandlerMixin",
     "client.ClientPlayNetworkHandlerMixin",
     "client.MinecraftClientMixin",
     "client.ShulkerBoxBlockEntityRendererMixin"

@@ -34,7 +34,7 @@ dependencies {
 	// library mods
 	// include modImplementation("com.github.Fallen-Breath:conditional-mixin:${project.conditionalmixin_version}")
     include modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm_version}")
-    include modApi("com.moandjiezana.toml:toml4j:${project.toml4j_version}") {
+    include modApi("io.hotmoka:toml4j:${project.toml4j_version}") {
         exclude(module: "gson")
     }
 }
