@@ -6,9 +6,18 @@ apply plugin: 'me.fallenbreath.yamlang'
 int mcVersion = project.mcVersion
 
 repositories {
+	// Fabric ASM
 	maven { url 'https://jitpack.io' }
-    maven { url "https://maven.shedaniel.me/" }
-    maven { url "https://maven.terraformersmc.com/releases/" }
+	// Cloth Config
+    maven { url 'https://maven.shedaniel.me/' }
+	// Mod Menu
+    maven { url 'https://maven.terraformersmc.com/releases/' }
+	// Reinforced Core and Shulkers
+	maven { url 'https://raw.githubusercontent.com/Aton-Kish/mcmod/maven' }
+	// Shulker Box Tooltip (needed by Reinforced Shulkers)
+	maven { url 'https://maven.misterpemodder.com/libs-release' }
+	// Quick Shulker and deps (needed by Reinforced Shulkers)
+	maven { url 'https://maven.kyrptonaught.dev' }
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783
@@ -37,6 +46,14 @@ dependencies {
     include modApi("io.hotmoka:toml4j:${project.toml4j_version}") {
         exclude(module: "gson")
     }
+
+	// mods tested for compatibility
+	// - Reinforced Shulkers
+	if (project.reinfshulkers == "true") {
+		// TODO: maybe exclude the optional deps
+		modImplementation "atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}"
+		modImplementation "atonkish.reinfcore:reinforced-core:${project.reinfcore_version}"
+	}
 }
 
 String MIXIN_CONFIG_PATH = 'enchantedshulkers.mixins.json'

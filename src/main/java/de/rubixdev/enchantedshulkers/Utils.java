@@ -1,5 +1,11 @@
 package de.rubixdev.enchantedshulkers;
 
+//#if MC < 12002
+//$$ import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
+//$$ import net.fabricmc.loader.api.FabricLoader;
+//$$ import net.minecraft.block.Block;
+//$$ import net.minecraft.item.BlockItem;
+//#endif
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
@@ -60,14 +66,23 @@ public class Utils {
     }
 
     public static DefaultedList<ItemStack> getContainerInventory(ItemStack container, ServerPlayerEntity player) {
-        DefaultedList<ItemStack> inventory = DefaultedList.ofSize(27, ItemStack.EMPTY);
-
         if (container.isOf(Items.ENDER_CHEST)) {
             return player.getEnderChestInventory().stacks;
         }
 
+        int size = 27;
+        //#if MC < 12002
+        //$$ if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
+        //$$         container.getItem() instanceof BlockItem blockItem &&
+        //$$         Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
+        //$$         size = reinforcedShulkerBoxBlock.getMaterial().getSize();
+        //$$ }
+        //#endif
+        DefaultedList<ItemStack> inventory = DefaultedList.ofSize(size, ItemStack.EMPTY);
+
         NbtCompound nbt = container.getSubNbt("BlockEntityTag");
-        if (nbt != null && nbt.contains("Items", NbtElement.LIST_TYPE)) Inventories.readNbt(nbt, inventory);
+        if (nbt != null && nbt.contains("Items", NbtElement.LIST_TYPE))
+            Inventories.readNbt(nbt, inventory);
         return inventory;
     }
 
