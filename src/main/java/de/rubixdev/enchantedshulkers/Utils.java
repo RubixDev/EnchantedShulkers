@@ -1,20 +1,19 @@
 package de.rubixdev.enchantedshulkers;
 
-import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
+//#if MC < 12002
+//$$ import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
+//$$ import net.fabricmc.loader.api.FabricLoader;
+//$$ import net.minecraft.block.Block;
+//$$ import net.minecraft.item.BlockItem;
+//#endif
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Block;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -72,11 +71,13 @@ public class Utils {
         }
 
         int size = 27;
-        if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
-                container.getItem() instanceof BlockItem blockItem &&
-                Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
-                size = reinforcedShulkerBoxBlock.getMaterial().getSize();
-        }
+        //#if MC < 12002
+        //$$ if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
+        //$$         container.getItem() instanceof BlockItem blockItem &&
+        //$$         Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
+        //$$         size = reinforcedShulkerBoxBlock.getMaterial().getSize();
+        //$$ }
+        //#endif
         DefaultedList<ItemStack> inventory = DefaultedList.ofSize(size, ItemStack.EMPTY);
 
         NbtCompound nbt = container.getSubNbt("BlockEntityTag");
