@@ -6,6 +6,7 @@
   "plugin": "de.rubixdev.enchantedshulkers.MixinCompatPlugin",
   "mixins": [
     "AbstractBlockMixin",
+    "BlockEntityMixin",
     "EnchantmentHelperMixin",
     "EnderChestBlockEntityMixin",
     "EnderChestBlockMixin",

@@ -2,9 +2,7 @@ package de.rubixdev.enchantedshulkers.mixin;
 
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -16,7 +14,6 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,14 +23,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ShulkerBoxBlockEntity.class)
-public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockEntity
+public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
         implements EnchantableBlockEntity {
     @Unique
     private NbtList enchantments = new NbtList();
-
-    protected ShulkerBoxBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
-        super(blockEntityType, blockPos, blockState);
-    }
 
     @Override
     public NbtList enchantedShulkers$getEnchantments() {
@@ -58,14 +51,13 @@ public abstract class ShulkerBoxBlockEntityMixin extends LootableContainerBlockE
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return this.enchantedShulkers$toClientNbt();
+    public void toInitialChunkDataNbt(CallbackInfoReturnable<NbtCompound> cir) {
+        cir.setReturnValue(this.enchantedShulkers$toClientNbt());
     }
 
-    @Nullable
     @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
+    public void toUpdatePacket(CallbackInfoReturnable<@Nullable Packet<ClientPlayPacketListener>> cir) {
+        cir.setReturnValue(BlockEntityUpdateS2CPacket.create((BlockEntity) (Object) this));
     }
 
     @Inject(method = "getContainerName", at = @At(value = "RETURN"), cancellable = true)

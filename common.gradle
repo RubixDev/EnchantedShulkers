@@ -18,6 +18,18 @@ repositories {
 	maven { url 'https://maven.misterpemodder.com/libs-release' }
 	// Quick Shulker and deps (needed by Reinforced Shulkers)
 	maven { url 'https://maven.kyrptonaught.dev' }
+	// Modrinth Maven for other compat tested mods
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783
@@ -53,6 +65,10 @@ dependencies {
 		// TODO: maybe exclude the optional deps
 		modImplementation "atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}"
 		modImplementation "atonkish.reinfcore:reinforced-core:${project.reinfcore_version}"
+	}
+	// Shulker+
+	if (project.shulker_plus == "true") {
+		modImplementation "maven.modrinth:shulker+:${project.shulker_plus_version}"
 	}
 }
 

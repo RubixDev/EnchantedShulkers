@@ -12,6 +12,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.ShulkerBoxBlockEntityRenderer;
+import net.minecraft.client.render.entity.model.ShulkerEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -20,12 +21,25 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ShulkerBoxBlockEntityRenderer.class)
 public class ShulkerBoxBlockEntityRendererMixin {
+    @ModifyVariable(
+            method = "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"),
+            name = "spriteIdentifier")
+    private SpriteIdentifier modifySpriteIdentifier(SpriteIdentifier value, ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f) {
+        if (!ClientMod.customModels()
+                || !Utils.shouldGlint(shulkerBoxBlockEntity)
+                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) return value;
+        DyeColor dyeColor;
+        return (dyeColor = shulkerBoxBlockEntity.getColor()) == null
+                ? CLOSED_SHULKER_TEXTURE_ID
+                : CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS.get(dyeColor.getId());
+    }
+
     @Redirect(
             method =
                     "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
@@ -59,41 +73,16 @@ public class ShulkerBoxBlockEntityRendererMixin {
         CLOSED_BOX = TexturedModelData.of(modelData, 64, 32).createModel();
     }
 
-    @Inject(
-            method =
-                    "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/client/render/entity/model/ShulkerEntityModel;getLid()Lnet/minecraft/client/model/ModelPart;"),
-            cancellable = true)
-    private void renderGlint(
-            ShulkerBoxBlockEntity shulkerBoxBlockEntity,
-            float f,
-            MatrixStack matrixStack,
-            VertexConsumerProvider vertexConsumerProvider,
-            int i,
-            int j,
-            CallbackInfo ci) {
+    @Redirect(
+            method = "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/ShulkerEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
+    private void renderClosedBox(ShulkerEntityModel<?> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f) {
         if (!ClientMod.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)
-                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) return;
-
-        DyeColor dyeColor;
-        SpriteIdentifier spriteIdentifier = (dyeColor = shulkerBoxBlockEntity.getColor()) == null
-                ? CLOSED_SHULKER_TEXTURE_ID
-                : CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS.get(dyeColor.getId());
-
-        VertexConsumer vertexConsumer = spriteIdentifier
-                .getSprite()
-                .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
-                        vertexConsumerProvider,
-                        spriteIdentifier.getRenderLayer(RenderLayer::getEntityCutout),
-                        false,
-                        true));
-        CLOSED_BOX.render(matrixStack, vertexConsumer, i, j, 1.0f, 1.0f, 1.0f, 1.0f);
-        matrixStack.pop();
-        ci.cancel();
+                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) {
+            instance.render(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);
+        } else {
+            CLOSED_BOX.render(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);
+        }
     }
 }
