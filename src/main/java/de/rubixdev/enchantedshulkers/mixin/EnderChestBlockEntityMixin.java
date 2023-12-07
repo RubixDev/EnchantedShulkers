@@ -1,9 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -11,19 +9,16 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderChestBlockEntity.class)
-public abstract class EnderChestBlockEntityMixin extends BlockEntity implements EnchantableBlockEntity {
+public abstract class EnderChestBlockEntityMixin extends BlockEntityMixin implements EnchantableBlockEntity {
     @Unique
     private NbtList enchantments = new NbtList();
-
-    public EnderChestBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-    }
 
     @Override
     public NbtList enchantedShulkers$getEnchantments() {
@@ -36,27 +31,26 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, CallbackInfo ci) {
+        super.readNbt(nbt, ci);
         if (nbt.contains("Enchantments", NbtElement.LIST_TYPE)) {
             enchantedShulkers$setEnchantments(nbt.getList("Enchantments", NbtElement.COMPOUND_TYPE));
         }
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void writeNbt(NbtCompound nbt, CallbackInfo ci) {
+        super.writeNbt(nbt, ci);
         nbt.put("Enchantments", this.enchantments);
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return this.enchantedShulkers$toClientNbt();
+    public void toInitialChunkDataNbt(CallbackInfoReturnable<NbtCompound> cir) {
+        cir.setReturnValue(this.enchantedShulkers$toClientNbt());
     }
 
-    @Nullable
     @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
+    public void toUpdatePacket(CallbackInfoReturnable<@Nullable Packet<ClientPlayPacketListener>> cir) {
+        cir.setReturnValue(BlockEntityUpdateS2CPacket.create((BlockEntity) (Object) this));
     }
 }
