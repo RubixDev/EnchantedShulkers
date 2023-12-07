@@ -9,8 +9,13 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 public class MixinCompatPlugin implements IMixinConfigPlugin {
     static final Map<String, String[]> incompatibilities = new HashMap<>() {
         {
-            put("de.rubixdev.enchantedshulkers.mixin.client.BuiltinModelItemRendererMixin", new String[] {"optifabric"
-            });
+            put("de.rubixdev.enchantedshulkers.mixin.client.BuiltinModelItemRendererMixin", new String[] {"optifabric"});
+        }
+    };
+    static final Map<String, String[]> deps = new HashMap<>() {
+        {
+            put("de.rubixdev.enchantedshulkers.mixin.client.SplitShulkers_ShulkerBoxBlockEntityRendererMixin", new String[] {"splitshulkers"});
+            put("de.rubixdev.enchantedshulkers.mixin.client.SplitShulkers_BuiltinModelItemRendererMixin", new String[] {"splitshulkers"});
         }
     };
 
@@ -24,6 +29,10 @@ public class MixinCompatPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (deps.containsKey(mixinClassName)) {
+            return Arrays.stream(deps.get(mixinClassName)).allMatch(modId -> FabricLoader.getInstance().isModLoaded(modId));
+        }
+
         String[] classNameParts = mixinClassName.split("\\.");
         String lastPart = classNameParts[classNameParts.length - 1];
         if (lastPart.contains("_")) {

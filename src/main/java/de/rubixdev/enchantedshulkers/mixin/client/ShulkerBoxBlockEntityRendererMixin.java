@@ -33,7 +33,8 @@ public class ShulkerBoxBlockEntityRendererMixin {
     private SpriteIdentifier modifySpriteIdentifier(SpriteIdentifier value, ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f) {
         if (!ClientMod.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)
-                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) return value;
+                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f
+                || Utils.hasTwoColors(shulkerBoxBlockEntity)) return value;
         DyeColor dyeColor;
         return (dyeColor = shulkerBoxBlockEntity.getColor()) == null
                 ? CLOSED_SHULKER_TEXTURE_ID

@@ -2,15 +2,18 @@ package de.rubixdev.enchantedshulkers;
 
 //#if MC < 12002
 //$$ import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
-//$$ import net.fabricmc.loader.api.FabricLoader;
 //$$ import net.minecraft.block.Block;
 //$$ import net.minecraft.item.BlockItem;
 //#endif
+import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.Inventories;
@@ -102,5 +105,12 @@ public class Utils {
 
     public static MutableText translatableText(String trKey, Object... args) {
         return Text.translatableWithFallback(trKey, Mod.EN_US_TRANSLATIONS.get(trKey), args);
+    }
+
+    // for compat with Split Shulker Boxes
+    public static boolean hasTwoColors(ShulkerBoxBlockEntity shulkerBox) {
+        if (!FabricLoader.getInstance().isModLoaded("splitshulkers")) return false;
+        SplitShulkerBoxBlockEntity splitShulker = (SplitShulkerBoxBlockEntity) shulkerBox;
+        return !Objects.equals(splitShulker.getColor(), splitShulker.splitshulkers_getSecondaryColor());
     }
 }

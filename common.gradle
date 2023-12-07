@@ -6,7 +6,7 @@ apply plugin: 'me.fallenbreath.yamlang'
 int mcVersion = project.mcVersion
 
 repositories {
-	// Fabric ASM
+	// Fabric ASM and MixinSquared
 	maven { url 'https://jitpack.io' }
 	// Cloth Config
     maven { url 'https://maven.shedaniel.me/' }
@@ -58,6 +58,7 @@ dependencies {
     include modApi("io.hotmoka:toml4j:${project.toml4j_version}") {
         exclude(module: "gson")
     }
+	include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")))
 
 	// mods tested for compatibility
 	// - Reinforced Shulkers
@@ -68,7 +69,12 @@ dependencies {
 	}
 	// Shulker+
 	if (project.shulker_plus == "true") {
-		modImplementation "maven.modrinth:shulker+:${project.shulker_plus_version}"
+		// TODO: change to `modImplementation` when compatible with split shulkers (https://github.com/CursedFlames/MCTweaks/issues/3)
+		modCompileOnly "maven.modrinth:shulker+:${project.shulker_plus_version}"
+	}
+	// Split Shulker Boxes
+	if (project.split_shulkers == "true") {
+		modImplementation "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
 	}
 }
 

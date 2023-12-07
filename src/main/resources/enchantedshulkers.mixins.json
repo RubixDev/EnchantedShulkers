@@ -25,7 +25,9 @@
     "client.ClientLoginNetworkHandlerMixin",
     "client.ClientPlayNetworkHandlerMixin",
     "client.MinecraftClientMixin",
-    "client.ShulkerBoxBlockEntityRendererMixin"
+    "client.ShulkerBoxBlockEntityRendererMixin",
+    "client.SplitShulkers_BuiltinModelItemRendererMixin",
+    "client.SplitShulkers_ShulkerBoxBlockEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
