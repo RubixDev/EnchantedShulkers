@@ -63,9 +63,18 @@ dependencies {
     // mods tested for compatibility
     // - Reinforced Shulkers
     if (project.reinfshulkers == "true") {
-        // TODO: maybe exclude the optional deps
-        modImplementation "atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}"
-        modImplementation "atonkish.reinfcore:reinforced-core:${project.reinfcore_version}"
+        modImplementation("atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}") {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "atonkish.reinfcore")
+            exclude(group: "atonkish.reinfchest")
+            exclude(group: "net.kyrptonaught")
+            exclude(group: "com.misterpemodder")
+        }
+        modImplementation("atonkish.reinfcore:reinforced-core:${project.reinfcore_version}") {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "com.terraformersmc")
+            exclude(group: "me.shedaniel.cloth")
+        }
     }
     // Shulker+
     if (project.shulker_plus == "true") {

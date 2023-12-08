@@ -14,8 +14,10 @@ public class MixinCompatPlugin implements IMixinConfigPlugin {
     };
     static final Map<String, String[]> deps = new HashMap<>() {
         {
-            put("de.rubixdev.enchantedshulkers.mixin.client.SplitShulkers_ShulkerBoxBlockEntityRendererMixin", new String[] {"splitshulkers"});
-            put("de.rubixdev.enchantedshulkers.mixin.client.SplitShulkers_BuiltinModelItemRendererMixin", new String[] {"splitshulkers"});
+            put("de.rubixdev.enchantedshulkers.mixin.client.compat.SplitShulkers_ShulkerBoxBlockEntityRendererMixin", new String[] {"splitshulkers"});
+            put("de.rubixdev.enchantedshulkers.mixin.client.compat.SplitShulkers_BuiltinModelItemRendererMixin", new String[] {"splitshulkers"});
+            put("de.rubixdev.enchantedshulkers.mixin.client.compat.ReinforcedShulkerBoxBlockEntityRendererMixin", new String[] {"reinfshulker"});
+            put("de.rubixdev.enchantedshulkers.mixin.client.compat.ReinforcedShulkerBoxesClientModMixin", new String[] {"reinfshulker"});
         }
     };
 

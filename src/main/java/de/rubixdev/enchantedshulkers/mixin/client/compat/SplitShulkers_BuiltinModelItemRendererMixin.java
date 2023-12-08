@@ -1,4 +1,4 @@
-package de.rubixdev.enchantedshulkers.mixin.client;
+package de.rubixdev.enchantedshulkers.mixin.client.compat;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;

@@ -1,13 +1,9 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import static de.rubixdev.enchantedshulkers.ClientMod.CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS;
-import static de.rubixdev.enchantedshulkers.ClientMod.CLOSED_SHULKER_TEXTURE_ID;
-
 import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Utils;
 import java.util.function.Function;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
-import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -19,10 +15,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import static de.rubixdev.enchantedshulkers.ClientMod.*;
 
 @Mixin(ShulkerBoxBlockEntityRenderer.class)
 public class ShulkerBoxBlockEntityRendererMixin {
@@ -59,19 +56,6 @@ public class ShulkerBoxBlockEntityRendererMixin {
         return instance.getSprite()
                 .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
                         vertexConsumers, instance.getRenderLayer(layerFactory), false, true));
-    }
-
-    @Unique
-    private static final ModelPart CLOSED_BOX;
-
-    static {
-        ModelData modelData = new ModelData();
-        ModelPartData modelPartData = modelData.getRoot();
-        modelPartData.addChild(
-                "box",
-                ModelPartBuilder.create().uv(0, 0).cuboid(-8.0f, 8.0f, -8.0f, 16.0f, 16.0f, 16.0f),
-                ModelTransform.NONE);
-        CLOSED_BOX = TexturedModelData.of(modelData, 64, 32).createModel();
     }
 
     @Redirect(
