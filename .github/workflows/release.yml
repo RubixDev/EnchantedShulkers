@@ -180,7 +180,11 @@ jobs:
           loaders: fabric
           game-versions: ${{ steps.game_versions.outputs.value }}
           game-version-filter: any
-          dependencies: '' # declare the dependencies explicitly, so mc-publish won't try to load from fabric.mod.json
+          # declare the dependencies explicitly, so mc-publish won't try to load from fabric.mod.json
+          dependencies: |
+            fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}
+            modmenu(optional){modrinth:mOgUt4GM}{curseforge:308702}
+            cloth-config(optional){modrinth:9s6osm5g}{curseforge:348521}
 
           modrinth-changelog: ${{ steps.changelog.outputs.result }}
           curseforge-changelog: ${{ steps.changelog.outputs.result }}
