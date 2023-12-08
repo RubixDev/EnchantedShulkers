@@ -60,7 +60,7 @@ public class SiphonEnchantment extends Enchantment {
             if (stack.isEmpty()) return usedSiphon;
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
             boolean updateContainer = false;
-            for (int i = 0; i < containerInventory.toArray().length; i++) {
+            for (int i = 0; i < containerInventory.size(); i++) {
                 ItemStack innerStack = containerInventory.get(i);
                 if (innerStack.isEmpty() && requireStack) continue;
                 if (trySiphonStack(stack, innerStack, containerInventory, i)) {
@@ -81,13 +81,13 @@ public class SiphonEnchantment extends Enchantment {
 
         boolean usedSiphon = false;
         for (ItemStack container : containerSlots) {
+            if (stack.isEmpty())
+                return usedSiphon;
             Item item = stack.getItem();
             ArrayList<Integer> foundItemSlots = new ArrayList<>();
             ArrayList<Integer> emptyItemSlots = new ArrayList<>();
-            if (stack.isEmpty())
-                return usedSiphon;
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
-            for (int i = 0; i < containerInventory.toArray().length; i++) {
+            for (int i = 0; i < containerInventory.size(); i++) {
                 ItemStack innerStack = containerInventory.get(i);
                 if (innerStack.isEmpty())
                     emptyItemSlots.add(i);
@@ -116,7 +116,6 @@ public class SiphonEnchantment extends Enchantment {
                 usedSiphon = true;
                 Utils.setContainerInventory(container, containerInventory);
             }
-
         }
         return usedSiphon;
     }
