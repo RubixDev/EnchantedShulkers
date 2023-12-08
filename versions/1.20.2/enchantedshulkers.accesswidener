@@ -4,3 +4,4 @@ extendable class net/minecraft/enchantment/EnchantmentTarget
 
 accessible field net/minecraft/block/EnderChestBlock CONTAINER_NAME Lnet/minecraft/text/Text;
 accessible field net/minecraft/inventory/SimpleInventory stacks Lnet/minecraft/util/collection/DefaultedList;
+accessible field net/minecraft/screen/ShulkerBoxScreenHandler inventory Lnet/minecraft/inventory/Inventory;

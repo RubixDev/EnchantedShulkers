@@ -14,22 +14,10 @@ repositories {
     maven { url 'https://maven.terraformersmc.com/releases/' }
     // Reinforced Core and Shulkers
     maven { url 'https://raw.githubusercontent.com/Aton-Kish/mcmod/maven' }
-    // Shulker Box Tooltip (needed by Reinforced Shulkers)
-    maven { url 'https://maven.misterpemodder.com/libs-release' }
-    // Quick Shulker and deps (needed by Reinforced Shulkers)
+    // Quick Shulker deps
     maven { url 'https://maven.kyrptonaught.dev' }
     // Modrinth Maven for other compat tested mods
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter {
-            includeGroup "maven.modrinth"
-        }
-    }
+    maven { url 'https://api.modrinth.com/maven' }
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783
@@ -84,6 +72,12 @@ dependencies {
     // Split Shulker Boxes
     if (project.split_shulkers == "true") {
         modImplementation "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
+    }
+    // Quick Shulker
+    if (project.quickshulker == "true") {
+        modImplementation "maven.modrinth:quickshulker:${project.quickshulker_version}"
+        modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
+        modImplementation "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
     }
 }
 
