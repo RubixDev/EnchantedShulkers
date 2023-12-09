@@ -26,7 +26,7 @@ public class ServerConfigurationNetworkHandlerMixin implements HasClientMod {
 
     @Inject(method = "onReady", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;onPlayerConnect(Lnet/minecraft/network/ClientConnection;Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/server/network/ConnectedClientData;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void onReady(ReadyC2SPacket packet, CallbackInfo ci, PlayerManager playerManager, Text text, ServerPlayerEntity serverPlayerEntity) {
-        Mod.LOGGER.info("Player " + serverPlayerEntity.getEntityName() + " has logged in with" + (this.hasClientMod ? "" : "out") + " the client-side mod.");
+        Mod.LOGGER.info("Player " + serverPlayerEntity.getNameForScoreboard() + " has logged in with" + (this.hasClientMod ? "" : "out") + " the client-side mod.");
         if (this.hasClientMod) ((HasClientMod) serverPlayerEntity).enchantedShulkers$setTrue();
     }
 }

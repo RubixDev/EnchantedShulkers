@@ -90,7 +90,7 @@ public class Utils {
         if (FabricLoader.getInstance().isModLoaded("quickshulker")) {
             if (player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
                     && handler.inventory instanceof ItemStackInventory inventory) {
-                return inventory.stacks;
+                return inventory.heldStacks;
             }
             //#if MC < 12002
             //$$ if (FabricLoader.getInstance().isModLoaded("reinfshulker")
@@ -106,7 +106,7 @@ public class Utils {
             return ((ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
         }
         if (container.isOf(Items.ENDER_CHEST)) {
-            return player.getEnderChestInventory().stacks;
+            return player.getEnderChestInventory().heldStacks;
         }
 
         int size = 27;

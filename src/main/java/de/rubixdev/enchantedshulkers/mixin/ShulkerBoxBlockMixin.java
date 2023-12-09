@@ -7,20 +7,23 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//#if MC >= 12004
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//#else
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//#endif
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ShulkerBoxBlock.class)
 public class ShulkerBoxBlockMixin {
     /**
-     * Only for creative mode, for all other means of breaking see {@link de.rubixdev.enchantedshulkers.mixin.AbstractBlockMixin#getDroppedStacks(BlockState, LootContext.Builder, CallbackInfoReturnable)}
+     * Only for creative mode, for all other means of breaking see {@link de.rubixdev.enchantedshulkers.mixin.AbstractBlockMixin#getDroppedStacks(BlockState, LootContextParameterSet.Builder, CallbackInfoReturnable)}
      */
     @Inject(
             method = "onBreak",
@@ -31,7 +34,11 @@ public class ShulkerBoxBlockMixin {
             BlockPos pos,
             BlockState state,
             PlayerEntity player,
-            CallbackInfo ci,
+            //#if MC >= 12004
+            CallbackInfoReturnable<BlockState> cir,
+            //#else
+            //$$ CallbackInfo ci,
+            //#endif
             BlockEntity blockEntity,
             ShulkerBoxBlockEntity shulkerBoxBlockEntity,
             ItemStack itemStack) {
