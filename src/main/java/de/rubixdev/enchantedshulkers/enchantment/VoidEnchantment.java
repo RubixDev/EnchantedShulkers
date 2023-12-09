@@ -5,7 +5,6 @@ import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
@@ -45,19 +44,12 @@ public class VoidEnchantment extends Enchantment {
     }
 
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
-        if (player.isCreative() && !WorldConfig.creativeVoid()) return false;
-        return onItemPickup(player, stack, Mod.VOID_ENCHANTMENT, true);
-    }
-
-    public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack, Enchantment enchantment, boolean requireStack) {
-        List<ItemStack> containerSlots = Utils.getContainers(player, enchantment);
+        if (player.isCreative() && !WorldConfig.creativeVoid() || stack.isEmpty()) return false;
+        List<ItemStack> containerSlots = Utils.getContainers(player, Mod.VOID_ENCHANTMENT);
         for (ItemStack container : containerSlots) {
-            if (stack.isEmpty())
-                return false;
-            Item item = stack.getItem();
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
             for (ItemStack innerStack : containerInventory) {
-                if (innerStack.isOf(item)) {
+                if (innerStack.isOf(stack.getItem())) {
                     stack.setCount(0);
                     return true;
                 }

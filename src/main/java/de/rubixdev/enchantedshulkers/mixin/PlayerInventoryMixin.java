@@ -27,7 +27,7 @@ public class PlayerInventoryMixin {
             cir.setReturnValue(true);
         } else if (VacuumEnchantment.onItemPickup(serverPlayer, stack) && stack.isEmpty()) {
             cir.setReturnValue(true);
-        } else if (VoidEnchantment.onItemPickup(serverPlayer, stack) && stack.isEmpty()) {
+        } else if (VoidEnchantment.onItemPickup(serverPlayer, stack)) {
             cir.setReturnValue(true);
         }
     }
