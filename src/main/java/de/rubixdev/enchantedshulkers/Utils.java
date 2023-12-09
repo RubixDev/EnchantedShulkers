@@ -44,7 +44,6 @@ public class Utils {
     }
 
     public static List<ItemStack> getContainers(ServerPlayerEntity player, Enchantment enchantment) {
-        visitedEnderChest = false;
         List<ItemStack> playerInventory = new ArrayList<>();
         for (int i = 0; i <= player.getInventory().size(); i++) {
             playerInventory.add(player.getInventory().getStack(i));
@@ -53,14 +52,16 @@ public class Utils {
             // include the slot from Shulker Box Slot
             Services.INSTANCE.findShulkerBoxAccessory(player).ifPresent(triple -> playerInventory.add(triple.getLeft()));
         }
-        return getContainers(playerInventory, player, enchantment, 0);
+        return getContainers(playerInventory, player, enchantment, 0, false);
     }
 
-    // TODO: does this break with multiple players?
-    private static boolean visitedEnderChest;
-
     private static List<ItemStack> getContainers(
-            List<ItemStack> inventory, ServerPlayerEntity player, Enchantment enchantment, int recursionDepth) {
+            List<ItemStack> inventory,
+            ServerPlayerEntity player,
+            Enchantment enchantment,
+            int recursionDepth,
+            boolean visitedEnderChest
+    ) {
         List<ItemStack> out = new ArrayList<>();
         for (ItemStack stack : inventory) {
             // TODO: technically a vacuum shulker box inside a siphon ender chest should also be returned here,
@@ -71,10 +72,14 @@ public class Utils {
                     // in case some other mod allows shulkers to stack, ignore them to prevent duping
                     && stack.getCount() == 1) {
                 out.add(stack);
-                if (stack.isOf(Items.ENDER_CHEST)) visitedEnderChest = true;
                 if (recursionDepth < (WorldConfig.nestedContainers() ? 255 : 0)) {
                     out.addAll(getContainers(
-                            getContainerInventory(stack, player), player, enchantment, recursionDepth + 1));
+                            getContainerInventory(stack, player),
+                            player,
+                            enchantment,
+                            recursionDepth + 1,
+                            visitedEnderChest || stack.isOf(Items.ENDER_CHEST)
+                    ));
                 }
             }
         }
