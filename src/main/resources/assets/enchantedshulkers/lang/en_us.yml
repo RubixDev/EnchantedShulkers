@@ -34,6 +34,8 @@ enchantedshulkers.options:
   nestedContainers.desc: Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest).
   refillNonStackables.desc: Allow refilling non-stackable items like Totems of Undying.
   refillOffhand.desc: Allow refilling stacks in the offhand.
+  strongerSiphon.desc: Allow the Siphon enchantment to fill empty slots. The same behavior can be enabled for the Vacuum enchantment with "weakerVacuum".
+  weakerVacuum.desc: Require the same item to already be present in the container. The same behavior can be enabled for the Siphon enchantment with "strongerSiphon".
 
 text.autoconfig.enchantedshulkers:
   title: Enchanted Shulkers Client Settings

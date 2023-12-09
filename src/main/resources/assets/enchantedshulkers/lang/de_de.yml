@@ -34,6 +34,8 @@ enchantedshulkers.options:
   nestedContainers.desc: Suche rekursiv in Kisten bis zu 256 Stufen tief (z.B. suche durch Schulker-Kisten die sich in der Endertruhe befinden).
   refillNonStackables.desc: Erlaube das Nachfüllen von nicht stapelbaren Gegenständen wie z.B. Totems der Unsterblichkeit.
   refillOffhand.desc: Erlaube das Nachfüllen von Stapeln in der Zweithand.
+  strongerSiphon.desc: Die Saugen Verzauberung kann auch leere Slots füllen. Das selbe Verhalten kann für die Vakuum Verzauberung mit "weakerVacuum" eingeschaltet werden.
+  weakerVacuum.desc: Vakuum benötigt Gegenstände der selben Art bereits Container. Das selbe Verhalten kann für die Saugen Verzauberung mit "strongerSiphon" eingeschaltet werden.
 
 text.autoconfig.enchantedshulkers:
   title: Enchanted Shulkers Client Einstellungen

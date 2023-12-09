@@ -178,6 +178,10 @@ public class WorldConfig {
         return inner.strongerSiphon;
     }
 
+    public static boolean weakerVacuum() {
+        return inner.weakerVacuum;
+    }
+
     private static class Inner {
         boolean refillOffhand = true;
         boolean refillNonStackables = false;
@@ -193,5 +197,6 @@ public class WorldConfig {
         boolean generateVoid = false;
         boolean nestedContainers = true;
         boolean strongerSiphon = false;
+        boolean weakerVacuum = false;
     }
 }

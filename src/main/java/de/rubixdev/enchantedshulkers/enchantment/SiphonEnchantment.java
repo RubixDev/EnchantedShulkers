@@ -47,12 +47,17 @@ public class SiphonEnchantment extends Enchantment {
 
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
         return (!player.isCreative() || WorldConfig.creativeSiphon())
-                && onItemPickup(player, stack, Mod.SIPHON_ENCHANTMENT, true);
+                && onItemPickup(player, stack, Mod.SIPHON_ENCHANTMENT, true, WorldConfig.strongerSiphon());
     }
 
-    public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack, Enchantment enchantment, boolean requireStack) {
-        if (WorldConfig.strongerSiphon())
-            return onItemPickupStrongSiphon(player, stack, enchantment, requireStack);
+    public static boolean onItemPickup(
+            ServerPlayerEntity player,
+            ItemStack stack,
+            Enchantment enchantment,
+            boolean requireStack,
+            boolean strongerSiphon
+    ) {
+        if (strongerSiphon) return onItemPickupStrongerSiphon(player, stack, enchantment);
         List<ItemStack> containerSlots = Utils.getContainers(player, enchantment);
 
         boolean usedSiphon = false;
@@ -76,7 +81,7 @@ public class SiphonEnchantment extends Enchantment {
         return usedSiphon;
     }
 
-    public static boolean onItemPickupStrongSiphon(ServerPlayerEntity player, ItemStack stack, Enchantment enchantment, boolean requireStack) {
+    private static boolean onItemPickupStrongerSiphon(ServerPlayerEntity player, ItemStack stack, Enchantment enchantment) {
         List<ItemStack> containerSlots = Utils.getContainers(player, enchantment);
 
         boolean usedSiphon = false;
@@ -84,8 +89,8 @@ public class SiphonEnchantment extends Enchantment {
             if (stack.isEmpty())
                 return usedSiphon;
             Item item = stack.getItem();
-            ArrayList<Integer> foundItemSlots = new ArrayList<>();
-            ArrayList<Integer> emptyItemSlots = new ArrayList<>();
+            List<Integer> foundItemSlots = new ArrayList<>();
+            List<Integer> emptyItemSlots = new ArrayList<>();
             DefaultedList<ItemStack> containerInventory = Utils.getContainerInventory(container, player);
             for (int i = 0; i < containerInventory.size(); i++) {
                 ItemStack innerStack = containerInventory.get(i);
@@ -95,16 +100,19 @@ public class SiphonEnchantment extends Enchantment {
                     foundItemSlots.add(i);
             }
 
+            // don't siphon if there are no items of that type already in the container
             if (foundItemSlots.isEmpty())
-                return false;
+                continue;
 
             boolean updateContainer = false;
+            // try to add to the existing stacks first
             for (int slotId : foundItemSlots) {
                 if (stack.isEmpty())
                     break;
                 if (trySiphonStack(stack, containerInventory.get(slotId), containerInventory, slotId))
                     updateContainer = true;
             }
+            // then fill empty slots
             for (int slotId : emptyItemSlots) {
                 if (stack.isEmpty())
                     break;
