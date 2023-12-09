@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Enchanted Shulkers",
-  "description": "Adds the \"Siphon\" and \"Refill\" enchantments to Shulker Boxes",
+  "description": "Adds some helpful enchantments for Shulker Boxes",
   "authors": [
     "RubixDev"
   ],

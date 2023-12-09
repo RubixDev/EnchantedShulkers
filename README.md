@@ -8,7 +8,7 @@ for a Forge mod with similar functionality, have a look at
 
 ---
 
-Adds the "Siphon" and "Refill" enchantments to Shulker Boxes
+Adds some helpful enchantments for Shulker Boxes
 
 [![Requires Fabric API](https://raw.githubusercontent.com/RubixDev/Rug/1.17/fabric-api.png)](https://modrinth.com/mod/fabric-api)
 
