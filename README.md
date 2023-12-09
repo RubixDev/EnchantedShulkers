@@ -120,19 +120,21 @@ The behavior of the mod can be tweaked per world in the `enchantedshulkers.toml`
 config file inside you world save folder, or with the `/enchantedshulkers`
 command in game. Below is a list of available options.
 
-| **Option**              | **Possible Values** | **Default Value** | **Description**                                                                                           |
-| ----------------------- | ------------------- | ----------------- | --------------------------------------------------------------------------------------------------------- |
-| `refillOffhand`         | `true`, `false`     | `true`            | Allow refilling stacks in the offhand                                                                     |
-| `refillNonStackables`   | `true`, `false`     | `false`           | Allow refilling non-stackable items like Totems of Undying                                                |
-| `enchantableEnderChest` | `true`, `false`     | `false`           | Allows Ender Chests to also be enchanted                                                                  |
-| `coloredNames`          | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color. This applies to all players                  |
-| `creativeSiphon`        | `true`, `false`     | `false`           | Enable the Siphon enchantment for creative players                                                        |
-| `creativeRefill`        | `true`, `false`     | `false`           | Enable the Refill enchantment for creative players                                                        |
-| `creativeVacuum`        | `true`, `false`     | `false`           | Enable the Vacuum enchantment for creative players                                                        |
-| `generateSiphon`        | `true`, `false`     | `true`            | Make the Siphon enchantment obtainable in survival by allowing enchanted books to generate with it        |
-| `generateRefill`        | `true`, `false`     | `true`            | Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it        |
-| `generateVacuum`        | `true`, `false`     | `false`           | Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it        |
-| `nestedContainers`      | `true`, `false`     | `true`            | Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest) |
+| **Option**              | **Possible Values** | **Default Value** | **Description**                                                                                                                                 |
+| ----------------------- | ------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `refillOffhand`         | `true`, `false`     | `true`            | Allow refilling stacks in the offhand                                                                                                           |
+| `refillNonStackables`   | `true`, `false`     | `false`           | Allow refilling non-stackable items like Totems of Undying                                                                                      |
+| `enchantableEnderChest` | `true`, `false`     | `false`           | Allows Ender Chests to also be enchanted                                                                                                        |
+| `coloredNames`          | `true`, `false`     | `false`           | Show the names of placed enchanted containers in aqua color. This applies to all players                                                        |
+| `creativeSiphon`        | `true`, `false`     | `false`           | Enable the Siphon enchantment for creative players                                                                                              |
+| `creativeRefill`        | `true`, `false`     | `false`           | Enable the Refill enchantment for creative players                                                                                              |
+| `creativeVacuum`        | `true`, `false`     | `false`           | Enable the Vacuum enchantment for creative players                                                                                              |
+| `generateSiphon`        | `true`, `false`     | `true`            | Make the Siphon enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
+| `generateRefill`        | `true`, `false`     | `true`            | Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
+| `generateVacuum`        | `true`, `false`     | `false`           | Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
+| `nestedContainers`      | `true`, `false`     | `true`            | Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest)                                       |
+| `strongerSiphon`        | `true`, `false`     | `false`           | Allow the Siphon enchantment to fill empty slots. The same behavior can be enabled for the Vacuum enchantment with `weakerVacuum`               |
+| `weakerVacuum`          | `true`, `false`     | `false`           | Require the same item to already be present in the container. The same behavior can be enabled for the Siphon enchantment with `strongerSiphon` |
 
 ## For Mod Developers
 

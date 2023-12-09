@@ -1,15 +1,11 @@
 package de.rubixdev.enchantedshulkers.enchantment;
 
 import de.rubixdev.enchantedshulkers.Mod;
-import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.collection.DefaultedList;
-
-import java.util.List;
 
 public class VacuumEnchantment extends Enchantment {
     public VacuumEnchantment() {
@@ -45,6 +41,6 @@ public class VacuumEnchantment extends Enchantment {
 
     public static boolean onItemPickup(ServerPlayerEntity player, ItemStack stack) {
         if (player.isCreative() && !WorldConfig.creativeVacuum()) return false;
-        return SiphonEnchantment.onItemPickup(player, stack, Mod.VACUUM_ENCHANTMENT, false);
+        return SiphonEnchantment.onItemPickup(player, stack, Mod.VACUUM_ENCHANTMENT, false, WorldConfig.weakerVacuum());
     }
 }
