@@ -50,12 +50,21 @@ your inventory.
 ### Vacuum
 
 The Vacuum enchantment doesn't generate by default making it unobtainable in
-survival. To change that, set the `generateVacuum` option to `true` (and
-optionally disable Siphon by setting `generateSiphon` to `false`). Its behavior
-is very similar to that of the Siphon enchantment, with the key difference that
-it doesn't require the same item to already be present in the enchanted
-container. This means a container enchanted with Vacuum will take all items you
-pick up as long as it has space to do so.
+survival. To change that, [set the `generateVacuum` option to `true`](#server)
+(and optionally disable Siphon by setting `generateSiphon` to `false`). Its
+behavior is very similar to that of the Siphon enchantment, with the key
+difference that it doesn't require the same item to already be present in the
+enchanted container. This means a container enchanted with Vacuum will take all
+items you pick up as long as it has space to do so.
+
+### Void
+
+Same as [the Vacuum enchantment](#vacuum), the Void enchantment also doesn't
+generate by default. To make it obtainable in survival mode,
+[enable the `generateVoid` option](#server). When pick up items of the same type
+as a container with the Void enchantment contains, the picked up items will be
+deleted. The enchanted container does not require space to put the deleted
+items, and unlike Siphon, the stacks in the enchanted container can be full.
 
 ## A note on Resource Packs
 
@@ -129,9 +138,11 @@ command in game. Below is a list of available options.
 | `creativeSiphon`        | `true`, `false`     | `false`           | Enable the Siphon enchantment for creative players                                                                                              |
 | `creativeRefill`        | `true`, `false`     | `false`           | Enable the Refill enchantment for creative players                                                                                              |
 | `creativeVacuum`        | `true`, `false`     | `false`           | Enable the Vacuum enchantment for creative players                                                                                              |
+| `creativeVoid`          | `true`, `false`     | `false`           | Enable the Void enchantment for creative players                                                                                                |
 | `generateSiphon`        | `true`, `false`     | `true`            | Make the Siphon enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
 | `generateRefill`        | `true`, `false`     | `true`            | Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
 | `generateVacuum`        | `true`, `false`     | `false`           | Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
+| `generateVoid`          | `true`, `false`     | `false`           | Make the Void enchantment obtainable in survival by allowing enchanted books to generate with it                                                |
 | `nestedContainers`      | `true`, `false`     | `true`            | Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest)                                       |
 | `strongerSiphon`        | `true`, `false`     | `false`           | Allow the Siphon enchantment to fill empty slots. The same behavior can be enabled for the Vacuum enchantment with `weakerVacuum`               |
 | `weakerVacuum`          | `true`, `false`     | `false`           | Require the same item to already be present in the container. The same behavior can be enabled for the Siphon enchantment with `strongerSiphon` |
