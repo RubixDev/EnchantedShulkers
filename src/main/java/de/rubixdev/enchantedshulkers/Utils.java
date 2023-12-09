@@ -70,7 +70,7 @@ public class Utils {
                     && EnchantmentHelper.getLevel(enchantment, stack) > 0
                     && !(visitedEnderChest && stack.isOf(Items.ENDER_CHEST))
                     // in case some other mod allows shulkers to stack, ignore them to prevent duping
-                    && stack.getCount() == 1) {
+                    && (stack.isOf(Items.ENDER_CHEST) || stack.getCount() == 1)) {
                 out.add(stack);
                 if (recursionDepth < (WorldConfig.nestedContainers() ? 255 : 0)) {
                     out.addAll(getContainers(
