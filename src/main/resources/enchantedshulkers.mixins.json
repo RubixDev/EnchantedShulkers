@@ -16,7 +16,8 @@
     "ServerPlayerEntity_Anonymous1Mixin",
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
-    "ShulkerBoxBlockMixin"
+    "ShulkerBoxBlockMixin",
+    "compat.ShulkerBoxAccessoryInventoryAccessor"
   ],
   "client": [
     "client.BuiltinModelItemRendererMixin",

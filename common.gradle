@@ -10,12 +10,16 @@ repositories {
     maven { url 'https://jitpack.io' }
     // Cloth Config
     maven { url 'https://maven.shedaniel.me/' }
-    // Mod Menu
+    // Mod Menu and Trinkets
     maven { url 'https://maven.terraformersmc.com/releases/' }
     // Reinforced Core and Shulkers
     maven { url 'https://raw.githubusercontent.com/Aton-Kish/mcmod/maven' }
     // Quick Shulker deps
     maven { url 'https://maven.kyrptonaught.dev' }
+    // Cardinal Components API (required by Trinkets)
+    maven { url 'https://maven.ladysnake.org/releases' }
+    // Spectrelib (required by Shulker Box Slot)
+    maven { url 'https://maven.theillusivec4.top/' }
     // Modrinth Maven for other compat tested mods
     maven { url 'https://api.modrinth.com/maven' }
 }
@@ -40,7 +44,7 @@ dependencies {
     }
     modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-    // library mods
+    // libraries
     // include modImplementation("com.github.Fallen-Breath:conditional-mixin:${project.conditionalmixin_version}")
     include modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm_version}")
     include modApi("io.hotmoka:toml4j:${project.toml4j_version}") {
@@ -64,20 +68,31 @@ dependencies {
             exclude(group: "me.shedaniel.cloth")
         }
     }
-    // Shulker+
+    // - Shulker+
     if (project.shulker_plus == "true") {
         // TODO: change to `modImplementation` when compatible with split shulkers (https://github.com/CursedFlames/MCTweaks/issues/3)
         modCompileOnly "maven.modrinth:shulker+:${project.shulker_plus_version}"
     }
-    // Split Shulker Boxes
+    // - Split Shulker Boxes
     if (project.split_shulkers == "true") {
         modImplementation "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
     }
-    // Quick Shulker
+    // - Quick Shulker
     if (project.quickshulker == "true") {
         modImplementation "maven.modrinth:quickshulker:${project.quickshulker_version}"
         modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
         modImplementation "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
+    }
+    // - Shulker Box Slot
+    if (project.shulker_slot == "true") {
+        modImplementation "maven.modrinth:shulker-box-slot:${project.shulker_slot_version}"
+        modImplementation("dev.emi:trinkets:${project.trinkets_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        if (project.spectrelib == "true") {
+            modImplementation("com.illusivesoulworks.spectrelib:spectrelib-fabric:${project.spectrelib_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        }
     }
 }
 

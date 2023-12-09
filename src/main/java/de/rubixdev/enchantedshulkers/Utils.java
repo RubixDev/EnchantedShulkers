@@ -6,12 +6,16 @@ package de.rubixdev.enchantedshulkers;
 //$$ import net.minecraft.block.Block;
 //$$ import net.minecraft.item.BlockItem;
 //#endif
+import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
+import com.illusivesoulworks.shulkerboxslot.platform.Services;
 import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxAccessoryInventoryAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyrptonaught.shulkerutils.ItemStackInventory;
 import net.minecraft.block.entity.BlockEntity;
@@ -44,6 +48,10 @@ public class Utils {
         List<ItemStack> playerInventory = new ArrayList<>();
         for (int i = 0; i <= player.getInventory().size(); i++) {
             playerInventory.add(player.getInventory().getStack(i));
+        }
+        if (FabricLoader.getInstance().isModLoaded("shulkerboxslot")) {
+            // include the slot from Shulker Box Slot
+            Services.INSTANCE.findShulkerBoxAccessory(player).ifPresent(triple -> playerInventory.add(triple.getLeft()));
         }
         return getContainers(playerInventory, player, enchantment, 0);
     }
@@ -84,6 +92,11 @@ public class Utils {
             //$$     return inventory.stacks;
             //$$ }
             //#endif
+        }
+        if (FabricLoader.getInstance().isModLoaded("shulkerboxslot")
+                && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
+                && handler.inventory instanceof ShulkerBoxAccessoryInventory inventory) {
+            return ((ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
         }
         if (container.isOf(Items.ENDER_CHEST)) {
             return player.getEnderChestInventory().stacks;
