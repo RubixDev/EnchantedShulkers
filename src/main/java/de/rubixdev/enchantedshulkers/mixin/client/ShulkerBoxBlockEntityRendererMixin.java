@@ -26,7 +26,7 @@ public class ShulkerBoxBlockEntityRendererMixin {
     @ModifyVariable(
             method = "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"),
-            name = "spriteIdentifier")
+            ordinal = 0)
     private SpriteIdentifier modifySpriteIdentifier(SpriteIdentifier value, ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f) {
         if (!ClientMod.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)

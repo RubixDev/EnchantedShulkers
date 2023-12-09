@@ -67,8 +67,7 @@ import org.spongepowered.asm.mixin.Mixin;
 //$$     @ModifyVariable(
 //$$             method = "render(Latonkish/reinfshulker/block/entity/ReinforcedShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
 //$$             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;push()V"),
-//$$             name = "spriteIdentifier2",
-//$$             remap = false)
+//$$             ordinal = 0)
 //$$     private SpriteIdentifier modifySpriteIdentifier(SpriteIdentifier value, ReinforcedShulkerBoxBlockEntity shulkerBox, float f) {
 //$$         if (!ClientMod.customModels()
 //$$                 || !Utils.shouldGlint(shulkerBox)
@@ -81,8 +80,7 @@ import org.spongepowered.asm.mixin.Mixin;
 //$$
 //$$     @Redirect(
 //$$             method = "render(Latonkish/reinfshulker/block/entity/ReinforcedShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
-//$$             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"),
-//$$             remap = false)
+//$$             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"))
 //$$     private VertexConsumer getVertexConsumer(SpriteIdentifier instance, VertexConsumerProvider vertexConsumers, Function<Identifier, RenderLayer> layerFactory, ReinforcedShulkerBoxBlockEntity shulkerBoxBlockEntity) {
 //$$         if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
 //$$             return instance.getVertexConsumer(vertexConsumers, layerFactory);
