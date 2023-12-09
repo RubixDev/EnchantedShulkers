@@ -9,6 +9,7 @@ import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.enchantment.RefillEnchantment;
 import de.rubixdev.enchantedshulkers.enchantment.SiphonEnchantment;
 import de.rubixdev.enchantedshulkers.enchantment.VacuumEnchantment;
+import de.rubixdev.enchantedshulkers.enchantment.VoidEnchantment;
 import de.rubixdev.enchantedshulkers.interfaces.HasClientMod;
 import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
 import net.fabricmc.api.ModInitializer;
@@ -20,6 +21,7 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.Item;
 //#if MC >= 12002
@@ -73,6 +75,7 @@ public class Mod implements ModInitializer {
     public static final SiphonEnchantment SIPHON_ENCHANTMENT = new SiphonEnchantment();
     public static final RefillEnchantment REFILL_ENCHANTMENT = new RefillEnchantment();
     public static final VacuumEnchantment VACUUM_ENCHANTMENT = new VacuumEnchantment();
+    public static final VoidEnchantment VOID_ENCHANTMENT = new VoidEnchantment();
 
     public static final Identifier CLIENT_INSTALLED_PACKET_ID = new Identifier(MOD_ID, "client_installed");
     public static final Identifier INVENTORY_OPEN_PACKET_ID = new Identifier(MOD_ID, "inventory_open");
@@ -83,6 +86,7 @@ public class Mod implements ModInitializer {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), SIPHON_ENCHANTMENT);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "refill"), REFILL_ENCHANTMENT);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "vacuum"), VACUUM_ENCHANTMENT);
+        Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "void"), VOID_ENCHANTMENT);
 
         // Add enchanted_ender_chest data pack when enabled in config
         FabricLoader.getInstance()

@@ -150,6 +150,10 @@ public class WorldConfig {
         return inner.creativeVacuum;
     }
 
+    public static boolean creativeVoid() {
+        return inner.creativeVoid;
+    }
+
     public static boolean generateRefill() {
         return inner.generateRefill;
     }
@@ -160,6 +164,10 @@ public class WorldConfig {
 
     public static boolean generateVacuum() {
         return inner.generateVacuum;
+    }
+
+    public static boolean generateVoid() {
+        return inner.generateVoid;
     }
 
     public static boolean nestedContainers() {
@@ -174,9 +182,11 @@ public class WorldConfig {
         boolean creativeSiphon = false;
         boolean creativeRefill = false;
         boolean creativeVacuum = false;
+        boolean creativeVoid = false;
         boolean generateRefill = true;
         boolean generateSiphon = true;
         boolean generateVacuum = false;
+        boolean generateVoid = false;
         boolean nestedContainers = true;
     }
 }
