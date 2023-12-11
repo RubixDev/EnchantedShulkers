@@ -27,6 +27,7 @@
     "client.ClientPlayNetworkHandlerMixin",
     "client.MinecraftClientMixin",
     "client.ShulkerBoxBlockEntityRendererMixin",
+    "client.ShulkerBoxBlockEntityRendererMixin_999",
     "client.compat.ReinforcedShulkerBoxBlockEntityRendererMixin",
     "client.compat.ReinforcedShulkerBoxesClientModMixin",
     "client.compat.SplitShulkers_BuiltinModelItemRendererMixin",
