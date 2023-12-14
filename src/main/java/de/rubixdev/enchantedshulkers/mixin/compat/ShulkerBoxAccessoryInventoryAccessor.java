@@ -10,4 +10,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface ShulkerBoxAccessoryInventoryAccessor {
     @Accessor("items")
     DefaultedList<ItemStack> getItems();
+
+    @Accessor("shulkerBox")
+    ItemStack getShulkerBox();
 }

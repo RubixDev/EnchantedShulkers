@@ -17,6 +17,7 @@
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",
+    "compat.QuickShulker_ItemStackInventoryAccessor",
     "compat.ShulkerBoxAccessoryInventoryAccessor"
   ],
   "client": [

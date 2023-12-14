@@ -1,11 +1,9 @@
 package de.rubixdev.enchantedshulkers;
 
-//#if MC < 12002
-//$$ import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
-//$$ import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler;
-//$$ import net.minecraft.block.Block;
-//$$ import net.minecraft.item.BlockItem;
-//#endif
+import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
+import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler;
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
 import com.illusivesoulworks.shulkerboxslot.platform.Services;
 import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity;
@@ -15,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor;
 import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxAccessoryInventoryAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyrptonaught.shulkerutils.ItemStackInventory;
@@ -87,36 +86,35 @@ public class Utils {
     }
 
     public static DefaultedList<ItemStack> getContainerInventory(ItemStack container, ServerPlayerEntity player) {
-        if (FabricLoader.getInstance().isModLoaded("quickshulker")) {
-            if (player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
-                    && handler.inventory instanceof ItemStackInventory inventory) {
-                return inventory.heldStacks;
-            }
-            //#if MC < 12002
-            //$$ if (FabricLoader.getInstance().isModLoaded("reinfshulker")
-            //$$         && player.currentScreenHandler instanceof ReinforcedStorageScreenHandler handler
-            //$$         && handler.getInventory() instanceof ItemStackInventory inventory) {
-            //$$     return inventory.stacks;
-            //$$ }
-            //#endif
-        }
-        if (FabricLoader.getInstance().isModLoaded("shulkerboxslot")
-                && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
-                && handler.inventory instanceof ShulkerBoxAccessoryInventory inventory) {
-            return ((ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
-        }
         if (container.isOf(Items.ENDER_CHEST)) {
             return player.getEnderChestInventory().heldStacks;
         }
+        if (FabricLoader.getInstance().isModLoaded("quickshulker")) {
+            if (player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
+                    && handler.inventory instanceof ItemStackInventory inventory
+                    && ((QuickShulker_ItemStackInventoryAccessor) inventory).getItemStack() == container) {
+                return inventory.heldStacks;
+            }
+            if (FabricLoader.getInstance().isModLoaded("reinfshulker")
+                    && player.currentScreenHandler instanceof ReinforcedStorageScreenHandler handler
+                    && handler.getInventory() instanceof ItemStackInventory inventory
+                    && ((QuickShulker_ItemStackInventoryAccessor) inventory).getItemStack() == container) {
+                return inventory.heldStacks;
+            }
+        }
+        if (FabricLoader.getInstance().isModLoaded("shulkerboxslot")
+                && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
+                && handler.inventory instanceof ShulkerBoxAccessoryInventory inventory
+                && ((ShulkerBoxAccessoryInventoryAccessor) inventory).getShulkerBox() == container) {
+            return ((ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
+        }
 
         int size = 27;
-        //#if MC < 12002
-        //$$ if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
-        //$$         container.getItem() instanceof BlockItem blockItem &&
-        //$$         Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
-        //$$     size = reinforcedShulkerBoxBlock.getMaterial().getSize();
-        //$$ }
-        //#endif
+        if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
+                container.getItem() instanceof BlockItem blockItem &&
+                Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
+            size = reinforcedShulkerBoxBlock.getMaterial().getSize();
+        }
         DefaultedList<ItemStack> inventory = DefaultedList.ofSize(size, ItemStack.EMPTY);
 
         NbtCompound nbt = container.getSubNbt("BlockEntityTag");
