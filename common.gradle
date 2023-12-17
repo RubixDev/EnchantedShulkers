@@ -94,6 +94,10 @@ dependencies {
             modImplementation("com.illusivesoulworks.spectrelib:spectrelib-fabric:${project.spectrelib_version}") { exclude(group: "net.fabricmc.fabric-api") }
         }
     }
+    // - Click Opener
+    if (project.clickopener == "true") {
+        modImplementation "maven.modrinth:clickopener:${project.clickopener_version}"
+    }
 }
 
 String MIXIN_CONFIG_PATH = 'enchantedshulkers.mixins.json'

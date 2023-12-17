@@ -2,6 +2,11 @@ package de.rubixdev.enchantedshulkers;
 
 import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
 import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler;
+//#if MC >= 12001
+import megaminds.clickopener.api.BlockEntityInventory;
+//#else
+//$$ import megaminds.clickopener.api.ShulkerInventory;
+//#endif
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
@@ -108,6 +113,21 @@ public class Utils {
                 && ((ShulkerBoxAccessoryInventoryAccessor) inventory).getShulkerBox() == container) {
             return ((ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
         }
+        //#if MC >= 12001
+        if (FabricLoader.getInstance().isModLoaded("clickopener")
+                && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
+                && handler.inventory instanceof BlockEntityInventory inventory
+                && inventory.getLink() == container) {
+            return inventory.getInventory();
+        }
+        //#else
+        //$$ if (FabricLoader.getInstance().isModLoaded("clickopener")
+        //$$         && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
+        //$$         && handler.inventory instanceof ShulkerInventory inventory
+        //$$         && inventory.link() == container) {
+        //$$     return inventory.inventory();
+        //$$ }
+        //#endif
 
         int size = 27;
         if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
