@@ -75,14 +75,10 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
     @Unique
     private static ItemStack setLore(ItemStack stack) {
         NbtList lore = new NbtList();
-        if (EnchantmentHelper.getLevel(Mod.SIPHON_ENCHANTMENT, stack) > 0
-                || storesEnchantment(Mod.SIPHON_ENCHANTMENT, stack)) {
-            lore.add(NbtString.of(enchantmentText("Siphon")));
-        }
-        if (EnchantmentHelper.getLevel(Mod.REFILL_ENCHANTMENT, stack) > 0
-                || storesEnchantment(Mod.REFILL_ENCHANTMENT, stack)) {
-            lore.add(NbtString.of(enchantmentText("Refill")));
-        }
+        addEnchantment(lore, stack, Mod.SIPHON_ENCHANTMENT, "Siphon");
+        addEnchantment(lore, stack, Mod.REFILL_ENCHANTMENT, "Refill");
+        addEnchantment(lore, stack, Mod.VACUUM_ENCHANTMENT, "Vacuum");
+        addEnchantment(lore, stack, Mod.VOID_ENCHANTMENT, "Void");
 
         if (!lore.isEmpty()) {
             NbtCompound nbt = stack.getOrCreateSubNbt("display");
@@ -90,6 +86,14 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
         }
 
         return stack;
+    }
+
+    @Unique
+    private static void addEnchantment(NbtList lore, ItemStack stack, Enchantment enchantment, String name) {
+        if (EnchantmentHelper.getLevel(enchantment, stack) > 0
+                || storesEnchantment(enchantment, stack)) {
+            lore.add(NbtString.of(enchantmentText(name)));
+        }
     }
 
     @Unique
