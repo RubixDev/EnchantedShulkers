@@ -4,42 +4,18 @@ import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import java.util.List;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 
-public class RefillEnchantment extends Enchantment {
+public class RefillEnchantment extends ContainerEnchantment {
     public RefillEnchantment() {
-        super(Rarity.RARE, Mod.PORTABLE_CONTAINER_TARGET, new EquipmentSlot[] {
-            EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND
-        });
+        super(Mod.PORTABLE_CONTAINER_TARGET);
     }
 
     @Override
-    public int getMinPower(int level) {
-        return level * 25;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return getMinPower(level) + 50;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return true;
-    }
-
-    @Override
-    public boolean isAvailableForEnchantedBookOffer() {
-        return WorldConfig.generateRefill();
-    }
-
-    @Override
-    public boolean isAvailableForRandomSelection() {
+    protected boolean generate() {
         return WorldConfig.generateRefill();
     }
 

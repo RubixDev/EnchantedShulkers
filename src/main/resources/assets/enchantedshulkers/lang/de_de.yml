@@ -11,6 +11,9 @@ enchantment.enchantedshulkers:
   void: Void
   void.desc: Übereinstimmende Gegenstände werden vernichtet.
 
+  augment: Erweitern
+  augment.desc: Erhöhe die Kapazität von Containern.
+
 commands.enchantedshulkers:
   all_options_title: 'Alle EnchantedShulkers Einstellungen:'
   current_value: 'Aktueller Wert: '
@@ -31,6 +34,7 @@ enchantedshulkers.options:
   generateVacuum.desc: Macht die Vakuum Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
   generateVoid.desc: Macht die Void Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
   generateRefill.desc: Macht die Nachfüllen Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
+  generateAugment.desc: Macht die Erweitern Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
   nestedContainers.desc: Suche rekursiv in Kisten bis zu 256 Stufen tief (z.B. suche durch Schulker-Kisten die sich in der Endertruhe befinden).
   refillNonStackables.desc: Erlaube das Nachfüllen von nicht stapelbaren Gegenständen wie z.B. Totems der Unsterblichkeit.
   refillOffhand.desc: Erlaube das Nachfüllen von Stapeln in der Zweithand.

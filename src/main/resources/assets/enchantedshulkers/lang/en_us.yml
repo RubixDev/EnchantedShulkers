@@ -11,6 +11,9 @@ enchantment.enchantedshulkers:
   void: Void
   void.desc: Matching picked up items get deleted.
 
+  augment: Augment
+  augment.desc: Increase the size of containers.
+
 commands.enchantedshulkers:
   all_options_title: 'All EnchantedShulkers options:'
   current_value: 'Current value: '
@@ -31,6 +34,7 @@ enchantedshulkers.options:
   generateVacuum.desc: Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it.
   generateVoid.desc: Make the Void enchantment obtainable in survival by allowing enchanted books to generate with it.
   generateRefill.desc: Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it.
+  generateAugment.desc: Make the Augment enchantment obtainable in survival by allowing enchanted books to generate with it.
   nestedContainers.desc: Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest).
   refillNonStackables.desc: Allow refilling non-stackable items like Totems of Undying.
   refillOffhand.desc: Allow refilling stacks in the offhand.

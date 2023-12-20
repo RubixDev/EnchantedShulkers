@@ -170,6 +170,10 @@ public class WorldConfig {
         return inner.generateVoid;
     }
 
+    public static boolean generateAugment() {
+        return inner.generateAugment;
+    }
+
     public static boolean nestedContainers() {
         return inner.nestedContainers;
     }
@@ -195,6 +199,7 @@ public class WorldConfig {
         boolean generateSiphon = true;
         boolean generateVacuum = false;
         boolean generateVoid = false;
+        boolean generateAugment = false;
         boolean nestedContainers = true;
         boolean strongerSiphon = false;
         boolean weakerVacuum = false;

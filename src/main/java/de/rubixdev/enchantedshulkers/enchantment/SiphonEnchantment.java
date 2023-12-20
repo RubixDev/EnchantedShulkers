@@ -7,41 +7,18 @@ import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 
-public class SiphonEnchantment extends Enchantment {
+public class SiphonEnchantment extends ContainerEnchantment {
     public SiphonEnchantment() {
-        super(Rarity.RARE, Mod.PORTABLE_CONTAINER_TARGET, new EquipmentSlot[] {
-            EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND
-        });
+        super(Mod.PORTABLE_CONTAINER_TARGET);
     }
 
     @Override
-    public int getMinPower(int level) {
-        return level * 25;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return getMinPower(level) + 50;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return true;
-    }
-
-    @Override
-    public boolean isAvailableForEnchantedBookOffer() {
-        return WorldConfig.generateSiphon();
-    }
-
-    @Override
-    public boolean isAvailableForRandomSelection() {
+    protected boolean generate() {
         return WorldConfig.generateSiphon();
     }
 

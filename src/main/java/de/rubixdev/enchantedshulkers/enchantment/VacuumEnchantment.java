@@ -2,40 +2,16 @@ package de.rubixdev.enchantedshulkers.enchantment;
 
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class VacuumEnchantment extends Enchantment {
+public class VacuumEnchantment extends ContainerEnchantment {
     public VacuumEnchantment() {
-        super(Rarity.RARE, Mod.PORTABLE_CONTAINER_TARGET, new EquipmentSlot[] {
-            EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND
-        });
+        super(Mod.PORTABLE_CONTAINER_TARGET);
     }
 
     @Override
-    public int getMinPower(int level) {
-        return level * 25;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return getMinPower(level) + 50;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return true;
-    }
-
-    @Override
-    public boolean isAvailableForEnchantedBookOffer() {
-        return WorldConfig.generateVacuum();
-    }
-
-    @Override
-    public boolean isAvailableForRandomSelection() {
+    protected boolean generate() {
         return WorldConfig.generateVacuum();
     }
 

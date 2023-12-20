@@ -4,9 +4,9 @@ import de.rubixdev.enchantedshulkers.Utils;
 import net.minecraft.item.Item;
 
 @SuppressWarnings("unused") // used in de.rubixdev.enchantedshulkers.asm.EnumInjector
-public class PortableContainerTarget extends EnchantmentTargetMixin {
+public class AugmentableContainerTarget extends EnchantmentTargetMixin {
     @Override
     public boolean isAcceptableItem(Item item) {
-        return Utils.canEnchant(item);
+        return Utils.canAugment(item);
     }
 }

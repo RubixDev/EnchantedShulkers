@@ -32,11 +32,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.MathHelper;
 
 public class Utils {
     public static boolean canEnchant(Item item) {
@@ -45,6 +47,14 @@ public class Utils {
 
     public static boolean canEnchant(ItemStack stack) {
         return stack.isIn(Mod.PORTABLE_CONTAINER_TAG);
+    }
+
+    public static boolean canAugment(Item item) {
+        return canAugment(item.getDefaultStack());
+    }
+
+    public static boolean canAugment(ItemStack stack) {
+        return stack.isIn(Mod.AUGMENTABLE_CONTAINER_TAG);
     }
 
     public static List<ItemStack> getContainers(ServerPlayerEntity player, Enchantment enchantment) {
@@ -129,7 +139,7 @@ public class Utils {
         //$$ }
         //#endif
 
-        int size = 27;
+        int size = 9 * getInvRows(EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, container));
         if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
                 container.getItem() instanceof BlockItem blockItem &&
                 Block.getBlockFromItem(blockItem) instanceof ReinforcedShulkerBoxBlock reinforcedShulkerBoxBlock) {
@@ -166,5 +176,13 @@ public class Utils {
         if (!FabricLoader.getInstance().isModLoaded("splitshulkers")) return false;
         SplitShulkerBoxBlockEntity splitShulker = (SplitShulkerBoxBlockEntity) shulkerBox;
         return !Objects.equals(splitShulker.getColor(), splitShulker.splitshulkers_getSecondaryColor());
+    }
+
+    public static int getLevelFromNbt(Enchantment enchantment, NbtList nbt) {
+        return EnchantmentHelper.fromNbt(nbt).getOrDefault(enchantment, 0);
+    }
+
+    public static int getInvRows(int augmentLevel) {
+        return MathHelper.clamp(augmentLevel + 3, 3, 6);
     }
 }

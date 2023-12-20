@@ -79,6 +79,7 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
         addEnchantment(lore, stack, Mod.REFILL_ENCHANTMENT, "Refill");
         addEnchantment(lore, stack, Mod.VACUUM_ENCHANTMENT, "Vacuum");
         addEnchantment(lore, stack, Mod.VOID_ENCHANTMENT, "Void");
+        addEnchantment(lore, stack, Mod.AUGMENT_ENCHANTMENT, "Augment");
 
         if (!lore.isEmpty()) {
             NbtCompound nbt = stack.getOrCreateSubNbt("display");
