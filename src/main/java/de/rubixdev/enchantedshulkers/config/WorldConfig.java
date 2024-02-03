@@ -8,6 +8,7 @@ import com.moandjiezana.toml.TomlWriter;
 import de.rubixdev.enchantedshulkers.Mod;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,12 +82,13 @@ public class WorldConfig {
         }
     }
 
-    private static final String ENCHANTED_ENDER_CHEST_ID = "enchantedshulkers:enchanted_ender_chest";
+    private static final String ENCHANTED_ENDER_CHEST_ID = "enchantedshulkers:enchanted_ender_chest_resourcepacks" + File.separator + "enchanted_ender_chest";
 
     private static void updateResources() {
         ResourcePackManager manager = server.getDataPackManager();
         boolean isEnderPackLoaded = manager.getEnabledNames().contains(ENCHANTED_ENDER_CHEST_ID);
         if (isEnderPackLoaded == inner.enchantableEnderChest) return;
+
 
         ArrayList<ResourcePackProfile> loadedPacks =
                 Lists.newArrayList(server.getDataPackManager().getEnabledProfiles());
