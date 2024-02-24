@@ -18,6 +18,8 @@
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",
     "compat.QuickShulker_ItemStackInventoryAccessor",
+    "compat.QuickShulker_RegisterMixin",
+    "compat.QuickShulker_ShulkerUtilsMixin",
     "compat.ShulkerBoxAccessoryInventoryAccessor"
   ],
   "client": [

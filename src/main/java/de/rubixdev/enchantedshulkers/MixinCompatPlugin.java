@@ -19,7 +19,9 @@ public class MixinCompatPlugin implements IMixinConfigPlugin {
             put("de.rubixdev.enchantedshulkers.mixin.client.compat.ReinforcedShulkerBoxBlockEntityRendererMixin", new String[] {"reinfshulker"});
             put("de.rubixdev.enchantedshulkers.mixin.client.compat.ReinforcedShulkerBoxesClientModMixin", new String[] {"reinfshulker"});
             put("de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxAccessoryInventoryAccessor", new String[] {"shulkerboxslot"});
-            put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor", new String[] {"quickshulker"});
+            put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor", new String[] {"shulkerutils"});
+            put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ShulkerUtilsMixin", new String[] {"shulkerutils"});
+            put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_RegisterMixin", new String[] {"quickshulker"});
         }
     };
 
