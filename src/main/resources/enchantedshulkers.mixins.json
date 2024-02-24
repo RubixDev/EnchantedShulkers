@@ -20,7 +20,8 @@
     "compat.QuickShulker_ItemStackInventoryAccessor",
     "compat.QuickShulker_RegisterMixin",
     "compat.QuickShulker_ShulkerUtilsMixin",
-    "compat.ShulkerBoxAccessoryInventoryAccessor"
+    "compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor",
+    "compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin"
   ],
   "client": [
     "client.BuiltinModelItemRendererMixin",

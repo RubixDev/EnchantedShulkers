@@ -2,12 +2,14 @@ package de.rubixdev.enchantedshulkers;
 
 import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
 import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler;
+import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
 //#if MC >= 12001
 import megaminds.clickopener.api.BlockEntityInventory;
 //#else
 //$$ import megaminds.clickopener.api.ShulkerInventory;
 //#endif
 import net.minecraft.block.Block;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
 import com.illusivesoulworks.shulkerboxslot.platform.Services;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 import de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor;
-import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxAccessoryInventoryAccessor;
+import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyrptonaught.shulkerutils.ItemStackInventory;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,12 +35,14 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
 
 public class Utils {
     public static boolean canEnchant(Item item) {
@@ -100,40 +104,43 @@ public class Utils {
         return out;
     }
 
+    @Nullable
+    private static Inventory getScreenHandlerInventory(ScreenHandler screenHandler) {
+        return screenHandler instanceof ShulkerBoxScreenHandler handler ? handler.inventory
+                : screenHandler instanceof AugmentedShulkerBoxScreenHandler handler ? handler.getInventory()
+                : screenHandler instanceof ReinforcedStorageScreenHandler handler ? handler.getInventory()
+                : null;
+    }
+
     public static DefaultedList<ItemStack> getContainerInventory(ItemStack container, ServerPlayerEntity player) {
         if (container.isOf(Items.ENDER_CHEST)) {
             return player.getEnderChestInventory().heldStacks;
         }
         if (FabricLoader.getInstance().isModLoaded("quickshulker")) {
-            if (player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
-                    && handler.inventory instanceof ItemStackInventory inventory
+            if (getScreenHandlerInventory(player.currentScreenHandler) instanceof ItemStackInventory inventory
                     && ((QuickShulker_ItemStackInventoryAccessor) inventory).getItemStack() == container) {
                 return inventory.heldStacks;
             }
             if (FabricLoader.getInstance().isModLoaded("reinfshulker")
-                    && player.currentScreenHandler instanceof ReinforcedStorageScreenHandler handler
-                    && handler.getInventory() instanceof ItemStackInventory inventory
+                    && getScreenHandlerInventory(player.currentScreenHandler) instanceof ItemStackInventory inventory
                     && ((QuickShulker_ItemStackInventoryAccessor) inventory).getItemStack() == container) {
                 return inventory.heldStacks;
             }
         }
         if (FabricLoader.getInstance().isModLoaded("shulkerboxslot")
-                && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
-                && handler.inventory instanceof ShulkerBoxAccessoryInventory inventory
-                && ((ShulkerBoxAccessoryInventoryAccessor) inventory).getShulkerBox() == container) {
-            return ((ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
+                && getScreenHandlerInventory(player.currentScreenHandler) instanceof ShulkerBoxAccessoryInventory inventory
+                && ((ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor) inventory).getShulkerBox() == container) {
+            return ((ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor) inventory).getItems();
         }
         //#if MC >= 12001
         if (FabricLoader.getInstance().isModLoaded("clickopener")
-                && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
-                && handler.inventory instanceof BlockEntityInventory inventory
+                && getScreenHandlerInventory(player.currentScreenHandler) instanceof BlockEntityInventory inventory
                 && inventory.getLink() == container) {
             return inventory.getInventory();
         }
         //#else
         //$$ if (FabricLoader.getInstance().isModLoaded("clickopener")
-        //$$         && player.currentScreenHandler instanceof ShulkerBoxScreenHandler handler
-        //$$         && handler.inventory instanceof ShulkerInventory inventory
+        //$$         && getScreenHandlerInventory(player.currentScreenHandler) instanceof ShulkerInventory inventory
         //$$         && inventory.link() == container) {
         //$$     return inventory.inventory();
         //$$ }
