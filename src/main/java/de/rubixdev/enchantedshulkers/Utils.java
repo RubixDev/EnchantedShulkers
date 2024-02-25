@@ -108,7 +108,8 @@ public class Utils {
     private static Inventory getScreenHandlerInventory(ScreenHandler screenHandler) {
         return screenHandler instanceof ShulkerBoxScreenHandler handler ? handler.inventory
                 : screenHandler instanceof AugmentedShulkerBoxScreenHandler handler ? handler.getInventory()
-                : screenHandler instanceof ReinforcedStorageScreenHandler handler ? handler.getInventory()
+                : FabricLoader.getInstance().isModLoaded("reinfshulker")
+                    && screenHandler instanceof ReinforcedStorageScreenHandler handler ? handler.getInventory()
                 : null;
     }
 

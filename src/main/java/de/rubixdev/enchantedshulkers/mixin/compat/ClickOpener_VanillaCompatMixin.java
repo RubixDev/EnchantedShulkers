@@ -3,7 +3,6 @@ package de.rubixdev.enchantedshulkers.mixin.compat;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
-import megaminds.clickopener.api.BlockEntityInventory;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,8 +14,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+//#if MC >= 12001
+import megaminds.clickopener.api.BlockEntityInventory;
+//#else
+//$$ import megaminds.clickopener.api.ShulkerInventory;
+//#endif
+
+//#if MC >= 12001
 @Mixin(targets = "megaminds/clickopener/compat/VanillaCompat$3")
+//#else
+//$$ @Mixin(megaminds.clickopener.compat.VanillaCompat.class)
+//#endif
 public class ClickOpener_VanillaCompatMixin {
+    //#if MC >= 12001
     @SuppressWarnings("UnresolvedMixinReference")
     @Inject(
             method = "lambda$createFactory$0",
@@ -32,4 +42,17 @@ public class ClickOpener_VanillaCompatMixin {
             ));
         }
     }
+    //#else
+    //$$ @Inject(method = "lambda$init$7", at = @At("RETURN"), cancellable = true)
+    //$$ private static void augmentedScreenHandler(ItemStack stack, int syncId, PlayerInventory playerInventory, PlayerEntity player, CallbackInfoReturnable<ScreenHandler> cir) {
+    //$$     int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack);
+    //$$     if (level != 0) {
+    //$$         cir.setReturnValue(new AugmentedShulkerBoxScreenHandler(
+    //$$                 syncId, playerInventory,
+    //$$                 new ShulkerInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
+    //$$                 level
+    //$$         ));
+    //$$     }
+    //$$ }
+    //#endif
 }
