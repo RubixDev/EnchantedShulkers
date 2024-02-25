@@ -53,16 +53,17 @@ dependencies {
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")))
 
     // mods tested for compatibility
+    def modCompat = { ...args -> project.run_with_compat_mods == "true" ? modImplementation(args) : modCompileOnly(args) }
     // - Reinforced Shulkers
     if (project.reinfshulkers == "true") {
-        modCompileOnly("atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}") {
+        modCompat("atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}") {
             exclude(group: "net.fabricmc.fabric-api")
             exclude(group: "atonkish.reinfcore")
             exclude(group: "atonkish.reinfchest")
             exclude(group: "net.kyrptonaught")
             exclude(group: "com.misterpemodder")
         }
-        modCompileOnly("atonkish.reinfcore:reinforced-core:${project.reinfcore_version}") {
+        modCompat("atonkish.reinfcore:reinforced-core:${project.reinfcore_version}") {
             exclude(group: "net.fabricmc.fabric-api")
             exclude(group: "com.terraformersmc")
             exclude(group: "me.shedaniel.cloth")
@@ -70,32 +71,33 @@ dependencies {
     }
     // - Shulker+
     if (project.shulker_plus == "true") {
+        // TODO: change to `modCompat` when compatible with split shulkers (https://github.com/CursedFlames/MCTweaks/issues/3)
         modCompileOnly "maven.modrinth:shulker+:${project.shulker_plus_version}"
     }
     // - Split Shulker Boxes
     if (project.split_shulkers == "true") {
-        modCompileOnly "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
+        modCompat "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
     }
     // - Quick Shulker
     if (project.quickshulker == "true") {
-        modCompileOnly "maven.modrinth:quickshulker:${project.quickshulker_version}"
-        modCompileOnly "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
-        modCompileOnly "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
+        modCompat "maven.modrinth:quickshulker:${project.quickshulker_version}"
+        modCompat "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
+        modCompat "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
     }
     // - Shulker Box Slot
     if (project.shulker_slot == "true") {
-        modCompileOnly "maven.modrinth:shulker-box-slot:${project.shulker_slot_version}"
-        modCompileOnly("dev.emi:trinkets:${project.trinkets_version}") { exclude(group: "net.fabricmc.fabric-api") }
-        modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
-        modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
-        modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompat "maven.modrinth:shulker-box-slot:${project.shulker_slot_version}"
+        modCompat("dev.emi:trinkets:${project.trinkets_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
         if (project.spectrelib == "true") {
-            modCompileOnly("com.illusivesoulworks.spectrelib:spectrelib-fabric:${project.spectrelib_version}") { exclude(group: "net.fabricmc.fabric-api") }
+            modCompat("com.illusivesoulworks.spectrelib:spectrelib-fabric:${project.spectrelib_version}") { exclude(group: "net.fabricmc.fabric-api") }
         }
     }
     // - Click Opener
     if (project.clickopener == "true") {
-        modCompileOnly "maven.modrinth:clickopener:${project.clickopener_version}"
+        modCompat "maven.modrinth:clickopener:${project.clickopener_version}"
     }
 }
 
