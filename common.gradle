@@ -55,14 +55,14 @@ dependencies {
     // mods tested for compatibility
     // - Reinforced Shulkers
     if (project.reinfshulkers == "true") {
-        modImplementation("atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}") {
+        modCompileOnly("atonkish.reinfshulker:reinforced-shulker-boxes:${project.reinfshulkers_version}") {
             exclude(group: "net.fabricmc.fabric-api")
             exclude(group: "atonkish.reinfcore")
             exclude(group: "atonkish.reinfchest")
             exclude(group: "net.kyrptonaught")
             exclude(group: "com.misterpemodder")
         }
-        modImplementation("atonkish.reinfcore:reinforced-core:${project.reinfcore_version}") {
+        modCompileOnly("atonkish.reinfcore:reinforced-core:${project.reinfcore_version}") {
             exclude(group: "net.fabricmc.fabric-api")
             exclude(group: "com.terraformersmc")
             exclude(group: "me.shedaniel.cloth")
@@ -70,33 +70,32 @@ dependencies {
     }
     // - Shulker+
     if (project.shulker_plus == "true") {
-        // TODO: change to `modImplementation` when compatible with split shulkers (https://github.com/CursedFlames/MCTweaks/issues/3)
         modCompileOnly "maven.modrinth:shulker+:${project.shulker_plus_version}"
     }
     // - Split Shulker Boxes
     if (project.split_shulkers == "true") {
-        modImplementation "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
+        modCompileOnly "maven.modrinth:split-shulker-boxes:${project.split_shulkers_version}"
     }
     // - Quick Shulker
     if (project.quickshulker == "true") {
-        modImplementation "maven.modrinth:quickshulker:${project.quickshulker_version}"
-        modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
-        modImplementation "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
+        modCompileOnly "maven.modrinth:quickshulker:${project.quickshulker_version}"
+        modCompileOnly "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
+        modCompileOnly "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
     }
     // - Shulker Box Slot
     if (project.shulker_slot == "true") {
-        modImplementation "maven.modrinth:shulker-box-slot:${project.shulker_slot_version}"
-        modImplementation("dev.emi:trinkets:${project.trinkets_version}") { exclude(group: "net.fabricmc.fabric-api") }
-        modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
-        modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
-        modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompileOnly "maven.modrinth:shulker-box-slot:${project.shulker_slot_version}"
+        modCompileOnly("dev.emi:trinkets:${project.trinkets_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
+        modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}") { exclude(group: "net.fabricmc.fabric-api") }
         if (project.spectrelib == "true") {
-            modImplementation("com.illusivesoulworks.spectrelib:spectrelib-fabric:${project.spectrelib_version}") { exclude(group: "net.fabricmc.fabric-api") }
+            modCompileOnly("com.illusivesoulworks.spectrelib:spectrelib-fabric:${project.spectrelib_version}") { exclude(group: "net.fabricmc.fabric-api") }
         }
     }
     // - Click Opener
     if (project.clickopener == "true") {
-        modImplementation "maven.modrinth:clickopener:${project.clickopener_version}"
+        modCompileOnly "maven.modrinth:clickopener:${project.clickopener_version}"
     }
 }
 
