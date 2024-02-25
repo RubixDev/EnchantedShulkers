@@ -2,6 +2,8 @@ package de.rubixdev.enchantedshulkers.mixin.compat;
 
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.kyrptonaught.quickshulker.QuickShulkerMod;
 import net.kyrptonaught.shulkerutils.ShulkerUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Restriction(require = @Condition("quickshulker"))
 @Mixin(QuickShulkerMod.class)
 public class QuickShulker_RegisterMixin {
     @Inject(

@@ -4,6 +4,8 @@ import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Restriction(require = @Condition("shulkerboxslot"))
 @Mixin(ShulkerBoxAccessoryInventory.class)
 public class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
     @Shadow @Final private ItemStack shulkerBox;

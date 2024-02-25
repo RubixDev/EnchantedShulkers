@@ -1,5 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin.compat;
 
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.kyrptonaught.shulkerutils.ItemStackInventory;
 import net.kyrptonaught.shulkerutils.ShulkerUtils;
 import net.minecraft.block.Block;
@@ -15,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@Restriction(require = @Condition("shulkerutils"))
 @Mixin(ShulkerUtils.class)
 public class QuickShulker_ShulkerUtilsMixin {
     // might not be necessary once https://github.com/kyrptonaught/shulkerutils/pull/1 gets merged

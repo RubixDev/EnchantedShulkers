@@ -3,6 +3,8 @@ package de.rubixdev.enchantedshulkers.mixin.compat;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +22,7 @@ import megaminds.clickopener.api.BlockEntityInventory;
 //$$ import megaminds.clickopener.api.ShulkerInventory;
 //#endif
 
+@Restriction(require = @Condition("clickopener"))
 //#if MC >= 12001
 @Mixin(targets = "megaminds/clickopener/compat/VanillaCompat$3")
 //#else

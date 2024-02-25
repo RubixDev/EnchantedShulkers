@@ -2,6 +2,8 @@ package de.rubixdev.enchantedshulkers.mixin.client.compat;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
@@ -12,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+@Restriction(require = @Condition("splitshulkers"))
 @Mixin(value = BuiltinModelItemRenderer.class, priority = 1100)
 public class SplitShulkers_BuiltinModelItemRendererMixin {
     @SuppressWarnings({"MixinAnnotationTarget", "InvalidMemberReference", "UnresolvedMixinReference"}) // MixinSquared

@@ -1,5 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin.client.compat;
 
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import org.spongepowered.asm.mixin.Mixin;
 import atonkish.reinfcore.util.ReinforcingMaterial;
 import atonkish.reinfshulker.ReinforcedShulkerBoxesClientMod;
@@ -15,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@Restriction(require = @Condition("reinfshulker"))
 @Mixin(ReinforcedShulkerBoxesClientMod.class)
 public class ReinforcedShulkerBoxesClientModMixin {
     @Inject(

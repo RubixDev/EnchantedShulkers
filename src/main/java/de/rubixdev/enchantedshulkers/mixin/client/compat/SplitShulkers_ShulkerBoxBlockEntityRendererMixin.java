@@ -4,6 +4,8 @@ import com.bawnorton.mixinsquared.TargetHandler;
 import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity;
 import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Utils;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -23,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 import java.util.function.Function;
 
+@Restriction(require = @Condition("splitshulkers"))
 @Mixin(value = ShulkerBoxBlockEntityRenderer.class, priority = 1100)
 public class SplitShulkers_ShulkerBoxBlockEntityRendererMixin {
     @SuppressWarnings({"MixinAnnotationTarget", "InvalidMemberReference", "CancellableInjectionUsage"}) // MixinSquared

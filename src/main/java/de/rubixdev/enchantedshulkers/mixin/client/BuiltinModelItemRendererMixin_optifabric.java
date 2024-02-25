@@ -1,6 +1,8 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShulkerBoxBlock;
@@ -22,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Restriction(require = @Condition("optifabric"))
 @Mixin(BuiltinModelItemRenderer.class)
 public class BuiltinModelItemRendererMixin_optifabric {
     @Shadow
