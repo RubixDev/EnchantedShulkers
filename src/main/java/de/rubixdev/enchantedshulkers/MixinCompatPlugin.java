@@ -23,6 +23,7 @@ public class MixinCompatPlugin implements IMixinConfigPlugin {
             put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor", new String[] {"shulkerutils"});
             put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ShulkerUtilsMixin", new String[] {"shulkerutils"});
             put("de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_RegisterMixin", new String[] {"quickshulker"});
+            put("de.rubixdev.enchantedshulkers.mixin.compat.ClickOpener_VanillaCompatMixin", new String[] {"clickopener"});
         }
     };
 

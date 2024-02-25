@@ -17,6 +17,7 @@
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",
+    "compat.ClickOpener_VanillaCompatMixin",
     "compat.QuickShulker_ItemStackInventoryAccessor",
     "compat.QuickShulker_RegisterMixin",
     "compat.QuickShulker_ShulkerUtilsMixin",
