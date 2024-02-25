@@ -8,12 +8,17 @@ import com.moandjiezana.toml.TomlWriter;
 import de.rubixdev.enchantedshulkers.Mod;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.Version;
+import net.fabricmc.loader.api.VersionParsingException;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ResourcePackProfile;
 import net.minecraft.server.MinecraftServer;
@@ -81,12 +86,25 @@ public class WorldConfig {
         }
     }
 
-    private static final String ENCHANTED_ENDER_CHEST_ID = "enchantedshulkers:enchanted_ender_chest";
+    private static final String ENCHANTED_ENDER_CHEST_ID;
+
+    static {
+        // Fabric API 0.95.4 and later use a different resource pack naming scheme
+        try {
+            ENCHANTED_ENDER_CHEST_ID = FabricLoader.getInstance().getModContainer("fabric-api").orElseThrow(RuntimeException::new).getMetadata()
+                    .getVersion().compareTo(Version.parse("0.95.4")) >= 0
+                ? "enchantedshulkers:enchanted_ender_chest_resourcepacks" + File.separator + "enchanted_ender_chest"
+                : "enchantedshulkers:enchanted_ender_chest";
+        } catch (VersionParsingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static void updateResources() {
         ResourcePackManager manager = server.getDataPackManager();
         boolean isEnderPackLoaded = manager.getEnabledNames().contains(ENCHANTED_ENDER_CHEST_ID);
         if (isEnderPackLoaded == inner.enchantableEnderChest) return;
+
 
         ArrayList<ResourcePackProfile> loadedPacks =
                 Lists.newArrayList(server.getDataPackManager().getEnabledProfiles());
