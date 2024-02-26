@@ -9,6 +9,7 @@ import megaminds.clickopener.api.BlockEntityInventory;
 //$$ import megaminds.clickopener.api.ShulkerInventory;
 //#endif
 import net.minecraft.block.Block;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
@@ -59,6 +60,11 @@ public class Utils {
 
     public static boolean canAugment(ItemStack stack) {
         return stack.isIn(Mod.AUGMENTABLE_CONTAINER_TAG);
+    }
+
+    public static boolean isShulkerBox(ItemStack stack) {
+        return stack.getItem() instanceof BlockItem blockItem
+                && blockItem.getBlock() instanceof ShulkerBoxBlock;
     }
 
     public static List<ItemStack> getContainers(ServerPlayerEntity player, Enchantment enchantment) {
