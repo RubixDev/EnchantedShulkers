@@ -61,10 +61,18 @@ items you pick up as long as it has space to do so.
 
 Same as [the Vacuum enchantment](#vacuum), the Void enchantment also doesn't
 generate by default. To make it obtainable in survival mode,
-[enable the `generateVoid` option](#server). When pick up items of the same type
-as a container with the Void enchantment contains, the picked up items will be
-deleted. The enchanted container does not require space to put the deleted
+[enable the `generateVoid` option](#server). When you pick up items of the same
+type as a container with the Void enchantment contains, the picked up items will
+be deleted. The enchanted container does not require space to put the deleted
 items, and unlike Siphon, the stacks in the enchanted container can be full.
+
+### Augment
+
+The Augment enchantment expands the size of a Shulker Box. It is available in
+different levels where each level adds nine more slots to the Shulker's
+inventory. Just like [Vacuum](#vacuum) and [Void](#void) it is unobtainable in
+survival when using the default settings, but that can be configured with the
+[`generateAugment` option](#server).
 
 ## A note on Resource Packs
 
@@ -143,6 +151,7 @@ command in game. Below is a list of available options.
 | `generateRefill`        | `true`, `false`     | `true`            | Make the Refill enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
 | `generateVacuum`        | `true`, `false`     | `false`           | Make the Vacuum enchantment obtainable in survival by allowing enchanted books to generate with it                                              |
 | `generateVoid`          | `true`, `false`     | `false`           | Make the Void enchantment obtainable in survival by allowing enchanted books to generate with it                                                |
+| `generateAugment`       | `true`, `false`     | `false`           | Make the Augment enchantment obtainable in survival by allowing enchanted books to generate with it                                             |
 | `nestedContainers`      | `true`, `false`     | `true`            | Search containers recursively up to 256 levels deep (e.g, search through Shulker Boxes in an Ender Chest)                                       |
 | `strongerSiphon`        | `true`, `false`     | `false`           | Allow the Siphon enchantment to fill empty slots. The same behavior can be enabled for the Vacuum enchantment with `weakerVacuum`               |
 | `weakerVacuum`          | `true`, `false`     | `false`           | Require the same item to already be present in the container. The same behavior can be enabled for the Siphon enchantment with `strongerSiphon` |
