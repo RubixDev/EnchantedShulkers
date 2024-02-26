@@ -147,6 +147,10 @@ public class Utils {
         //$$ }
         //#endif
 
+        return getContainerInventory(container);
+    }
+
+    public static DefaultedList<ItemStack> getContainerInventory(ItemStack container) {
         int size = 9 * getInvRows(EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, container));
         if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
                 container.getItem() instanceof BlockItem blockItem &&

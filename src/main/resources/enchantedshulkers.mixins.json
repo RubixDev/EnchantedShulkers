@@ -11,6 +11,8 @@
     "EnchantmentHelperMixin",
     "EnderChestBlockEntityMixin",
     "EnderChestBlockMixin",
+    "GrindstoneScreenHandler_ResultSlotMixin",
+    "GrindstoneScreenHandlerMixin",
     "ItemStackMixin",
     "PlayerInventoryMixin",
     "ServerConfigurationNetworkHandlerMixin",

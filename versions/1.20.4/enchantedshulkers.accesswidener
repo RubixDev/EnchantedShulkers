@@ -6,3 +6,4 @@ accessible field net/minecraft/block/EnderChestBlock CONTAINER_NAME Lnet/minecra
 accessible field net/minecraft/inventory/SimpleInventory heldStacks Lnet/minecraft/util/collection/DefaultedList;
 accessible field net/minecraft/screen/ShulkerBoxScreenHandler inventory Lnet/minecraft/inventory/Inventory;
 mutable field net/minecraft/village/TradeOffers$EnchantBookFactory possibleEnchantments Ljava/util/List;
+accessible field net/minecraft/screen/GrindstoneScreenHandler input Lnet/minecraft/inventory/Inventory;
