@@ -9,12 +9,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.util.Identifier;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
+import java.util.Map;
 
 @Mixin(targets = "net.minecraft.server.network.ServerPlayerEntity$1")
 public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
@@ -91,27 +96,30 @@ public class ServerPlayerEntity_Anonymous1Mixin implements HasClientMod {
 
     @Unique
     private static void addEnchantment(NbtList lore, ItemStack stack, Enchantment enchantment, String name) {
-        if (EnchantmentHelper.getLevel(enchantment, stack) > 0
-                || storesEnchantment(enchantment, stack)) {
-            lore.add(NbtString.of(enchantmentText(name)));
+        int level = EnchantmentHelper.getLevel(enchantment, stack);
+        if (level <= 0) {
+            level = getStoredLevel(enchantment, stack);
+        }
+        if (level > 0) {
+            lore.add(NbtString.of(enchantmentText(name, level, enchantment)));
         }
     }
 
     @Unique
-    private static String enchantmentText(String name) {
-        return "{\"text\": \"" + name + "\", \"italic\": false, \"color\": \"gray\"}";
+    private static String enchantmentText(String name, int level, Enchantment enchantment) {
+        MutableText mutableText = Text.literal(name);
+        mutableText.formatted(Formatting.GRAY).styled(style -> style.withItalic(false));
+        if (level != 1 || enchantment.getMaxLevel() != 1) {
+            mutableText.append(ScreenTexts.SPACE).append(Text.translatable("enchantment.level." + level));
+        }
+        return Text.Serialization.toJsonString(mutableText);
     }
 
     @Unique
-    private static boolean storesEnchantment(Enchantment enchantment, ItemStack stack) {
-        if (stack.isEmpty()) return false;
-        Identifier identifier = EnchantmentHelper.getEnchantmentId(enchantment);
+    private static int getStoredLevel(Enchantment enchantment, ItemStack stack) {
+        if (stack.isEmpty()) return 0;
         NbtList nbtList = EnchantedBookItem.getEnchantmentNbt(stack);
-        for (int i = 0; i < nbtList.size(); i++) {
-            NbtCompound nbtCompound = nbtList.getCompound(i);
-            Identifier identifier2 = EnchantmentHelper.getIdFromNbt(nbtCompound);
-            if (identifier2 != null && identifier2.equals(identifier)) return true;
-        }
-        return false;
+        Map<Enchantment, Integer> storedEnchantments = EnchantmentHelper.fromNbt(nbtList);
+        return storedEnchantments.getOrDefault(enchantment, 0);
     }
 }
