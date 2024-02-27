@@ -12,7 +12,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import de.rubixdev.enchantedshulkers.Mod;
-import de.rubixdev.enchantedshulkers.Utils;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
@@ -45,7 +44,7 @@ public class ConfigCommand {
         try {
             WorldConfig.getOption(optionName);
         } catch (Exception e) {
-            throw new SimpleCommandExceptionType(Utils.translatableText("commands." + Mod.MOD_ID + ".unknown_option",  optionName).setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true))).create();
+            throw new SimpleCommandExceptionType(Text.translatable("commands." + Mod.MOD_ID + ".unknown_option",  optionName).setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true))).create();
         }
         return optionName;
     }
@@ -54,7 +53,7 @@ public class ConfigCommand {
         sendFeedback(context.getSource(), Text.empty());
         sendFeedback(
                 context.getSource(),
-                Utils.translatableText("commands." + Mod.MOD_ID + ".all_options_title")
+                Text.translatable("commands." + Mod.MOD_ID + ".all_options_title")
                         .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(true))
         );
 
@@ -63,7 +62,7 @@ public class ConfigCommand {
             text.append(Text.literal("- " + option)
                     .setStyle(Style.EMPTY
                             .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Mod.MOD_ID + " " + option))
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Utils.translatableText(Mod.MOD_ID + ".options." + option + ".desc").setStyle(Style.EMPTY.withColor(Formatting.YELLOW))))));
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Mod.MOD_ID + ".options." + option + ".desc").setStyle(Style.EMPTY.withColor(Formatting.YELLOW))))));
             text.append(makeSetOptionButton(option, "true", true));
             text.append(makeSetOptionButton(option, "false", true));
             sendFeedback(
@@ -81,7 +80,6 @@ public class ConfigCommand {
         boolean optionIsDefault = WorldConfig.getOption(option) == WorldConfig.getOptionDefault(option);
         boolean valueIsOptionDefault = String.valueOf(WorldConfig.getOptionDefault(option)).equalsIgnoreCase(value);
         boolean valueIsOptionCurrent = String.valueOf(WorldConfig.getOption(option)).equalsIgnoreCase(value);
-        Mod.LOGGER.info(optionIsDefault + " || " + valueIsOptionDefault + " || " + valueIsOptionCurrent);
         if (optionIsDefault) {
             // all gray if option has its default value
             style = style.withColor(Formatting.GRAY);
@@ -104,7 +102,7 @@ public class ConfigCommand {
         // if this button is for the current value, don't make it clickable
         if (!valueIsOptionCurrent) {
             style = style.withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + Mod.MOD_ID + " " + option + " " + value));
-            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Utils.translatableText("commands." + Mod.MOD_ID + ".switch_to", value + (valueIsOptionDefault ? " (default)" : "")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))));
+            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("commands." + Mod.MOD_ID + ".switch_to", value + (valueIsOptionDefault ? " (default)" : "")).setStyle(Style.EMPTY.withColor(Formatting.GRAY))));
         }
 
         return Text.literal(" ").append(text.setStyle(style));
@@ -113,15 +111,15 @@ public class ConfigCommand {
     private static int displayOptionMenu(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         String option = optionFromContext(context);
         sendFeedback(context.getSource(), Text.empty());
-        sendFeedback(context.getSource(), Text.literal(option).setStyle(Style.EMPTY.withBold(true).withColor(Formatting.WHITE).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Mod.MOD_ID + " " + option)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Utils.translatableText("commands." + Mod.MOD_ID + ".refresh").setStyle(Style.EMPTY.withColor(Formatting.GRAY))))));
-        sendFeedback(context.getSource(), Utils.translatableText(Mod.MOD_ID + ".options." + option + ".desc").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-        sendFeedback(context.getSource(), Utils.translatableText("commands." + Mod.MOD_ID + ".current_value").append(Text.literal(WorldConfig.getOption(option) + (WorldConfig.getOption(option) == WorldConfig.getOptionDefault(option) ? " (default)" : " (modified)")).setStyle(Style.EMPTY.withColor(WorldConfig.getOption(option) ? Formatting.GREEN : Formatting.DARK_RED).withBold(true))));
+        sendFeedback(context.getSource(), Text.literal(option).setStyle(Style.EMPTY.withBold(true).withColor(Formatting.WHITE).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Mod.MOD_ID + " " + option)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("commands." + Mod.MOD_ID + ".refresh").setStyle(Style.EMPTY.withColor(Formatting.GRAY))))));
+        sendFeedback(context.getSource(), Text.translatable(Mod.MOD_ID + ".options." + option + ".desc").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
+        sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".current_value").append(Text.literal(WorldConfig.getOption(option) + (WorldConfig.getOption(option) == WorldConfig.getOptionDefault(option) ? " (default)" : " (modified)")).setStyle(Style.EMPTY.withColor(WorldConfig.getOption(option) ? Formatting.GREEN : Formatting.DARK_RED).withBold(true))));
 
         MutableText optionsText = Text.literal("[").setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
         optionsText.append(makeSetOptionButton(option, "true", false));
         optionsText.append(makeSetOptionButton(option, "false", false));
         optionsText.append(Text.literal(" ]"));
-        sendFeedback(context.getSource(), Utils.translatableText("commands." + Mod.MOD_ID + ".options").append(optionsText));
+        sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".options").append(optionsText));
 
         return 1;
     }
@@ -131,7 +129,7 @@ public class ConfigCommand {
         boolean value = BoolArgumentType.getBool(context, "value");
 
         WorldConfig.setOption(option, value);
-        sendFeedback(context.getSource(), Utils.translatableText("commands.enchantedshulkers.set", option, value));
+        sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".set", option, String.valueOf(value)));
 
         return 1;
     }

@@ -15,8 +15,6 @@
     "GrindstoneScreenHandlerMixin",
     "ItemStackMixin",
     "PlayerInventoryMixin",
-    "ServerConfigurationNetworkHandlerMixin",
-    "ServerPlayerEntity_Anonymous1Mixin",
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",

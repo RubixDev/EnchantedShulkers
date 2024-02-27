@@ -39,8 +39,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -183,10 +181,6 @@ public class Utils {
     public static <T extends BlockEntity> boolean shouldGlint(T blockEntity) {
         return blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
                 && !enchantableBlockEntity.enchantedShulkers$getEnchantments().isEmpty();
-    }
-
-    public static MutableText translatableText(String trKey, Object... args) {
-        return Text.translatableWithFallback(trKey, Mod.EN_US_TRANSLATIONS.get(trKey), args);
     }
 
     // for compat with Split Shulker Boxes

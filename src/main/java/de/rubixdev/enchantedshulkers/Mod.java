@@ -1,13 +1,9 @@
 package de.rubixdev.enchantedshulkers;
 
 import com.chocohead.mm.api.ClassTinkerers;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import de.rubixdev.enchantedshulkers.config.ConfigCommand;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.enchantment.*;
-import de.rubixdev.enchantedshulkers.interfaces.HasClientMod;
 import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -20,11 +16,6 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.item.Item;
-//#if MC >= 12002
-import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
-//#else
-//$$ import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-//#endif
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -33,19 +24,12 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
 public class Mod implements ModInitializer {
     public static final String MOD_ID = "enchantedshulkers";
     public static final String MOD_NAME;
     public static final Version MOD_VERSION;
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
-    public static final Map<String, String> EN_US_TRANSLATIONS;
 
     static {
         ModMetadata metadata = FabricLoader.getInstance()
@@ -54,12 +38,6 @@ public class Mod implements ModInitializer {
                 .getMetadata();
         MOD_NAME = metadata.getName();
         MOD_VERSION = metadata.getVersion();
-
-        // read english translations
-        InputStream langFile = Mod.class.getClassLoader().getResourceAsStream("assets/%s/lang/en_us.json".formatted(MOD_ID));
-        assert langFile != null;
-        Gson gson = new GsonBuilder().setLenient().create();
-        EN_US_TRANSLATIONS = gson.fromJson(new InputStreamReader(langFile, StandardCharsets.UTF_8), new TypeToken<>() {}.getType());
     }
 
     public static final TagKey<Item> PORTABLE_CONTAINER_TAG =
@@ -104,19 +82,6 @@ public class Mod implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
 
         // Register packet listeners
-        //#if MC >= 12002
-        ServerConfigurationNetworking.registerGlobalReceiver(
-                CLIENT_INSTALLED_PACKET_ID,
-                (server, handler, buf, responseSender) -> ((HasClientMod) handler).enchantedShulkers$setTrue());
-        //#else
-        //$$ ServerPlayNetworking.registerGlobalReceiver(
-        //$$         CLIENT_INSTALLED_PACKET_ID,
-        //$$         (server, player, handler, buf, responseSender) -> ((HasClientMod) player).enchantedShulkers$setTrue());
-        //$$ ServerPlayNetworking.registerGlobalReceiver(
-        //$$         CustomPayloadC2SPacket.BRAND,
-        //$$         // at this point a modded client would have sent a `CLIENT_INSTALLED_PACKET_ID` packet
-        //$$         (server, player, handler, buf, responseSender) -> ((HasClientMod) player).enchantedShulkers$submit());
-        //#endif
         ServerPlayNetworking.registerGlobalReceiver(
                 INVENTORY_OPEN_PACKET_ID,
                 (server, player, handler, buf, responseSender) -> ((InventoryState) player).enchantedShulkers$setOpen());

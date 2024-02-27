@@ -12,6 +12,8 @@ repositories {
     maven { url 'https://maven.shedaniel.me/' }
     // Mod Menu and Trinkets
     maven { url 'https://maven.terraformersmc.com/releases/' }
+    // Polymer and Server Translations
+    maven { url 'https://maven.nucleoid.xyz' }
     // Reinforced Core and Shulkers
     maven { url 'https://raw.githubusercontent.com/Aton-Kish/mcmod/maven' }
     // Quick Shulker deps
@@ -51,6 +53,8 @@ dependencies {
         exclude(module: "gson")
     }
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")))
+    modImplementation include("eu.pb4:polymer-core:${project.polymer_version}")
+    modImplementation include("xyz.nucleoid:server-translations-api:${project.server_translations_version}")
 
     // mods tested for compatibility
     def modCompat = { ...args -> project.run_with_compat_mods == "true" ? modImplementation(args) : modCompileOnly(args) }
@@ -102,7 +106,7 @@ dependencies {
 }
 
 String MIXIN_CONFIG_PATH = 'enchantedshulkers.mixins.json'
-String LANG_DIR = 'assets/enchantedshulkers/lang'
+String LANG_DIR = 'data/enchantedshulkers/lang'
 JavaVersion JAVA_COMPATIBILITY
 if (mcVersion >= 11800) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_17
