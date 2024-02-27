@@ -94,7 +94,7 @@ public class Utils {
                     // in case some other mod allows shulkers to stack, ignore them to prevent duping
                     && (stack.isOf(Items.ENDER_CHEST) || stack.getCount() == 1)) {
                 out.add(stack);
-                if (recursionDepth < (WorldConfig.nestedContainers() ? 255 : 0)) {
+                if (recursionDepth < WorldConfig.nestedContainers()) {
                     out.addAll(getContainers(
                             getContainerInventory(stack, player),
                             player,

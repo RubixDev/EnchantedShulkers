@@ -22,6 +22,7 @@ import net.fabricmc.loader.api.VersionParsingException;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ResourcePackProfile;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Text;
 import net.minecraft.util.WorldSavePath;
 
 public class WorldConfig {
@@ -43,31 +44,45 @@ public class WorldConfig {
         return Arrays.stream(Inner.class.getDeclaredFields()).map(Field::getName);
     }
 
-    public static boolean getOption(String option) {
+    public static Object getOption(String option) {
         Field optionField = getField(option);
         try {
-            return optionField.getBoolean(inner);
+            return optionField.get(inner);
         } catch (IllegalAccessException e) {
             // shouldn't fail after `setAccessible(true)` call
             throw new RuntimeException(e);
         }
     }
 
-    public static boolean getOptionDefault(String option) {
+    public static Object getOptionDefault(String option) {
         Field optionField = getField(option);
         try {
-            return optionField.getBoolean(new Inner());
+            return optionField.get(new Inner());
         } catch (IllegalAccessException e) {
             // shouldn't fail after `setAccessible(true)` call
             throw new RuntimeException(e);
         }
     }
 
-    public static void setOption(String option, boolean value) {
+    public static boolean getBooleanValue(String option) {
+        Object value = getOption(option);
+        if (value instanceof Boolean bool) return bool;
+        if (value instanceof Number number) return number.doubleValue() > 0;
+        return false;
+    }
+
+    public static void setOption(String option, String value) throws InvalidOptionValueException {
         Field optionField = getField(option);
         try {
-            if (optionField.getBoolean(inner) == value) return;
-            optionField.set(inner, value);
+            if (optionField.getType() == boolean.class || Boolean.class.isAssignableFrom(optionField.getType())) {
+                if (value.equals("true")) optionField.setBoolean(inner, true);
+                else if (value.equals("false")) optionField.setBoolean(inner, false);
+                else throw new InvalidOptionValueException(Text.translatable("commands." + Mod.MOD_ID + ".invalid_bool", value));
+            } else if (optionField.getType() == int.class || Integer.class.isAssignableFrom(optionField.getType())) {
+                optionField.setInt(inner, getIntValue(optionField, value));
+            } else {
+                throw new IllegalStateException("Option '" + option + "' has an unsupported type");
+            }
             updateResources();
         } catch (IllegalAccessException e) {
             // shouldn't fail after `setAccessible(true)`
@@ -76,7 +91,21 @@ public class WorldConfig {
         write();
     }
 
-    private static Field getField(String name) {
+    private static int getIntValue(Field optionField, String value) throws InvalidOptionValueException {
+        int intValue;
+        try {
+            intValue = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new InvalidOptionValueException(Text.translatable("commands." + Mod.MOD_ID + ".invalid_int", value));
+        }
+        IntOption intOption = optionField.getAnnotation(IntOption.class);
+        if (intOption != null && (intValue < intOption.min() || intValue > intOption.max())) {
+            throw new InvalidOptionValueException(Text.translatable("commands." + Mod.MOD_ID + ".invalid_int_range", intOption.min(), intOption.max(), intValue));
+        }
+        return intValue;
+    }
+
+    public static Field getField(String name) {
         try {
             Field field =  Inner.class.getDeclaredField(name);
             field.setAccessible(true);
@@ -192,7 +221,7 @@ public class WorldConfig {
         return inner.generateAugment;
     }
 
-    public static boolean nestedContainers() {
+    public static int nestedContainers() {
         return inner.nestedContainers;
     }
 
@@ -202,6 +231,10 @@ public class WorldConfig {
 
     public static boolean weakerVacuum() {
         return inner.weakerVacuum;
+    }
+
+    public static int maxAugmentLevel() {
+        return inner.maxAugmentLevel;
     }
 
     private static class Inner {
@@ -218,8 +251,11 @@ public class WorldConfig {
         boolean generateVacuum = false;
         boolean generateVoid = false;
         boolean generateAugment = false;
-        boolean nestedContainers = true;
+        @IntOption(min = 0, max = Short.MAX_VALUE, suggestions = {"0", "1", "127", "255"})
+        int nestedContainers = 255;
         boolean strongerSiphon = false;
         boolean weakerVacuum = false;
+        @IntOption(min = 1, max = 3, suggestions = {"1", "2", "3"})
+        int maxAugmentLevel = 3;
     }
 }

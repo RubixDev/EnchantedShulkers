@@ -5,7 +5,6 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -16,6 +15,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 
+import java.lang.reflect.Field;
+
 public class ConfigCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder =
@@ -24,7 +25,8 @@ public class ConfigCommand {
                 .then(argument("option", StringArgumentType.word())
                         .suggests((context, builder) -> suggestMatching(WorldConfig.getOptions().sorted(), builder))
                         .executes(ConfigCommand::displayOptionMenu)
-                        .then(argument("value", BoolArgumentType.bool())
+                        .then(argument("value", StringArgumentType.greedyString())
+                                .suggests((context, builder) -> suggestMatching(suggestions(context), builder))
                                 .executes(ConfigCommand::setOption)));
         dispatcher.register(literalArgumentBuilder);
     }
@@ -49,6 +51,18 @@ public class ConfigCommand {
         return optionName;
     }
 
+    private static String[] suggestions(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        return suggestions(optionFromContext(context));
+    }
+
+    private static String[] suggestions(String option) {
+        Field field = WorldConfig.getField(option);
+        if (field.getType() == boolean.class || Boolean.class.isAssignableFrom(field.getType())) return new String[]{"true", "false"};
+        IntOption intOption = field.getAnnotation(IntOption.class);
+        if (intOption != null) return intOption.suggestions();
+        return new String[]{String.valueOf(WorldConfig.getOptionDefault(option))};
+    }
+
     private static int listAllOptions(CommandContext<ServerCommandSource> context) {
         sendFeedback(context.getSource(), Text.empty());
         sendFeedback(
@@ -63,8 +77,9 @@ public class ConfigCommand {
                     .setStyle(Style.EMPTY
                             .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Mod.MOD_ID + " " + option))
                             .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Mod.MOD_ID + ".options." + option + ".desc").setStyle(Style.EMPTY.withColor(Formatting.YELLOW))))));
-            text.append(makeSetOptionButton(option, "true", true));
-            text.append(makeSetOptionButton(option, "false", true));
+            for (String suggestion : suggestions(option)) {
+                text.append(makeSetOptionButton(option, suggestion, true));
+            }
             sendFeedback(
                     context.getSource(),
                     text
@@ -77,7 +92,7 @@ public class ConfigCommand {
     private static Text makeSetOptionButton(String option, String value, boolean brackets) {
         MutableText text = Text.literal((brackets ? "[" : "") + value + (brackets ? "]" : ""));
         Style style = Style.EMPTY;
-        boolean optionIsDefault = WorldConfig.getOption(option) == WorldConfig.getOptionDefault(option);
+        boolean optionIsDefault = WorldConfig.getOption(option).equals(WorldConfig.getOptionDefault(option));
         boolean valueIsOptionDefault = String.valueOf(WorldConfig.getOptionDefault(option)).equalsIgnoreCase(value);
         boolean valueIsOptionCurrent = String.valueOf(WorldConfig.getOption(option)).equalsIgnoreCase(value);
         if (optionIsDefault) {
@@ -113,11 +128,12 @@ public class ConfigCommand {
         sendFeedback(context.getSource(), Text.empty());
         sendFeedback(context.getSource(), Text.literal(option).setStyle(Style.EMPTY.withBold(true).withColor(Formatting.WHITE).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Mod.MOD_ID + " " + option)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("commands." + Mod.MOD_ID + ".refresh").setStyle(Style.EMPTY.withColor(Formatting.GRAY))))));
         sendFeedback(context.getSource(), Text.translatable(Mod.MOD_ID + ".options." + option + ".desc").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-        sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".current_value").append(Text.literal(WorldConfig.getOption(option) + (WorldConfig.getOption(option) == WorldConfig.getOptionDefault(option) ? " (default)" : " (modified)")).setStyle(Style.EMPTY.withColor(WorldConfig.getOption(option) ? Formatting.GREEN : Formatting.DARK_RED).withBold(true))));
+        sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".current_value").append(Text.literal(WorldConfig.getOption(option) + (WorldConfig.getOption(option).equals(WorldConfig.getOptionDefault(option)) ? " (default)" : " (modified)")).setStyle(Style.EMPTY.withColor(WorldConfig.getBooleanValue(option) ? Formatting.GREEN : Formatting.DARK_RED).withBold(true))));
 
         MutableText optionsText = Text.literal("[").setStyle(Style.EMPTY.withColor(Formatting.YELLOW));
-        optionsText.append(makeSetOptionButton(option, "true", false));
-        optionsText.append(makeSetOptionButton(option, "false", false));
+        for (String suggestion : suggestions(option)) {
+            optionsText.append(makeSetOptionButton(option, suggestion, false));
+        }
         optionsText.append(Text.literal(" ]"));
         sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".options").append(optionsText));
 
@@ -126,10 +142,14 @@ public class ConfigCommand {
 
     private static int setOption(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         String option = optionFromContext(context);
-        boolean value = BoolArgumentType.getBool(context, "value");
+        String value = StringArgumentType.getString(context, "value");
 
-        WorldConfig.setOption(option, value);
-        sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".set", option, String.valueOf(value)));
+        try {
+            WorldConfig.setOption(option, value);
+            sendFeedback(context.getSource(), Text.translatable("commands." + Mod.MOD_ID + ".set", option, String.valueOf(value)));
+        } catch (InvalidOptionValueException e) {
+            context.getSource().sendError(e.getText());
+        }
 
         return 1;
     }

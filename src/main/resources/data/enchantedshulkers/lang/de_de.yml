@@ -22,6 +22,9 @@ commands.enchantedshulkers:
   set: Option %s wurde auf ‚%s‘ gesetzt
   switch_to: Wechsel zu ‚%s‘
   unknown_option: Unbekannte Option ‚%s‘
+  invalid_bool: Wahrheitswert muss entweder ‚true‘ oder ‚false‘ sein, ist aber ‚%s‘
+  invalid_int: 'Invalider Wert für Ganzzahl: %s'
+  invalid_int_range: Ganzzahl Wert ist außerhalb des erlaubten Bereichs. Muss zwischen %d und %d sein, ist aber %d
 
 enchantedshulkers.options:
   coloredNames.desc: Färbe die Namen von platzierten verzauberten Kisten aqua. Diese option ist global für alle Spieler.
@@ -35,11 +38,12 @@ enchantedshulkers.options:
   generateVoid.desc: Macht die Void Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
   generateRefill.desc: Macht die Nachfüllen Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
   generateAugment.desc: Macht die Erweitern Verzauberung im Überlebensmodus verfügbar indem verzauberte Bücher mit ihr generieren können.
-  nestedContainers.desc: Suche rekursiv in Kisten bis zu 256 Stufen tief (z.B. suche durch Schulker-Kisten die sich in der Endertruhe befinden).
+  nestedContainers.desc: Suche rekursiv in Kisten bis zu der gesetzten Zahl an Stufen tief (z.B. suche durch Schulker-Kisten die sich in der Endertruhe befinden).
   refillNonStackables.desc: Erlaube das Nachfüllen von nicht stapelbaren Gegenständen wie z.B. Totems der Unsterblichkeit.
   refillOffhand.desc: Erlaube das Nachfüllen von Stapeln in der Zweithand.
   strongerSiphon.desc: Die Saugen Verzauberung kann auch leere Slots füllen. Das selbe Verhalten kann für die Vakuum Verzauberung mit "weakerVacuum" eingeschaltet werden.
   weakerVacuum.desc: Vakuum benötigt Gegenstände der selben Art bereits Container. Das selbe Verhalten kann für die Saugen Verzauberung mit "strongerSiphon" eingeschaltet werden.
+  maxAugmentLevel.desc: Das höchste Level für die Erweitern Verzauberung. Für die beste Erfahrung führe "/reload" aus nach dem Ändern dieses Werts.
 
 text.autoconfig.enchantedshulkers:
   title: Enchanted Shulkers Client Einstellungen

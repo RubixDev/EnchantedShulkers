@@ -15,6 +15,6 @@ public class AugmentEnchantment extends ContainerEnchantment {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return WorldConfig.maxAugmentLevel();
     }
 }
