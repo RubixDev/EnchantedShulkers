@@ -36,6 +36,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Utils {
     public static boolean canEnchant(Item item) {
-        return canEnchant(item.getDefaultStack());
+        return Registries.ITEM.getEntry(item).isIn(Mod.PORTABLE_CONTAINER_TAG);
     }
 
     public static boolean canEnchant(ItemStack stack) {
@@ -53,7 +54,7 @@ public class Utils {
     }
 
     public static boolean canAugment(Item item) {
-        return canAugment(item.getDefaultStack());
+        return Registries.ITEM.getEntry(item).isIn(Mod.AUGMENTABLE_CONTAINER_TAG);
     }
 
     public static boolean canAugment(ItemStack stack) {
