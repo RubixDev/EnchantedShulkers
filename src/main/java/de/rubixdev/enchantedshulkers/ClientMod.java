@@ -12,8 +12,13 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.nbt.NbtInt;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+
+//#if MC >= 12001
+import eu.pb4.polymer.networking.api.client.PolymerClientNetworking;
+//#endif
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @Environment(EnvType.CLIENT)
@@ -45,6 +50,11 @@ public class ClientMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        // let the server know that we have the client mod installed
+        //#if MC >= 12001
+        PolymerClientNetworking.setClientMetadata(Mod.HANDSHAKE_PACKET_ID, NbtInt.of(1));
+        //#endif
+
         if (!FabricLoader.getInstance().isModLoaded("cloth-config")) return;
         hasCloth = true;
         ClientConfig.init();

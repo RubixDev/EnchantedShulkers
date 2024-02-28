@@ -24,6 +24,10 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//#if MC < 12001
+//$$ import eu.pb4.polymer.networking.api.PolymerServerNetworking;
+//#endif
+
 public class Mod implements ModInitializer {
     public static final String MOD_ID = "enchantedshulkers";
     public static final String MOD_NAME;
@@ -56,7 +60,7 @@ public class Mod implements ModInitializer {
     public static final VoidEnchantment VOID_ENCHANTMENT = new VoidEnchantment();
     public static final AugmentEnchantment AUGMENT_ENCHANTMENT = new AugmentEnchantment();
 
-    public static final Identifier CLIENT_INSTALLED_PACKET_ID = new Identifier(MOD_ID, "client_installed");
+    public static final Identifier HANDSHAKE_PACKET_ID = new Identifier(MOD_ID, "handshake");
     public static final Identifier INVENTORY_OPEN_PACKET_ID = new Identifier(MOD_ID, "inventory_open");
     public static final Identifier INVENTORY_CLOSE_PACKET_ID = new Identifier(MOD_ID, "inventory_close");
 
@@ -67,6 +71,11 @@ public class Mod implements ModInitializer {
         Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "vacuum"), VACUUM_ENCHANTMENT);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "void"), VOID_ENCHANTMENT);
         Registry.register(Registries.ENCHANTMENT, new Identifier(MOD_ID, "augment"), AUGMENT_ENCHANTMENT);
+
+        // handshake with modded clients
+        //#if MC < 12001
+        //$$ PolymerServerNetworking.registerSendPacket(HANDSHAKE_PACKET_ID, 1);
+        //#endif
 
         // Add enchanted_ender_chest data pack when enabled in config
         FabricLoader.getInstance()

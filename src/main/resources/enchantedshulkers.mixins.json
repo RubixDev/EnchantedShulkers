@@ -23,14 +23,13 @@
     "compat.QuickShulker_RegisterMixin",
     "compat.QuickShulker_ShulkerUtilsMixin",
     "compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor",
-    "compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin"
+    "compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin",
+    "compat.ShulkerBoxTooltip_BlockEntityAwarePreviewProviderMixin"
   ],
   "client": [
     "client.BuiltinModelItemRendererMixin",
     "client.BuiltinModelItemRendererMixin_optifabric",
     "client.ChestBlockEntityRendererMixin",
-    "client.ClientLoginNetworkHandlerMixin",
-    "client.ClientPlayNetworkHandlerMixin",
     "client.MinecraftClientMixin",
     "client.ShulkerBoxBlockEntityRendererMixin",
     "client.ShulkerBoxBlockEntityRendererMixin_999",

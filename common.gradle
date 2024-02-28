@@ -22,6 +22,8 @@ repositories {
     maven { url 'https://maven.ladysnake.org/releases' }
     // Spectrelib (required by Shulker Box Slot)
     maven { url 'https://maven.theillusivec4.top/' }
+    // Shulker Box Tooltip
+    maven { url 'https://maven.misterpemodder.com/libs-release' }
     // Modrinth Maven for other compat tested mods
     maven { url 'https://api.modrinth.com/maven' }
 }
@@ -102,6 +104,14 @@ dependencies {
     // - Click Opener
     if (project.clickopener == "true") {
         modCompat "maven.modrinth:clickopener:${project.clickopener_version}"
+    }
+    // - Shulker Box Tooltip
+    if (project.shulkerboxtooltip == "true") {
+        modCompat("com.misterpemodder:shulkerboxtooltip-fabric:${project.shulkerboxtooltip_version}") {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "me.shedaniel.cloth")
+            exclude(group: "com.terraformersmc")
+        }
     }
 }
 

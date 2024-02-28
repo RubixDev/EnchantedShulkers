@@ -3,11 +3,6 @@ package de.rubixdev.enchantedshulkers;
 import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
 import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
-//#if MC >= 12001
-import megaminds.clickopener.api.BlockEntityInventory;
-//#else
-//$$ import megaminds.clickopener.api.ShulkerInventory;
-//#endif
 import net.minecraft.block.Block;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.inventory.Inventory;
@@ -44,6 +39,19 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
+//#if MC >= 12001
+import net.minecraft.nbt.NbtInt;
+import megaminds.clickopener.api.BlockEntityInventory;
+//#else
+//$$ import megaminds.clickopener.api.ShulkerInventory;
+//#endif
+
+//#if MC >= 12002
+import eu.pb4.polymer.networking.api.server.PolymerServerNetworking;
+//#else
+//$$ import eu.pb4.polymer.networking.api.PolymerServerNetworking;
+//#endif
+
 public class Utils {
     public static boolean canEnchant(Item item) {
         return Registries.ITEM.getEntry(item).isIn(Mod.PORTABLE_CONTAINER_TAG);
@@ -64,6 +72,17 @@ public class Utils {
     public static boolean isShulkerBox(ItemStack stack) {
         return stack.getItem() instanceof BlockItem blockItem
                 && blockItem.getBlock() instanceof ShulkerBoxBlock;
+    }
+
+    public static boolean hasClientMod(ServerPlayerEntity player) {
+        //#if MC >= 12001
+        NbtInt meta = player == null ? null
+                : PolymerServerNetworking.getMetadata(player.networkHandler, Mod.HANDSHAKE_PACKET_ID, NbtInt.TYPE);
+        int version = meta == null ? 0 : meta.intValue();
+        //#else
+        //$$ int version = player == null ? 0 : PolymerServerNetworking.getSupportedVersion(player.networkHandler, Mod.HANDSHAKE_PACKET_ID);
+        //#endif
+        return version > 0;
     }
 
     public static List<ItemStack> getContainers(ServerPlayerEntity player, Enchantment enchantment) {
@@ -196,6 +215,6 @@ public class Utils {
     }
 
     public static int getInvRows(int augmentLevel) {
-        return MathHelper.clamp(augmentLevel + 3, 3, 6);
+        return MathHelper.clamp(augmentLevel + 3, 3, 3 + WorldConfig.maxAugmentLevel());
     }
 }
