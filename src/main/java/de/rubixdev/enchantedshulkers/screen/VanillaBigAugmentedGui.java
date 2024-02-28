@@ -45,11 +45,11 @@ public class VanillaBigAugmentedGui extends SimpleGui {
     private static final String MAXIMIZE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQ2MTUwOGI2NGVjYmQ4YjM3YmRhZTUzYTZiOTQwMDQ0MDViMWM5ZDBmODE1ZDBjNjUxNmQwMDQ5YWQ2NzM5YSJ9fX0=";
     private static final String MINIMIZE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzJlYjZmZWNlMTg1ZjE0OTAxODVmMzk4MGU4MGM2ODk5YmZkNDBjZTdiZTJhOTQ2NWIwMTAxNTFkODgyZmYifX19";
 
-    public VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows) {
+    VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows) {
         this(player, shulkerInventory, rows, false, true);
     }
 
-    public VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows, boolean maximized, boolean onInventoryOpen) {
+    private VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows, boolean maximized, boolean onInventoryOpen) {
         super(ScreenHandlerType.GENERIC_9X6, player, maximized);
         this.rows = rows;
         this.shulkerInventory = shulkerInventory;
