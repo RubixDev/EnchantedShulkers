@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -36,7 +37,7 @@ import java.util.stream.IntStream;
 
 @Mixin(ShulkerBoxBlockEntity.class)
 public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
-        implements EnchantableBlockEntity {
+        implements EnchantableBlockEntity, NamedScreenHandlerFactory {
     @Shadow private DefaultedList<ItemStack> inventory;
     @Unique
     private NbtList enchantments = new NbtList();
@@ -99,7 +100,7 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
     private void augmentedScreenHandler(int syncId, PlayerInventory playerInventory, CallbackInfoReturnable<ScreenHandler> cir) {
         int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
         if (level != 0) {
-            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(syncId, playerInventory, (Inventory) this, level));
+            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName()));
         }
     }
 

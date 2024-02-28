@@ -26,10 +26,10 @@ import java.util.List;
 //#endif
 
 public class VanillaBigAugmentedGui extends SimpleGui {
-    private int scroll = 0;
-    private final boolean maximized;
-    private final int rows;
     private final Inventory shulkerInventory;
+    private final int rows;
+    private final boolean maximized;
+    private int scroll = 0;
 
     // TODO: custom player heads
     private static final String DISABLED_ARROW_UP = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2Y0NmFiYWQ5MjRiMjIzNzJiYzk2NmE2ZDUxN2QyZjFiOGI1N2ZkZDI2MmI0ZTA0ZjQ4MzUyZTY4M2ZmZjkyIn19fQ==";
@@ -45,15 +45,16 @@ public class VanillaBigAugmentedGui extends SimpleGui {
     private static final String MAXIMIZE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQ2MTUwOGI2NGVjYmQ4YjM3YmRhZTUzYTZiOTQwMDQ0MDViMWM5ZDBmODE1ZDBjNjUxNmQwMDQ5YWQ2NzM5YSJ9fX0=";
     private static final String MINIMIZE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzJlYjZmZWNlMTg1ZjE0OTAxODVmMzk4MGU4MGM2ODk5YmZkNDBjZTdiZTJhOTQ2NWIwMTAxNTFkODgyZmYifX19";
 
-    VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows) {
-        this(player, shulkerInventory, rows, false, true);
+    VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows, Text title) {
+        this(player, shulkerInventory, rows, title, false, true);
     }
 
-    private VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows, boolean maximized, boolean onInventoryOpen) {
+    private VanillaBigAugmentedGui(ServerPlayerEntity player, Inventory shulkerInventory, int rows, Text title, boolean maximized, boolean onInventoryOpen) {
         super(ScreenHandlerType.GENERIC_9X6, player, maximized);
-        this.rows = rows;
         this.shulkerInventory = shulkerInventory;
+        this.rows = rows;
         this.maximized = maximized;
+        setTitle(title);
         updateSlots();
         if (onInventoryOpen) {
             shulkerInventory.onOpen(player);
@@ -97,7 +98,7 @@ public class VanillaBigAugmentedGui extends SimpleGui {
                 .setLore(maximized ? List.of() : List.of(Text.literal("Items cannot be interacted with when maximized").formatted(Formatting.GRAY)))
                 .setCallback(() -> {
                     click();
-                    new VanillaBigAugmentedGui(player, shulkerInventory, rows, !maximized, false).open();
+                    new VanillaBigAugmentedGui(player, shulkerInventory, rows, getTitle(), !maximized, false).open();
                 }));
     }
 

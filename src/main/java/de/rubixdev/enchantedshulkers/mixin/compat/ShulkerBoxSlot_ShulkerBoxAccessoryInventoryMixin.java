@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,8 +24,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Restriction(require = @Condition("shulkerboxslot"))
 @Mixin(ShulkerBoxAccessoryInventory.class)
-public class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
+public abstract class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
     @Shadow @Final private ItemStack shulkerBox;
+
+    @Shadow public abstract Text getDisplayName();
 
     @ModifyConstant(method = "<init>", constant = @Constant(intValue = 27), require = 1)
     private int augmentInvSize(int constant, ItemStack shulkerBox) {
@@ -36,7 +39,7 @@ public class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
     private void augmentedScreenHandler(int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> cir) {
         int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, this.shulkerBox);
         if (level != 0) {
-            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(i, playerInventory, (Inventory) this, level));
+            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(i, playerInventory, (Inventory) this, level, getDisplayName()));
         }
     }
 }

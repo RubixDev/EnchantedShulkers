@@ -1,6 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin.compat;
 
 import de.rubixdev.enchantedshulkers.Mod;
+import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
@@ -27,7 +28,8 @@ public class QuickShulker_RegisterMixin {
         cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
                 i, playerInventory,
                 ShulkerUtils.getInventoryFromShulker(stack),
-                EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack))
-        );
+                EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack),
+                Utils.getDisplayName(stack)
+        ));
     }
 }

@@ -4,6 +4,7 @@ import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock;
 import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler;
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
@@ -32,10 +33,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -216,5 +220,18 @@ public class Utils {
 
     public static int getInvRows(int augmentLevel) {
         return MathHelper.clamp(augmentLevel + 3, 3, 3 + WorldConfig.maxAugmentLevel());
+    }
+
+    public static Text getDisplayName(ItemStack stack) {
+        if (stack.getItem() instanceof BlockItem blockItem) {
+            Block block = blockItem.getBlock();
+            if (block instanceof BlockWithEntity bwe) {
+                BlockEntity blockEntity = bwe.createBlockEntity(BlockPos.ORIGIN, null);
+                if (blockEntity instanceof NamedScreenHandlerFactory factory) {
+                    return factory.getDisplayName();
+                }
+            }
+        }
+        return stack.getName();
     }
 }

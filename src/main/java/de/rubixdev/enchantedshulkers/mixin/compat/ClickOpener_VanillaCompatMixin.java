@@ -41,7 +41,8 @@ public class ClickOpener_VanillaCompatMixin {
             cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
                     syncId, playerInventory,
                     new BlockEntityInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
-                    level
+                    level,
+                    Utils.getDisplayName(stack)
             ));
         }
     }
@@ -53,7 +54,8 @@ public class ClickOpener_VanillaCompatMixin {
     //$$         cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
     //$$                 syncId, playerInventory,
     //$$                 new ShulkerInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
-    //$$                 level
+    //$$                 level,
+    //$$                 Utils.getDisplayName(stack)
     //$$         ));
     //$$     }
     //$$ }
