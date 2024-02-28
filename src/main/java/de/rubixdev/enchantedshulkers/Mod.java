@@ -90,7 +90,8 @@ public class Mod implements ModInitializer {
         // Register event hooks and command
         ServerLifecycleEvents.SERVER_STARTING.register(WorldConfig::attachServer);
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> WorldConfig.detachServer());
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WorldConfig.sendConfigToClient(handler.player));
+        // we can't use ServerPlayConnectionEvents.JOIN here because Polymer's handshake comes after that in versions before 1.20.2
+        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> WorldConfig.sendConfigToClient(player));
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
 
         // Register packet listeners
