@@ -8,6 +8,7 @@ import de.rubixdev.enchantedshulkers.interfaces.InventoryState;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -61,6 +62,7 @@ public class Mod implements ModInitializer {
     public static final AugmentEnchantment AUGMENT_ENCHANTMENT = new AugmentEnchantment();
 
     public static final Identifier HANDSHAKE_PACKET_ID = new Identifier(MOD_ID, "handshake");
+    public static final Identifier CONFIG_SYNC_PACKET_ID = new Identifier(MOD_ID, "config_sync");
     public static final Identifier INVENTORY_OPEN_PACKET_ID = new Identifier(MOD_ID, "inventory_open");
     public static final Identifier INVENTORY_CLOSE_PACKET_ID = new Identifier(MOD_ID, "inventory_close");
 
@@ -88,6 +90,7 @@ public class Mod implements ModInitializer {
         // Register event hooks and command
         ServerLifecycleEvents.SERVER_STARTING.register(WorldConfig::attachServer);
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> WorldConfig.detachServer());
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WorldConfig.sendConfigToClient(handler.player));
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
 
         // Register packet listeners

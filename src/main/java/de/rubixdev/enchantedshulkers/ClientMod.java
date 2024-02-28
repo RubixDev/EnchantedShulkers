@@ -5,13 +5,20 @@ import de.rubixdev.enchantedshulkers.config.ClientConfig;
 
 import java.util.*;
 
+import de.rubixdev.enchantedshulkers.config.InvalidOptionValueException;
+import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.nbt.NbtByte;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -54,6 +61,29 @@ public class ClientMod implements ClientModInitializer {
         //#if MC >= 12001
         PolymerClientNetworking.setClientMetadata(Mod.HANDSHAKE_PACKET_ID, NbtInt.of(1));
         //#endif
+
+        // update config from server
+        ClientPlayNetworking.registerGlobalReceiver(Mod.CONFIG_SYNC_PACKET_ID, (client, handler, buf, responseSender) -> {
+            Mod.LOGGER.info("Received world config from server");
+            NbtCompound config = buf.readNbt();
+            if (config == null) {
+                Mod.LOGGER.warn("Received server config is null");
+                return;
+            }
+            for (String option : config.getKeys()) {
+                NbtElement nbtValue = Objects.requireNonNull(config.get(option));
+                String value = nbtValue.asString();
+                if (nbtValue instanceof NbtByte nbtBool) {
+                    value = String.valueOf(nbtBool.byteValue() != 0);
+                }
+                try {
+                    WorldConfig.setOption(option, value);
+                } catch (InvalidOptionValueException e) {
+                    Mod.LOGGER.error("Received server config value for '" + option + "' is invalid: " + e.getMessage());
+                }
+            }
+        });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> WorldConfig.detachServer());
 
         if (!FabricLoader.getInstance().isModLoaded("cloth-config")) return;
         hasCloth = true;

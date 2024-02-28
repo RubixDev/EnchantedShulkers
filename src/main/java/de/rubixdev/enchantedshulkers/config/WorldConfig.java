@@ -16,12 +16,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import de.rubixdev.enchantedshulkers.Utils;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
+import net.minecraft.nbt.*;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ResourcePackProfile;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.WorldSavePath;
 
@@ -130,6 +135,7 @@ public class WorldConfig {
     }
 
     private static void updateResources() {
+        if (server == null) return;
         ResourcePackManager manager = server.getDataPackManager();
         boolean isEnderPackLoaded = manager.getEnabledNames().contains(ENCHANTED_ENDER_CHEST_ID);
         if (isEnderPackLoaded == inner.enchantableEnderChest) return;
@@ -166,10 +172,39 @@ public class WorldConfig {
     }
 
     private static void write() {
+        if (server == null) return;
         try (BufferedWriter writer = Files.newBufferedWriter(getConfigPath(), WRITE, TRUNCATE_EXISTING, CREATE)) {
             new TomlWriter().write(inner, writer);
         } catch (Throwable e) {
             Mod.LOGGER.error("Could not write config: " + e);
+        }
+        Mod.LOGGER.info("Sending updated config to clients");
+        server.getPlayerManager().getPlayerList().forEach(WorldConfig::sendConfigToClient);
+    }
+
+    public static void sendConfigToClient(ServerPlayerEntity player) {
+        if (Utils.hasClientMod(player)) {
+            if (player.server.isHost(player.getGameProfile())) {
+                Mod.LOGGER.info("Not sending config to integrated server host " + player.getNameForScoreboard());
+                return;
+            }
+            Mod.LOGGER.info("Sending world config to " + player.getNameForScoreboard());
+            NbtCompound config = new NbtCompound();
+            getOptions().forEach(option -> {
+                Object rawValue = getOption(option);
+                NbtElement value;
+                if (rawValue instanceof Boolean boolValue) {
+                    value = NbtByte.of(boolValue);
+                } else if (rawValue instanceof Integer intValue) {
+                    value = NbtInt.of(intValue);
+                } else {
+                    value = NbtString.of(rawValue.toString());
+                }
+                config.put(option, value);
+            });
+            ServerPlayNetworking.send(player, Mod.CONFIG_SYNC_PACKET_ID, PacketByteBufs.create().writeNbt(config));
+        } else {
+            Mod.LOGGER.info("Not sending config to " + player.getNameForScoreboard());
         }
     }
 
