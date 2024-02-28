@@ -57,6 +57,7 @@ dependencies {
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")))
     modImplementation include("eu.pb4:polymer-core:${project.polymer_version}")
     modImplementation include("xyz.nucleoid:server-translations-api:${project.server_translations_version}")
+    modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 
     // mods tested for compatibility
     def modCompat = { ...args -> project.run_with_compat_mods == "true" ? modImplementation(args) : modCompileOnly(args) }

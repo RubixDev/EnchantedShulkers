@@ -86,7 +86,7 @@ public class Mod implements ModInitializer {
                         ResourcePackActivationType.NORMAL));
 
         // Register event hooks and command
-        ServerLifecycleEvents.SERVER_STARTED.register(WorldConfig::attachServer);
+        ServerLifecycleEvents.SERVER_STARTING.register(WorldConfig::attachServer);
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> WorldConfig.detachServer());
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ConfigCommand.register(dispatcher));
 

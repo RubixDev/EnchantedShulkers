@@ -255,7 +255,7 @@ public class WorldConfig {
         int nestedContainers = 255;
         boolean strongerSiphon = false;
         boolean weakerVacuum = false;
-        @IntOption(min = 1, max = 3, suggestions = {"1", "2", "3"})
+        @IntOption(min = 1, max = 10, suggestions = {"1", "2", "3", "6", "9", "10"})
         int maxAugmentLevel = 3;
     }
 }

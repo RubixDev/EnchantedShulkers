@@ -4,12 +4,14 @@ import de.rubixdev.enchantedshulkers.Utils;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.ShulkerBoxSlot;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class AugmentedShulkerBoxScreenHandler extends GenericContainerScreenHandler {
-    public AugmentedShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, int enchantmentLevel) {
+    private AugmentedShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, int enchantmentLevel) {
         super(
                 enchantmentLevel == 1 ? ScreenHandlerType.GENERIC_9X4
                     : enchantmentLevel == 2 ? ScreenHandlerType.GENERIC_9X5
@@ -21,6 +23,16 @@ public class AugmentedShulkerBoxScreenHandler extends GenericContainerScreenHand
                 Utils.getInvRows(enchantmentLevel)
         );
         this.convertSlots();
+    }
+
+    public static ScreenHandler create(int syncId, PlayerInventory playerInventory, Inventory inventory, int enchantmentLevel) {
+        int rows = Utils.getInvRows(enchantmentLevel);
+        ScreenHandler.checkSize(inventory, 9 * rows);
+        if (enchantmentLevel > 3 && playerInventory.player instanceof ServerPlayerEntity player) {
+            // TODO: modded clients should have a better UI
+            return new VanillaBigAugmentedGui(player, inventory, rows).openAsScreenHandler(syncId, playerInventory, player);
+        }
+        return new AugmentedShulkerBoxScreenHandler(syncId, playerInventory, inventory, enchantmentLevel);
     }
 
     private void convertSlots() {

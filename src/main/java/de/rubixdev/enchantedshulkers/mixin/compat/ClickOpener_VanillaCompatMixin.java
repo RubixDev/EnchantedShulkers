@@ -38,7 +38,7 @@ public class ClickOpener_VanillaCompatMixin {
     private static void augmentedScreenHandler(ItemStack stack, int syncId, PlayerInventory playerInventory, PlayerEntity player, CallbackInfoReturnable<ScreenHandler> cir) {
         int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack);
         if (level != 0) {
-            cir.setReturnValue(new AugmentedShulkerBoxScreenHandler(
+            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
                     syncId, playerInventory,
                     new BlockEntityInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
                     level
@@ -50,7 +50,7 @@ public class ClickOpener_VanillaCompatMixin {
     //$$ private static void augmentedScreenHandler(ItemStack stack, int syncId, PlayerInventory playerInventory, PlayerEntity player, CallbackInfoReturnable<ScreenHandler> cir) {
     //$$     int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack);
     //$$     if (level != 0) {
-    //$$         cir.setReturnValue(new AugmentedShulkerBoxScreenHandler(
+    //$$         cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
     //$$                 syncId, playerInventory,
     //$$                 new ShulkerInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
     //$$                 level

@@ -36,7 +36,7 @@ public class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
     private void augmentedScreenHandler(int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> cir) {
         int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, this.shulkerBox);
         if (level != 0) {
-            cir.setReturnValue(new AugmentedShulkerBoxScreenHandler(i, playerInventory, (Inventory) this, level));
+            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(i, playerInventory, (Inventory) this, level));
         }
     }
 }

@@ -99,7 +99,7 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
     private void augmentedScreenHandler(int syncId, PlayerInventory playerInventory, CallbackInfoReturnable<ScreenHandler> cir) {
         int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
         if (level != 0) {
-            cir.setReturnValue(new AugmentedShulkerBoxScreenHandler(syncId, playerInventory, (Inventory) this, level));
+            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(syncId, playerInventory, (Inventory) this, level));
         }
     }
 

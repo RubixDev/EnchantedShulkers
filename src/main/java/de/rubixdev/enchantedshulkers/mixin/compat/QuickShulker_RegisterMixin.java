@@ -24,7 +24,7 @@ public class QuickShulker_RegisterMixin {
             at = @At("RETURN"),
             cancellable = true)
     private static void augmentInvSize(PlayerEntity player, ItemStack stack, int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> cir) {
-        cir.setReturnValue(new AugmentedShulkerBoxScreenHandler(
+        cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
                 i, playerInventory,
                 ShulkerUtils.getInventoryFromShulker(stack),
                 EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack))
