@@ -19,6 +19,7 @@
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",
     "compat.ClickOpener_VanillaCompatMixin",
+    "compat.Peek_TooltipImageEventsMixin",
     "compat.QuickShulker_ItemStackInventoryAccessor",
     "compat.QuickShulker_RegisterMixin",
     "compat.QuickShulker_ShulkerUtilsMixin",

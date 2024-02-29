@@ -114,6 +114,11 @@ dependencies {
             exclude(group: "com.terraformersmc")
         }
     }
+    // - Peek
+    if (project.peek == "true") {
+        // TODO: remapping(?) breaks this in a dev env for some reason, so we keep it compile only. (getItems() (mojmaps) is remapped to getHeldStacks() but should be method_11282() (yarn/intermediary))
+        modCompileOnly "maven.modrinth:peek:${project.peek_version}"
+    }
 }
 
 String MIXIN_CONFIG_PATH = 'enchantedshulkers.mixins.json'
