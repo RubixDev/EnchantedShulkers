@@ -38,6 +38,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -233,5 +234,15 @@ public class Utils {
             }
         }
         return stack.getName();
+    }
+
+    public static @Nullable DyeColor getColor(ItemStack shulker) {
+        if (shulker.getItem() instanceof BlockItem blockItem) {
+            Block block = blockItem.getBlock();
+            if (block instanceof ShulkerBoxBlock shulkerBlock) {
+                return shulkerBlock.getColor();
+            }
+        }
+        return null;
     }
 }

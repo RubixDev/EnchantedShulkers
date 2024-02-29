@@ -29,7 +29,8 @@ public class QuickShulker_RegisterMixin {
                 i, playerInventory,
                 ShulkerUtils.getInventoryFromShulker(stack),
                 EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack),
-                Utils.getDisplayName(stack)
+                Utils.getDisplayName(stack),
+                Utils.getColor(stack)
         ));
     }
 }

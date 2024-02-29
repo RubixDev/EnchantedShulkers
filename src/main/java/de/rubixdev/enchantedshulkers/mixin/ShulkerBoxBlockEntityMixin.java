@@ -21,6 +21,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
@@ -39,6 +40,9 @@ import java.util.stream.IntStream;
 public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
         implements EnchantableBlockEntity, NamedScreenHandlerFactory {
     @Shadow private DefaultedList<ItemStack> inventory;
+
+    @Shadow @Nullable public abstract DyeColor getColor();
+
     @Unique
     private NbtList enchantments = new NbtList();
 
@@ -100,7 +104,7 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
     private void augmentedScreenHandler(int syncId, PlayerInventory playerInventory, CallbackInfoReturnable<ScreenHandler> cir) {
         int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
         if (level != 0) {
-            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName()));
+            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName(), this.getColor()));
         }
     }
 

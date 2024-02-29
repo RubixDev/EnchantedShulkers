@@ -10,6 +10,8 @@ import net.minecraft.screen.slot.ShulkerBoxSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
+import org.jetbrains.annotations.Nullable;
 
 public class AugmentedShulkerBoxScreenHandler extends GenericContainerScreenHandler {
     private AugmentedShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, int enchantmentLevel) {
@@ -26,12 +28,12 @@ public class AugmentedShulkerBoxScreenHandler extends GenericContainerScreenHand
         this.convertSlots();
     }
 
-    public static ScreenHandler create(int syncId, PlayerInventory playerInventory, Inventory inventory, int enchantmentLevel, Text title) {
+    public static ScreenHandler create(int syncId, PlayerInventory playerInventory, Inventory inventory, int enchantmentLevel, Text title, @Nullable DyeColor color) {
         int rows = Utils.getInvRows(enchantmentLevel);
         ScreenHandler.checkSize(inventory, 9 * rows);
         if (enchantmentLevel > 3 && playerInventory.player instanceof ServerPlayerEntity player) {
             // TODO: modded clients should have a better UI
-            return new VanillaBigAugmentedGui(player, inventory, rows, title).openAsScreenHandler(syncId, playerInventory, player);
+            return new VanillaBigAugmentedGui(player, inventory, rows, title, color).openAsScreenHandler(syncId, playerInventory, player);
         }
         return new AugmentedShulkerBoxScreenHandler(syncId, playerInventory, inventory, enchantmentLevel);
     }

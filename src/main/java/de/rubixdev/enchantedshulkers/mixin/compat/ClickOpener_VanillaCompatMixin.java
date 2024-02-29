@@ -42,7 +42,8 @@ public class ClickOpener_VanillaCompatMixin {
                     syncId, playerInventory,
                     new BlockEntityInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
                     level,
-                    Utils.getDisplayName(stack)
+                    Utils.getDisplayName(stack),
+                    Utils.getColor(stack)
             ));
         }
     }
@@ -56,6 +57,7 @@ public class ClickOpener_VanillaCompatMixin {
     //$$                 new ShulkerInventory(stack, 9 * Utils.getInvRows(level), BlockEntityType.SHULKER_BOX),
     //$$                 level,
     //$$                 Utils.getDisplayName(stack)
+    //$$                 Utils.getColor(stack)
     //$$         ));
     //$$     }
     //$$ }
