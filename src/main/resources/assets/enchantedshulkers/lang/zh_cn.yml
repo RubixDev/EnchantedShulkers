@@ -45,6 +45,20 @@ enchantedshulkers.options:
   # weakerVacuum.desc: Require the same item to already be present in the container. The same behavior can be enabled for the Siphon enchantment with "strongerSiphon".
   # maxAugmentLevel.desc: The maximum level for the Augment enchantment. For the best experience execute "/reload" after changing this value.
 
+enchantedshulkers.ui:
+  big_augment_sgui:
+    # scroll_up_one: Scroll up one
+    # scroll_up_two: Scroll up two
+    # scroll_up_three: Scroll up three
+    # scroll_to_top: Scroll to top
+    # scroll_down_one: Scroll down one
+    # scroll_down_two: Scroll down two
+    # scroll_down_three: Scroll down three
+    # scroll_to_bottom: Scroll to bottom
+    # maximize: Maximize
+    # maximize.desc: Items cannot be interacted with when maximized
+    # minimize: Minimize
+
 text.autoconfig.enchantedshulkers:
   title: 附魔潜影盒 - 客户端设置
   option:

@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers.screen;
 
+import de.rubixdev.enchantedshulkers.Mod;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
@@ -296,19 +297,19 @@ public class VanillaBigAugmentedGui extends SimpleGui {
             }
         }
 
-        addScrollButton(0, Text.literal("Scroll up one"), -1, scroll <= 0, up_1);
-        addScrollButton(1, Text.literal("Scroll down one"), 1, scroll >= maxScroll(), down_1);
-        addScrollButton(2, Text.literal("Scroll up two"), -2, scroll <= 0, up_2);
-        addScrollButton(3, Text.literal("Scroll down two"), 2, scroll >= maxScroll(), down_2);
-        addScrollButton(4, Text.literal("Scroll up three"), -3, scroll <= 0, up_3);
-        addScrollButton(5, Text.literal("Scroll down three"), 3, scroll >= maxScroll(), down_3);
-        addScrollButton(6, Text.literal("Scroll to top"), -rows, scroll <= 0, up_stop);
-        addScrollButton(7, Text.literal("Scroll to bottom"), rows, scroll >= maxScroll(), down_stop);
+        addScrollButton(0, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_up_one"), -1, scroll <= 0, up_1);
+        addScrollButton(1, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_down_one"), 1, scroll >= maxScroll(), down_1);
+        addScrollButton(2, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_up_two"), -2, scroll <= 0, up_2);
+        addScrollButton(3, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_down_two"), 2, scroll >= maxScroll(), down_2);
+        addScrollButton(4, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_up_three"), -3, scroll <= 0, up_3);
+        addScrollButton(5, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_down_three"), 3, scroll >= maxScroll(), down_3);
+        addScrollButton(6, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_to_top"), -rows, scroll <= 0, up_stop);
+        addScrollButton(7, Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.scroll_to_bottom"), rows, scroll >= maxScroll(), down_stop);
 
         setSlot(actionsRow() + 8, GuiElementBuilder.from(Items.PLAYER_HEAD.getDefaultStack())
                 .setSkullOwner(maximized ? minimize.getLeft() : maximize.getLeft(), maximized ? minimize.getRight() : maximize.getRight(), null)
-                .setName(Text.literal(maximized ? "Minimize" : "Maximize").formatted(Formatting.GREEN))
-                .setLore(maximized ? List.of() : List.of(Text.literal("Items cannot be interacted with when maximized").formatted(Formatting.GRAY)))
+                .setName(Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui." + (maximized ? "minimize" : "maximize")).formatted(Formatting.GREEN))
+                .setLore(maximized ? List.of() : List.of(Text.translatable(Mod.MOD_ID + ".ui.big_augment_sgui.maximize.desc").formatted(Formatting.GRAY)))
                 .setCallback(() -> {
                     click();
                     new VanillaBigAugmentedGui(player, shulkerInventory, rows, getTitle(), color, !maximized, false).open();

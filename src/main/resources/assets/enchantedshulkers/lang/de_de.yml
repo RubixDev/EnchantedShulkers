@@ -45,6 +45,20 @@ enchantedshulkers.options:
   weakerVacuum.desc: Vakuum benötigt Gegenstände der selben Art bereits Container. Das selbe Verhalten kann für die Saugen Verzauberung mit "strongerSiphon" eingeschaltet werden.
   maxAugmentLevel.desc: Das höchste Level für die Erweitern Verzauberung. Für die beste Erfahrung führe "/reload" aus nach dem Ändern dieses Werts.
 
+enchantedshulkers.ui:
+  big_augment_sgui:
+    scroll_up_one: Scrolle eine Reihe hoch
+    scroll_up_two: Scrolle zwei Reihen hoch
+    scroll_up_three: Scrolle drei Reihen hoch
+    scroll_to_top: Scrolle zum Anfang
+    scroll_down_one: Scrolle eine Reihe runter
+    scroll_down_two: Scrolle zwei Reihen runter
+    scroll_down_three: Scrolle drei Reihen runter
+    scroll_to_bottom: Scrolle zum Ende
+    maximize: Maximieren
+    maximize.desc: Wenn maximiert ist kann nicht mit Gegenständen interagiert werden
+    minimize: Minimieren
+
 text.autoconfig.enchantedshulkers:
   title: Enchanted Shulkers Client Einstellungen
   option:
