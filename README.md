@@ -156,7 +156,7 @@ command in game. Below is a list of available options.
 | `nestedContainers`      | any integer between `0` and `32767` | `255`             | Search containers recursively up to the specified number of levels deep (e.g, search through Shulker Boxes in an Ender Chest)                   |
 | `strongerSiphon`        | `true`, `false`                     | `false`           | Allow the Siphon enchantment to fill empty slots. The same behavior can be enabled for the Vacuum enchantment with `weakerVacuum`               |
 | `weakerVacuum`          | `true`, `false`                     | `false`           | Require the same item to already be present in the container. The same behavior can be enabled for the Siphon enchantment with `strongerSiphon` |
-| `maxAugmentLevel`       | `1`, `2`, `3`                       | `3`               | The maximum level for the Augment enchantment. For the best experience execute `/reload` after changing this value                              |
+| `maxAugmentLevel`       | any integer between `1` and `10`    | `3`               | The maximum level for the Augment enchantment. For the best experience execute `/reload` after changing this value                              |
 
 ## For Mod Developers
 
