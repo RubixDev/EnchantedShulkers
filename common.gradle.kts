@@ -119,46 +119,46 @@ repositories {
 
 // https://github.com/FabricMC/fabric-loader/issues/783
 configurations {
-    "modRuntimeOnly" {
+    modRuntimeOnly {
         exclude(group = "net.fabricmc", module = "fabric-loader")
     }
 }
 
 dependencies {
     // loom
-    "minecraft"("com.mojang:minecraft:${props.minecraft_version}")
-    "mappings"("net.fabricmc:yarn:${props.yarn_mappings}:v2")
-    "modImplementation"("net.fabricmc:fabric-loader:${props.loader_version}")
+    minecraft("com.mojang:minecraft:${props.minecraft_version}")
+    mappings("net.fabricmc:yarn:${props.yarn_mappings}:v2")
+    modImplementation("net.fabricmc:fabric-loader:${props.loader_version}")
 
     // dependencies
-    "modImplementation"("net.fabricmc.fabric-api:fabric-api:${props.fabric_version}")
-    "modImplementation"("net.fabricmc:fabric-language-kotlin:${props.fabric_kotlin_version}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${props.fabric_version}")
+    modImplementation("net.fabricmc:fabric-language-kotlin:${props.fabric_kotlin_version}")
 
     // optional dependencies
-    "modApi"("me.shedaniel.cloth:cloth-config-fabric:${props.cloth_version}") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${props.cloth_version}") {
         exclude(group = "net.fabricmc.fabric-api")
     }
-    "modApi"("com.terraformersmc:modmenu:${props.modmenu_version}")
+    modApi("com.terraformersmc:modmenu:${props.modmenu_version}")
 
     // libraries
-    "include"("modImplementation"("com.github.Fallen-Breath:conditional-mixin:${props.conditionalmixin_version}")!!)
-    "include"("modImplementation"("com.github.Chocohead:Fabric-ASM:${props.fabric_asm_version}")!!)
-    "include"(
-        "modApi"("io.hotmoka:toml4j:${props.toml4j_version}") {
+    include(modImplementation("com.github.Fallen-Breath:conditional-mixin:${props.conditionalmixin_version}")!!)
+    include(modImplementation("com.github.Chocohead:Fabric-ASM:${props.fabric_asm_version}")!!)
+    include(
+        modApi("io.hotmoka:toml4j:${props.toml4j_version}") {
             exclude(module = "gson")
         },
     )
-    "include"("implementation"("annotationProcessor"("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${props.mixinsquared_version}")!!)!!)
-    "include"("modImplementation"("eu.pb4:polymer-core:${props.polymer_version}")!!)
-    "include"("modImplementation"("xyz.nucleoid:server-translations-api:${props.server_translations_version}")!!)
-    "include"("modImplementation"("eu.pb4:sgui:${props.sgui_version}")!!)
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${props.mixinsquared_version}")!!)!!)
+    include(modImplementation("eu.pb4:polymer-core:${props.polymer_version}")!!)
+    include(modImplementation("xyz.nucleoid:server-translations-api:${props.server_translations_version}")!!)
+    include(modImplementation("eu.pb4:sgui:${props.sgui_version}")!!)
 
     // mods tested for compatibility
     fun modCompat(dependencyNotation: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit = {}) =
         if (props.run_with_compat_mods) {
-            "modImplementation"(dependencyNotation, dependencyConfiguration)
+            modImplementation(dependencyNotation, dependencyConfiguration)
         } else {
-            "modCompileOnly"(dependencyNotation, dependencyConfiguration)
+            modCompileOnly(dependencyNotation, dependencyConfiguration)
         }
     // - Reinforced Shulkers
     if (props.reinfshulkers) {
@@ -178,7 +178,7 @@ dependencies {
     // - Shulker+
     if (props.shulker_plus) {
         // TODO: change to `modCompat` when compatible with split shulkers (https://github.com/CursedFlames/MCTweaks/issues/3)
-        "modCompileOnly"("maven.modrinth:shulker+:${props.shulker_plus_version}")
+        modCompileOnly("maven.modrinth:shulker+:${props.shulker_plus_version}")
     }
     // - Split Shulker Boxes
     if (props.split_shulkers) {
@@ -216,7 +216,7 @@ dependencies {
     // - Peek
     if (props.peek) {
         // TODO: remapping(?) breaks this in a dev env for some reason, so we keep it compile only. (getItems() (mojmaps) is remapped to getHeldStacks() but should be method_11282() (yarn/intermediary))
-        "modCompileOnly"("maven.modrinth:peek:${props.peek_version}")
+        modCompileOnly("maven.modrinth:peek:${props.peek_version}")
     }
 }
 
