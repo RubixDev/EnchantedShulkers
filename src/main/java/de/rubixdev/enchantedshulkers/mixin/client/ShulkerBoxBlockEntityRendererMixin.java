@@ -22,32 +22,52 @@ import static de.rubixdev.enchantedshulkers.ClientMod.*;
 @Mixin(value = ShulkerBoxBlockEntityRenderer.class, priority = 1001)
 public class ShulkerBoxBlockEntityRendererMixin {
     @Redirect(
-            method =
-                    "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"))
+        method = "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"
+        )
+    )
     private VertexConsumer getVertexConsumer(
-            SpriteIdentifier instance,
-            VertexConsumerProvider vertexConsumers,
-            Function<Identifier, RenderLayer> layerFactory,
-            ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+        SpriteIdentifier instance,
+        VertexConsumerProvider vertexConsumers,
+        Function<Identifier, RenderLayer> layerFactory,
+        ShulkerBoxBlockEntity shulkerBoxBlockEntity
+    ) {
         if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
-                .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
-                        vertexConsumers, instance.getRenderLayer(layerFactory), false, true));
+            .getTextureSpecificVertexConsumer(
+                ItemRenderer
+                    .getDirectItemGlintConsumer(vertexConsumers, instance.getRenderLayer(layerFactory), false, true)
+            );
     }
 
     @Redirect(
-            method = "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/ShulkerEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
-    private void renderClosedBox(ShulkerEntityModel<?> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f) {
-        if (!ClientMod.customModels()
+        method = "render(Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/render/entity/model/ShulkerEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"
+        )
+    )
+    private void renderClosedBox(
+        ShulkerEntityModel<?> instance,
+        MatrixStack matrixStack,
+        VertexConsumer vertexConsumer,
+        int light,
+        int overlay,
+        float red,
+        float green,
+        float blue,
+        float alpha,
+        ShulkerBoxBlockEntity shulkerBoxBlockEntity,
+        float f
+    ) {
+        if (
+            !ClientMod.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)
-                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f) {
+                || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f
+        ) {
             instance.render(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);
         } else {
             CLOSED_BOX.render(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);

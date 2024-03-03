@@ -19,18 +19,22 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "de.rubixdev.enchantedshulkers.Mod"
-    ],
-    "client": [
-      "de.rubixdev.enchantedshulkers.ClientMod"
-    ],
-    "mm:early_risers": [
-      "de.rubixdev.enchantedshulkers.asm.EnumInjector"
-    ],
-    "modmenu": [
-      "de.rubixdev.enchantedshulkers.ModMenuInit"
-    ]
+    "main": [{
+      "value": "de.rubixdev.enchantedshulkers.Mod",
+      "adapter": "kotlin"
+    }],
+    "client": [{
+      "value": "de.rubixdev.enchantedshulkers.ClientMod",
+      "adapter": "kotlin"
+    }],
+    "mm:early_risers": [{
+      "value": "de.rubixdev.enchantedshulkers.asm.EnumInjector",
+      "adapter": "kotlin"
+    }],
+    "modmenu": [{
+      "value": "de.rubixdev.enchantedshulkers.ModMenuInit",
+      "adapter": "kotlin"
+    }]
   },
   "mixins": [
     "enchantedshulkers.mixins.json"
@@ -39,8 +43,9 @@
 
   "depends": {
     "fabricloader": ">=${fabric_loader}",
-    "${fabric_api_mod_id}": "*",
-    "minecraft": "${minecraft_dependency}"
+    "fabric-api": "*",
+    "minecraft": "${minecraft_dependency}",
+    "fabric-language-kotlin": ">=${fabric_kotlin_version}"
   },
   "suggests": {
     "cloth-config": "*",

@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings("CancellableInjectionUsage") // the methods are overriden in child mixins and there they need to be cancellable
+@SuppressWarnings("CancellableInjectionUsage") // the methods are overriden in
+                                               // child mixins and there they
+                                               // need to be cancellable
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin {
     @Inject(method = "toInitialChunkDataNbt", at = @At("HEAD"), cancellable = true)

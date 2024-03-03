@@ -11,19 +11,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings("UnstableApiUsage")
 @Restriction(require = @Condition("shulkerboxtooltip"))
 //#if MC >= 12004
+@SuppressWarnings("UnstableApiUsage")
 @Mixin(com.misterpemodder.shulkerboxtooltip.impl.provider.BlockEntityAwarePreviewRenderer.class)
 //#else
 //$$ @Mixin(com.misterpemodder.shulkerboxtooltip.api.provider.BlockEntityPreviewProvider.class)
 //#endif
 public class ShulkerBoxTooltip_BlockEntityAwarePreviewProviderMixin {
-    @Inject(
-            method = "getInventoryMaxSize",
-            at = @At("RETURN"),
-            cancellable = true,
-            remap = false)
+    @Inject(method = "getInventoryMaxSize", at = @At("RETURN"), cancellable = true, remap = false)
     private void augmentInvSize(PreviewContext context, CallbackInfoReturnable<Integer> cir) {
         if (!Utils.canAugment(context.stack())) return;
         int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, context.stack());

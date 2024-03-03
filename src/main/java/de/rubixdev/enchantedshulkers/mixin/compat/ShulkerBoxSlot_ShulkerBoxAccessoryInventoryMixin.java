@@ -25,9 +25,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Restriction(require = @Condition("shulkerboxslot"))
 @Mixin(ShulkerBoxAccessoryInventory.class)
 public abstract class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
-    @Shadow @Final private ItemStack shulkerBox;
+    @Shadow
+    @Final
+    private ItemStack shulkerBox;
 
-    @Shadow public abstract Text getDisplayName();
+    @Shadow
+    public abstract Text getDisplayName();
 
     @ModifyConstant(method = "<init>", constant = @Constant(intValue = 27), require = 1)
     private int augmentInvSize(int constant, ItemStack shulkerBox) {
@@ -36,15 +39,24 @@ public abstract class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
     }
 
     @Inject(method = "createMenu", at = @At("HEAD"), cancellable = true)
-    private void augmentedScreenHandler(int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> cir) {
+    private void augmentedScreenHandler(
+        int i,
+        PlayerInventory playerInventory,
+        PlayerEntity playerEntity,
+        CallbackInfoReturnable<ScreenHandler> cir
+    ) {
         int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, this.shulkerBox);
         if (level != 0) {
-            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
-                    i, playerInventory,
-                    (Inventory) this, level,
+            cir.setReturnValue(
+                AugmentedShulkerBoxScreenHandler.create(
+                    i,
+                    playerInventory,
+                    (Inventory) this,
+                    level,
                     getDisplayName(),
-                    Utils.getColor(this.shulkerBox)
-            ));
+                    Utils.getShulkerColor(this.shulkerBox)
+                )
+            );
         }
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,16 +18,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderChestBlockEntity.class)
 public abstract class EnderChestBlockEntityMixin extends BlockEntityMixin implements EnchantableBlockEntity {
-    @Unique
-    private NbtList enchantments = new NbtList();
+    @Unique private NbtList enchantments = new NbtList();
 
     @Override
-    public NbtList enchantedShulkers$getEnchantments() {
+    public @NotNull NbtList enchantedShulkers$getEnchantments() {
         return this.enchantments;
     }
 
     @Override
-    public void enchantedShulkers$setEnchantments(NbtList enchantments) {
+    public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
         this.enchantments = enchantments;
     }
 

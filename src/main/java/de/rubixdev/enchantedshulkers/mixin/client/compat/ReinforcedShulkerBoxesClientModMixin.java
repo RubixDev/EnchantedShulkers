@@ -21,20 +21,24 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ReinforcedShulkerBoxesClientMod.class)
 public class ReinforcedShulkerBoxesClientModMixin {
     @Inject(
-            method = "lambda$initializeReinforcedShulkerBoxesClient$0",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;renderEntity(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)Z"),
-            locals = LocalCapture.CAPTURE_FAILSOFT)
+        method = "lambda$initializeReinforcedShulkerBoxesClient$0",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;renderEntity(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)Z"
+        ),
+        locals = LocalCapture.CAPTURE_FAILSOFT
+    )
     private static void addEnchantments(
-            ReinforcingMaterial material,
-            Block block,
-            ItemStack stack,
-            ModelTransformationMode mode,
-            MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers,
-            int light,
-            int overlay,
-            CallbackInfo ci,
-            BlockEntity blockEntity
+        ReinforcingMaterial material,
+        Block block,
+        ItemStack stack,
+        ModelTransformationMode mode,
+        MatrixStack matrices,
+        VertexConsumerProvider vertexConsumers,
+        int light,
+        int overlay,
+        CallbackInfo ci,
+        BlockEntity blockEntity
     ) {
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
         enchantableBlockEntity.enchantedShulkers$setEnchantments(stack.getEnchantments());

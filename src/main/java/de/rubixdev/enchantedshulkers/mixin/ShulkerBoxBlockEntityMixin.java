@@ -25,6 +25,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,27 +39,27 @@ import java.util.stream.IntStream;
 
 @Mixin(ShulkerBoxBlockEntity.class)
 public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
-        implements EnchantableBlockEntity, NamedScreenHandlerFactory {
-    @Shadow private DefaultedList<ItemStack> inventory;
+    implements EnchantableBlockEntity, NamedScreenHandlerFactory {
+    @Shadow
+    private DefaultedList<ItemStack> inventory;
 
-    @Shadow @Nullable public abstract DyeColor getColor();
+    @Shadow
+    @Nullable public abstract DyeColor getColor();
 
-    @Unique
-    private NbtList enchantments = new NbtList();
+    @Unique private NbtList enchantments = new NbtList();
 
     @Override
-    public NbtList enchantedShulkers$getEnchantments() {
+    public @NotNull NbtList enchantedShulkers$getEnchantments() {
         return this.enchantments;
     }
 
     @Override
-    public void enchantedShulkers$setEnchantments(NbtList enchantments) {
+    public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
         this.enchantments = enchantments;
         this.updateInventorySize();
     }
 
-    @Unique
-    private void updateInventorySize() {
+    @Unique private void updateInventorySize() {
         int newSize = 9 * Utils.getInvRows(Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments));
         if (this.inventory.size() >= newSize) return;
 
@@ -101,10 +102,17 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
     }
 
     @Inject(method = "createScreenHandler", at = @At("HEAD"), cancellable = true)
-    private void augmentedScreenHandler(int syncId, PlayerInventory playerInventory, CallbackInfoReturnable<ScreenHandler> cir) {
+    private void augmentedScreenHandler(
+        int syncId,
+        PlayerInventory playerInventory,
+        CallbackInfoReturnable<ScreenHandler> cir
+    ) {
         int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
         if (level != 0) {
-            cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName(), this.getColor()));
+            cir.setReturnValue(
+                AugmentedShulkerBoxScreenHandler
+                    .create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName(), this.getColor())
+            );
         }
     }
 

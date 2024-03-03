@@ -21,7 +21,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class AbstractBlockMixin {
     @Inject(method = "getDroppedStacks", at = @At("RETURN"))
     public void getDroppedStacks(
-            BlockState state, LootContextParameterSet.Builder builder, CallbackInfoReturnable<List<ItemStack>> cir) {
+        BlockState state,
+        LootContextParameterSet.Builder builder,
+        CallbackInfoReturnable<List<ItemStack>> cir
+    ) {
         //#if MC >= 12000
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         //#else

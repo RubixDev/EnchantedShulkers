@@ -17,8 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
     @Shadow
-    @Nullable
-    public Screen currentScreen;
+    @Nullable public Screen currentScreen;
 
     @Inject(method = "setScreen", at = @At("HEAD"))
     private void sendScreenChangePacket(Screen screen, CallbackInfo ci) {

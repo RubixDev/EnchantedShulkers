@@ -19,13 +19,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net/minecraft/screen/GrindstoneScreenHandler$4")
 public class GrindstoneScreenHandler_ResultSlotMixin {
-    @Shadow @Final ScreenHandlerContext field_16779;
+    @Shadow
+    @Final
+    ScreenHandlerContext field_16779;
 
-    @Shadow @Final GrindstoneScreenHandler field_16780;
+    @Shadow
+    @Final
+    GrindstoneScreenHandler field_16780;
 
     @Inject(
-            method = "onTakeItem",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandlerContext;run(Ljava/util/function/BiConsumer;)V"))
+        method = "onTakeItem",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/screen/ScreenHandlerContext;run(Ljava/util/function/BiConsumer;)V"
+        )
+    )
     private void dropAugmentItems(PlayerEntity player, ItemStack resultStack, CallbackInfo ci) {
         this.field_16779.run((world, blockPos) -> {
             if (world instanceof ServerWorld) {

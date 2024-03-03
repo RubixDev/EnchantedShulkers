@@ -20,12 +20,18 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Restriction(require = @Condition("shulkerutils"))
 @Mixin(ShulkerUtils.class)
 public class QuickShulker_ShulkerUtilsMixin {
-    // might not be necessary once https://github.com/kyrptonaught/shulkerutils/pull/1 gets merged
+    // might not be necessary once
+    // https://github.com/kyrptonaught/shulkerutils/pull/1 gets merged
     @Inject(
-            method = "getInventoryFromShulker",
-            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/BlockItem;getBlock()Lnet/minecraft/block/Block;", shift = At.Shift.AFTER),
-            cancellable = true,
-            locals = LocalCapture.CAPTURE_FAILHARD)
+        method = "getInventoryFromShulker",
+        at = @At(
+            value = "INVOKE_ASSIGN",
+            target = "Lnet/minecraft/item/BlockItem;getBlock()Lnet/minecraft/block/Block;",
+            shift = At.Shift.AFTER
+        ),
+        cancellable = true,
+        locals = LocalCapture.CAPTURE_FAILHARD
+    )
     private static void augmentInvSize(ItemStack stack, CallbackInfoReturnable<ItemStackInventory> cir, Block shulker) {
         if (shulker instanceof BlockWithEntity bwe) {
             BlockEntity blockEntity = bwe.createBlockEntity(BlockPos.ORIGIN, null);

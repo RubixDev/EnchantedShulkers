@@ -45,13 +45,14 @@ public class BuiltinModelItemRendererMixin_optifabric {
 
     @Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
     public void render(
-            ItemStack stack,
-            ModelTransformationMode mode,
-            MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers,
-            int light,
-            int overlay,
-            CallbackInfo ci) {
+        ItemStack stack,
+        ModelTransformationMode mode,
+        MatrixStack matrices,
+        VertexConsumerProvider vertexConsumers,
+        int light,
+        int overlay,
+        CallbackInfo ci
+    ) {
         if (!(stack.getItem() instanceof BlockItem item)) return;
         Block block = item.getBlock();
         BlockEntity blockEntity;

@@ -28,34 +28,48 @@ import java.util.function.Function;
 @Restriction(require = @Condition("splitshulkers"))
 @Mixin(value = ShulkerBoxBlockEntityRenderer.class, priority = 1100)
 public class SplitShulkers_ShulkerBoxBlockEntityRendererMixin {
-    @SuppressWarnings({"MixinAnnotationTarget", "InvalidMemberReference", "CancellableInjectionUsage"}) // MixinSquared
-    @TargetHandler(
-            mixin = "cursedflames.splitshulkers.mixin.client.MixinShulkerBoxRenderer",
-            name = "onRender")
+    @SuppressWarnings({ "MixinAnnotationTarget", "InvalidMemberReference", "CancellableInjectionUsage" }) // MixinSquared
+    @TargetHandler(mixin = "cursedflames.splitshulkers.mixin.client.MixinShulkerBoxRenderer", name = "onRender")
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
-    private void splitShulkersCompat(ShulkerBoxBlockEntity shulkerBox, float f, MatrixStack poseStack, VertexConsumerProvider multiBufferSource, int i, int j, CallbackInfo ci, Direction direction, SpriteIdentifier material, CallbackInfo ci2) {
+    private void splitShulkersCompat(
+        ShulkerBoxBlockEntity shulkerBox,
+        float f,
+        MatrixStack poseStack,
+        VertexConsumerProvider multiBufferSource,
+        int i,
+        int j,
+        CallbackInfo ci,
+        Direction direction,
+        SpriteIdentifier material,
+        CallbackInfo ci2
+    ) {
         SplitShulkerBoxBlockEntity splitShulker = (SplitShulkerBoxBlockEntity) shulkerBox;
         if (Objects.equals(splitShulker.getColor(), splitShulker.splitshulkers_getSecondaryColor())) {
             ci2.cancel();
         }
     }
 
-    @SuppressWarnings({"MixinAnnotationTarget", "InvalidMemberReference", "UnresolvedMixinReference"}) // MixinSquared
-    @TargetHandler(
-            mixin = "cursedflames.splitshulkers.mixin.client.MixinShulkerBoxRenderer",
-            name = "onRender")
+    @SuppressWarnings({ "MixinAnnotationTarget", "InvalidMemberReference", "UnresolvedMixinReference" }) // MixinSquared
+    @TargetHandler(mixin = "cursedflames.splitshulkers.mixin.client.MixinShulkerBoxRenderer", name = "onRender")
     @Redirect(
-            method = "@MixinSquared:Handler",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"))
+        method = "@MixinSquared:Handler",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/util/SpriteIdentifier;getVertexConsumer(Lnet/minecraft/client/render/VertexConsumerProvider;Ljava/util/function/Function;)Lnet/minecraft/client/render/VertexConsumer;"
+        )
+    )
     private VertexConsumer getVertexConsumerSplitShulkers(
-            SpriteIdentifier instance,
-            VertexConsumerProvider vertexConsumers,
-            Function<Identifier, RenderLayer> layerFactory,
-            ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+        SpriteIdentifier instance,
+        VertexConsumerProvider vertexConsumers,
+        Function<Identifier, RenderLayer> layerFactory,
+        ShulkerBoxBlockEntity shulkerBoxBlockEntity
+    ) {
         if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
-                .getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(
-                        vertexConsumers, instance.getRenderLayer(layerFactory), false, true));
+            .getTextureSpecificVertexConsumer(
+                ItemRenderer
+                    .getDirectItemGlintConsumer(vertexConsumers, instance.getRenderLayer(layerFactory), false, true)
+            );
     }
 }

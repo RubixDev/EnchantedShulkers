@@ -17,17 +17,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements InventoryState {
-    @Unique
-    private int previousSlot = -1;
+    @Unique private int previousSlot = -1;
 
-    @Unique
-    private ItemStack previousMainStack = ItemStack.EMPTY;
+    @Unique private ItemStack previousMainStack = ItemStack.EMPTY;
 
-    @Unique
-    private ItemStack previousOffStack = ItemStack.EMPTY;
+    @Unique private ItemStack previousOffStack = ItemStack.EMPTY;
 
-    @Unique
-    private boolean hasOpenInventory = false;
+    @Unique private boolean hasOpenInventory = false;
 
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -43,10 +39,12 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
         hasOpenInventory = false;
     }
 
-    @SuppressWarnings("DataFlowIssue") // cast to ServerPlayerEntity isn't invalid
+    @SuppressWarnings("DataFlowIssue") // cast to ServerPlayerEntity isn't
+                                       // invalid
     @Inject(
-            method = "playerTick",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;tick()V"))
+        method = "playerTick",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;tick()V")
+    )
     public void playerTick(CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
@@ -55,14 +53,15 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements In
         ItemStack currentOffStack = player.getInventory().getStack(PlayerInventory.OFF_HAND_SLOT);
 
         RefillEnchantment.onPlayerTick(
-                (ServerPlayerEntity) (Object) this,
-                hasOpenInventory,
-                currentSlot,
-                currentMainStack,
-                currentOffStack,
-                previousSlot,
-                previousMainStack,
-                previousOffStack);
+            (ServerPlayerEntity) (Object) this,
+            hasOpenInventory,
+            currentSlot,
+            currentMainStack,
+            currentOffStack,
+            previousSlot,
+            previousMainStack,
+            previousOffStack
+        );
 
         previousSlot = currentSlot;
         previousMainStack = currentMainStack.copy();

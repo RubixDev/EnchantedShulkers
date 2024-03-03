@@ -20,17 +20,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Restriction(require = @Condition("quickshulker"))
 @Mixin(QuickShulkerMod.class)
 public class QuickShulker_RegisterMixin {
-    @Inject(
-            method = "lambda$registerProviders$1",
-            at = @At("RETURN"),
-            cancellable = true)
-    private static void augmentInvSize(PlayerEntity player, ItemStack stack, int i, PlayerInventory playerInventory, PlayerEntity playerEntity, CallbackInfoReturnable<ScreenHandler> cir) {
-        cir.setReturnValue(AugmentedShulkerBoxScreenHandler.create(
-                i, playerInventory,
+    @Inject(method = "lambda$registerProviders$1", at = @At("RETURN"), cancellable = true)
+    private static void augmentInvSize(
+        PlayerEntity player,
+        ItemStack stack,
+        int i,
+        PlayerInventory playerInventory,
+        PlayerEntity playerEntity,
+        CallbackInfoReturnable<ScreenHandler> cir
+    ) {
+        cir.setReturnValue(
+            AugmentedShulkerBoxScreenHandler.create(
+                i,
+                playerInventory,
                 ShulkerUtils.getInventoryFromShulker(stack),
                 EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, stack),
                 Utils.getDisplayName(stack),
-                Utils.getColor(stack)
-        ));
+                Utils.getShulkerColor(stack)
+            )
+        );
     }
 }

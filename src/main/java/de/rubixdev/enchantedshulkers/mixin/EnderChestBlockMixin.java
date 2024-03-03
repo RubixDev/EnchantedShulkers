@@ -19,18 +19,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(EnderChestBlock.class)
 public abstract class EnderChestBlockMixin {
     @Redirect(
-            method = "onUse",
-            at =
-                    @At(
-                            value = "FIELD",
-                            target = "Lnet/minecraft/block/EnderChestBlock;CONTAINER_NAME:Lnet/minecraft/text/Text;",
-                            opcode = Opcodes.GETSTATIC))
+        method = "onUse",
+        at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraft/block/EnderChestBlock;CONTAINER_NAME:Lnet/minecraft/text/Text;",
+            opcode = Opcodes.GETSTATIC
+        )
+    )
     private Text colorizeName(BlockState state, World world, BlockPos pos) {
         Text original = EnderChestBlock.CONTAINER_NAME;
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!(WorldConfig.coloredNames()
+        if (
+            !(WorldConfig.coloredNames()
                 && blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity
-                && !enchantableBlockEntity.enchantedShulkers$getEnchantments().isEmpty())) return original;
+                && !enchantableBlockEntity.enchantedShulkers$getEnchantments().isEmpty())
+        ) return original;
 
         MutableText text = original.copy();
         text.setStyle(Style.EMPTY.withFormatting(Formatting.AQUA));

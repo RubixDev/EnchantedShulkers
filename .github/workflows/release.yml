@@ -183,6 +183,7 @@ jobs:
           # declare the dependencies explicitly, so mc-publish won't try to load from fabric.mod.json
           dependencies: |
             fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}
+            fabric-language-kotlin(required){modrinth:Ha28R6CL}{curseforge:308769}
             modmenu(optional){modrinth:mOgUt4GM}{curseforge:308702}
             cloth-config(optional){modrinth:9s6osm5g}{curseforge:348521}
 

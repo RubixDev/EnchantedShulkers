@@ -28,25 +28,28 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ShulkerBoxBlock.class)
 public class ShulkerBoxBlockMixin {
     /**
-     * Only for creative mode, for all other means of breaking see {@link de.rubixdev.enchantedshulkers.mixin.AbstractBlockMixin#getDroppedStacks(BlockState, LootContextParameterSet.Builder, CallbackInfoReturnable)}
+     * Only for creative mode, for all other means of breaking see
+     * {@link de.rubixdev.enchantedshulkers.mixin.AbstractBlockMixin#getDroppedStacks(BlockState, LootContextParameterSet.Builder, CallbackInfoReturnable)}
      */
     @Inject(
-            method = "onBreak",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;hasCustomName()Z"),
-            locals = LocalCapture.CAPTURE_FAILHARD)
-    public void onBreak(
-            World world,
-            BlockPos pos,
-            BlockState state,
-            PlayerEntity player,
-            //#if MC >= 12004
-            CallbackInfoReturnable<BlockState> cir,
-            //#else
-            //$$ CallbackInfo ci,
-            //#endif
-            BlockEntity blockEntity,
-            ShulkerBoxBlockEntity shulkerBoxBlockEntity,
-            ItemStack itemStack) {
+        method = "onBreak",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/ShulkerBoxBlockEntity;hasCustomName()Z"),
+        locals = LocalCapture.CAPTURE_FAILHARD
+    )
+    public void onBreak(/* #if <- hack around formatter */
+        World world,
+        BlockPos pos,
+        BlockState state,
+        PlayerEntity player,
+        //#if MC >= 12004
+        CallbackInfoReturnable<BlockState> cir,
+        //#else
+        //$$ CallbackInfo ci,
+        //#endif
+        BlockEntity blockEntity,
+        ShulkerBoxBlockEntity shulkerBoxBlockEntity,
+        ItemStack itemStack
+    ) {
         if (!(blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) return;
         itemStack.setSubNbt("Enchantments", enchantableBlockEntity.enchantedShulkers$getEnchantments());
     }

@@ -17,14 +17,27 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Restriction(require = @Condition("splitshulkers"))
 @Mixin(value = BuiltinModelItemRenderer.class, priority = 1100)
 public class SplitShulkers_BuiltinModelItemRendererMixin {
-    @SuppressWarnings({"MixinAnnotationTarget", "InvalidMemberReference", "UnresolvedMixinReference"}) // MixinSquared
+    @SuppressWarnings({ "MixinAnnotationTarget", "InvalidMemberReference", "UnresolvedMixinReference" }) // MixinSquared
     @TargetHandler(
-            mixin = "cursedflames.splitshulkers.mixin.client.MixinBlockEntityWithoutLevelRenderer",
-            name = "onRenderByItem")
+        mixin = "cursedflames.splitshulkers.mixin.client.MixinBlockEntityWithoutLevelRenderer",
+        name = "onRenderByItem"
+    )
     @Redirect(
-            method = "@MixinSquared:Handler",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;renderEntity(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)Z"))
-    private boolean splitShulkersCompat(BlockEntityRenderDispatcher instance, BlockEntity blockEntity, MatrixStack matrix, VertexConsumerProvider vertexConsumerProvider, int light, int overlay, ItemStack stack) {
+        method = "@MixinSquared:Handler",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;renderEntity(Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;II)Z"
+        )
+    )
+    private boolean splitShulkersCompat(
+        BlockEntityRenderDispatcher instance,
+        BlockEntity blockEntity,
+        MatrixStack matrix,
+        VertexConsumerProvider vertexConsumerProvider,
+        int light,
+        int overlay,
+        ItemStack stack
+    ) {
         if ((blockEntity instanceof EnchantableBlockEntity enchantableBlockEntity)) {
             enchantableBlockEntity.enchantedShulkers$setEnchantments(stack.getEnchantments());
         }
