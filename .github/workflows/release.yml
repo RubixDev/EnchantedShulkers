@@ -186,6 +186,7 @@ jobs:
             fabric-language-kotlin(required){modrinth:Ha28R6CL}{curseforge:308769}
             modmenu(optional){modrinth:mOgUt4GM}{curseforge:308702}
             cloth-config(optional){modrinth:9s6osm5g}{curseforge:348521}
+            polymer(embedded){modrinth:xGdtZczs}{curseforge:551890}
 
           modrinth-changelog: ${{ steps.changelog.outputs.result }}
           curseforge-changelog: ${{ steps.changelog.outputs.result }}
