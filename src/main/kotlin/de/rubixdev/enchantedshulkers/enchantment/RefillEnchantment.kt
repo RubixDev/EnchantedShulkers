@@ -24,17 +24,17 @@ class RefillEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
             previousOffStack: ItemStack,
         ) {
             val allowsRefill = (!player.isCreative || WorldConfig.creativeRefill) && !inventoryOpen
-            val swappedHands = ItemStack.areEqual(previousMainStack, currentOffStack) &&
-                ItemStack.areEqual(currentMainStack, previousOffStack)
+            val swappedHands = ItemStack.areEqual(previousMainStack, currentOffStack)
+                && ItemStack.areEqual(currentMainStack, previousOffStack)
             val wasMainEmptied = previousMainStack.count > 0 && currentMainStack.isEmpty && !swappedHands
             val wasOffEmptied = previousOffStack.count > 0 && currentOffStack.isEmpty && !swappedHands
-            val shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previousMainStack)) &&
-                currentMainStack.count < previousMainStack.count &&
-                (WorldConfig.refillNonStackables || previousMainStack.isStackable)
-            val shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previousOffStack)) &&
-                currentOffStack.count < previousOffStack.count &&
-                (WorldConfig.refillNonStackables || previousOffStack.isStackable) &&
-                WorldConfig.refillOffhand
+            val shouldRefillMain = (wasMainEmptied || ItemStack.canCombine(currentMainStack, previousMainStack))
+                && currentMainStack.count < previousMainStack.count
+                && (WorldConfig.refillNonStackables || previousMainStack.isStackable)
+            val shouldRefillOff = (wasOffEmptied || ItemStack.canCombine(currentOffStack, previousOffStack))
+                && currentOffStack.count < previousOffStack.count
+                && (WorldConfig.refillNonStackables || previousOffStack.isStackable)
+                && WorldConfig.refillOffhand
             val doRefill = allowsRefill && currentSlot == previousSlot && !swappedHands && (shouldRefillMain || shouldRefillOff)
 
             if (!doRefill) return

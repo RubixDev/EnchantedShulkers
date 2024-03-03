@@ -105,9 +105,9 @@ object Utils {
             if (canEnchant(stack) && EnchantmentHelper.getLevel(
                     enchantment,
                     stack,
-                ) > 0 && !(visitedEnderChest && stack.isOf(Items.ENDER_CHEST)) &&
+                ) > 0 && !(visitedEnderChest && stack.isOf(Items.ENDER_CHEST))
                 // in case some other mod allows shulkers to stack, ignore them to prevent duping
-                (stack.isOf(Items.ENDER_CHEST) || stack.count == 1)
+                && (stack.isOf(Items.ENDER_CHEST) || stack.count == 1)
             ) {
                 out.add(stack)
                 if (recursionDepth < WorldConfig.nestedContainers) {
@@ -142,21 +142,21 @@ object Utils {
         }
         val screenHandlerInv = player.currentScreenHandler.getInventory()
         if (FabricLoader.getInstance().isModLoaded("quickshulker")) {
-            if (screenHandlerInv is ItemStackInventory &&
-                (screenHandlerInv as QuickShulker_ItemStackInventoryAccessor).itemStack === container
+            if (screenHandlerInv is ItemStackInventory
+                && (screenHandlerInv as QuickShulker_ItemStackInventoryAccessor).itemStack === container
             ) {
                 return screenHandlerInv.heldStacks
             }
-            if (FabricLoader.getInstance().isModLoaded("reinfshulker") &&
-                screenHandlerInv is ItemStackInventory &&
-                (screenHandlerInv as QuickShulker_ItemStackInventoryAccessor).itemStack === container
+            if (FabricLoader.getInstance().isModLoaded("reinfshulker")
+                && screenHandlerInv is ItemStackInventory
+                && (screenHandlerInv as QuickShulker_ItemStackInventoryAccessor).itemStack === container
             ) {
                 return screenHandlerInv.heldStacks
             }
         }
-        if (FabricLoader.getInstance().isModLoaded("shulkerboxslot") &&
-            screenHandlerInv is ShulkerBoxAccessoryInventory &&
-            (screenHandlerInv as ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor).shulkerBox === container
+        if (FabricLoader.getInstance().isModLoaded("shulkerboxslot")
+            && screenHandlerInv is ShulkerBoxAccessoryInventory
+            && (screenHandlerInv as ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor).shulkerBox === container
         ) {
             return (screenHandlerInv as ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor).items
         }

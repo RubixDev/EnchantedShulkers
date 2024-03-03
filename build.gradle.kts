@@ -1,3 +1,5 @@
+import com.diffplug.gradle.spotless.BaseKotlinExtension
+
 plugins {
     id("maven-publish")
     id("fabric-loom") version "1.5-SNAPSHOT" apply false
@@ -28,32 +30,31 @@ preprocess {
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io")
 }
 
 spotless {
+    fun BaseKotlinExtension.customKtlint() = ktlint("1.2.1").editorConfigOverride(
+        mapOf(
+            "ktlint_standard_no-wildcard-imports" to "disabled",
+            "ktlint_standard_blank-line-before-declaration" to "disabled",
+            "ktlint_standard_spacing-between-declarations-with-annotations" to "disabled",
+            // these don't play well with preprocessing
+            "ktlint_standard_import-ordering" to "disabled",
+            // these are replaced by the custom rule set
+            "ktlint_standard_comment-spacing" to "disabled",
+            "ktlint_standard_chain-wrapping" to "disabled",
+        ),
+    ).customRuleSets(listOf("com.github.RubixDev:ktlint-ruleset-mc-preprocessor:01fbcf09be"))
+
     kotlinGradle {
         target("**/*.gradle.kts")
-        ktlint("1.2.1").editorConfigOverride(
-            mapOf(
-                "ktlint_standard_comment-spacing" to "disabled",
-            ),
-        )
+        customKtlint()
     }
     kotlin {
         target("**/src/*/kotlin/**/*.kt")
         toggleOffOn("//#if", "//#endif")
-        ktlint("1.2.1").editorConfigOverride(
-            mapOf(
-                // TODO: ktlint chained condition wrapping, place operators at start of line
-                // (https://github.com/diffplug/spotless/issues/1901)
-                "ktlint_standard_no-wildcard-imports" to "disabled",
-                "ktlint_standard_blank-line-before-declaration" to "disabled",
-                "ktlint_standard_spacing-between-declarations-with-annotations" to "disabled",
-                // these don't play well with preprocessing
-                "ktlint_standard_import-ordering" to "disabled",
-                "ktlint_standard_comment-spacing" to "disabled",
-            ),
-        )
+        customKtlint()
     }
     java {
         target("**/src/*/java/**/*.java")
