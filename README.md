@@ -10,8 +10,6 @@ for a Forge mod with similar functionality, have a look at
 
 Adds some helpful enchantments for Shulker Boxes
 
-[![Requires Fabric API](https://raw.githubusercontent.com/RubixDev/Rug/1.17/fabric-api.png)](https://modrinth.com/mod/fabric-api)
-
 The project setup is based off of
 [Fallen-Breath's template](https://github.com/Fallen-Breath/fabric-mod-template/tree/b2352030438790d71d586f6654a6ea31a394906a).
 
