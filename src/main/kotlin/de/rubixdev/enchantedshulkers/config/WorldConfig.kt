@@ -5,6 +5,14 @@ import com.moandjiezana.toml.TomlWriter
 import de.rubixdev.enchantedshulkers.Mod
 import de.rubixdev.enchantedshulkers.Mod.MOD_ID
 import de.rubixdev.enchantedshulkers.Utils.clientModVersion
+import java.io.File
+import java.io.IOException
+import java.util.function.Function
+import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.jvm.isAccessible
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.fabricmc.loader.api.FabricLoader
@@ -17,14 +25,6 @@ import net.minecraft.server.MinecraftServer
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.WorldSavePath
-import java.io.File
-import java.io.IOException
-import java.util.function.Function
-import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.starProjectedType
-import kotlin.reflect.jvm.isAccessible
 
 object WorldConfig {
     private var server: MinecraftServer? = null

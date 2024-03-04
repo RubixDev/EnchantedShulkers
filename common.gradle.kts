@@ -1,8 +1,8 @@
+import kotlin.reflect.KProperty
+import kotlin.reflect.full.starProjectedType
 import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import kotlin.reflect.KProperty
-import kotlin.reflect.full.starProjectedType
 
 plugins {
     id("maven-publish")

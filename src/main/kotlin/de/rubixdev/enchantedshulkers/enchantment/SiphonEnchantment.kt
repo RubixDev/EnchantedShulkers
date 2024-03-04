@@ -3,11 +3,11 @@ package de.rubixdev.enchantedshulkers.enchantment
 import de.rubixdev.enchantedshulkers.Mod
 import de.rubixdev.enchantedshulkers.Utils
 import de.rubixdev.enchantedshulkers.config.WorldConfig
+import kotlin.math.min
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.collection.DefaultedList
-import kotlin.math.min
 
 class SiphonEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
     override fun generate() = WorldConfig.generateSiphon

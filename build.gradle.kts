@@ -39,13 +39,12 @@ spotless {
             "ktlint_standard_no-wildcard-imports" to "disabled",
             "ktlint_standard_blank-line-before-declaration" to "disabled",
             "ktlint_standard_spacing-between-declarations-with-annotations" to "disabled",
-            // these don't play well with preprocessing
-            "ktlint_standard_import-ordering" to "disabled",
             // these are replaced by the custom rule set
+            "ktlint_standard_import-ordering" to "disabled",
             "ktlint_standard_comment-spacing" to "disabled",
             "ktlint_standard_chain-wrapping" to "disabled",
         ),
-    ).customRuleSets(listOf("com.github.RubixDev:ktlint-ruleset-mc-preprocessor:01fbcf09be"))
+    ).customRuleSets(listOf("com.github.RubixDev:ktlint-ruleset-mc-preprocessor:3194cea69f"))
 
     kotlinGradle {
         target("**/*.gradle.kts")
