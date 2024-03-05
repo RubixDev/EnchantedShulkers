@@ -44,7 +44,7 @@ spotless {
             "ktlint_standard_comment-spacing" to "disabled",
             "ktlint_standard_chain-wrapping" to "disabled",
         ),
-    ).customRuleSets(listOf("com.github.RubixDev:ktlint-ruleset-mc-preprocessor:3194cea69f"))
+    ).customRuleSets(listOf("com.github.RubixDev:ktlint-ruleset-mc-preprocessor:2c5a3687bb"))
 
     kotlinGradle {
         target("**/*.gradle.kts")
@@ -52,12 +52,15 @@ spotless {
     }
     kotlin {
         target("**/src/*/kotlin/**/*.kt")
-        toggleOffOn("//#if", "//#endif")
+        // disable formatting between `//#if` and `//#endif` including any space in front of them
+        // unless they are at the start of a line (which should only be the case in imports)
+        toggleOffOnRegex("([ \\t]+//#if[\\s\\S]*?[ \\t]+//#endif)")
         customKtlint()
     }
     java {
         target("**/src/*/java/**/*.java")
-        toggleOffOn("//#if", "//#endif")
+        // disable formatting between `//#if` and `//#endif` including any space in front of them
+        toggleOffOnRegex("([ \\t]*//#if[\\s\\S]*?[ \\t]*//#endif)")
         // TODO: importOrder()
         removeUnusedImports()
         eclipse("4.30").configFile("eclipse-prefs.xml")
