@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers.config
 
+import com.google.gson.Gson
 import com.moandjiezana.toml.Toml
 import com.moandjiezana.toml.TomlWriter
 import de.rubixdev.enchantedshulkers.Mod
@@ -29,6 +30,7 @@ import net.minecraft.util.WorldSavePath
 object WorldConfig {
     private var server: MinecraftServer? = null
     private var inner = Inner()
+    private val GSON = Gson()
 
     fun attachServer(server: MinecraftServer) {
         this.server = server
@@ -146,7 +148,15 @@ object WorldConfig {
 
     private fun read() {
         try {
-            inner = Toml().read(getConfigPath().toFile()).to(Inner::class.java)
+            val toml = Toml().read(getConfigPath().toFile()).toMap()
+            if (toml["generateBooks"] == false) {
+                if ("generateSiphon" !in toml) toml["generateSiphon"] = false
+                if ("generateRefill" !in toml) toml["generateRefill"] = false
+            }
+            toml.remove("generateBooks")
+            if (toml["nestedContainers"] == true) toml["nestedContainers"] = 255
+            if (toml["nestedContainers"] == false) toml["nestedContainers"] = 0
+            inner = GSON.fromJson(GSON.toJsonTree(toml), Inner::class.java)
             Mod.LOGGER.info("Loaded settings from $MOD_ID.toml")
         } catch (e: Throwable) {
             Mod.LOGGER.warn("Could not read config, using default settings: $e")
