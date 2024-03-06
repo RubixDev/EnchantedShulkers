@@ -30,7 +30,6 @@ import megaminds.clickopener.api.BlockEntityInventory;
 //#endif
 public class ClickOpener_VanillaCompatMixin {
     //#if MC >= 12001
-    @SuppressWarnings("UnresolvedMixinReference")
     @Inject(
             method = "lambda$createFactory$0",
             at = @At("RETURN"),

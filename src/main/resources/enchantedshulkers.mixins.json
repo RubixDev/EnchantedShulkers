@@ -22,6 +22,8 @@
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",
     "compat.ClickOpener_VanillaCompatMixin",
+    "compat.Enderite_EnderiteBowMixin",
+    "compat.Enderite_EnderiteCrossbowMixin",
     "compat.Peek_TooltipImageEventsMixin",
     "compat.QuickShulker_ItemStackInventoryAccessor",
     "compat.QuickShulker_RegisterMixin",

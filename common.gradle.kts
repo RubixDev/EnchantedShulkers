@@ -87,6 +87,10 @@ class Props {
 
     val peek: Boolean by prop
     val peek_version: String by prop
+
+    val enderite: Boolean by prop
+    val enderite_version: String by prop
+    val architectury_version: String by prop
 }
 val props: Props = Props()
 
@@ -217,6 +221,11 @@ dependencies {
     if (props.peek) {
         // TODO: remapping(?) breaks this in a dev env for some reason, so we keep it compile only. (getItems() (mojmaps) is remapped to getHeldStacks() but should be method_11282() (yarn/intermediary))
         modCompileOnly("maven.modrinth:peek:${props.peek_version}")
+    }
+    // - Enderite Mod
+    if (props.enderite) {
+        modCompat("maven.modrinth:enderite-mod:${props.enderite_version}")
+        modRuntimeOnly("maven.modrinth:architectury-api:${props.architectury_version}")
     }
 }
 
