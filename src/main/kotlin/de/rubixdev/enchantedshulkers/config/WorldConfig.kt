@@ -193,6 +193,9 @@ object WorldConfig {
     @get:JvmName("refillNonStackables")
     val refillNonStackables get() = inner.refillNonStackables
     @JvmStatic
+    @get:JvmName("refillProjectiles")
+    val refillProjectiles get() = inner.refillProjectiles
+    @JvmStatic
     @get:JvmName("coloredNames")
     val coloredNames get() = inner.coloredNames
     @JvmStatic
@@ -238,6 +241,7 @@ object WorldConfig {
     private class Inner {
         var refillOffhand = true
         var refillNonStackables = false
+        var refillProjectiles = true
         var enchantableEnderChest = false
         var coloredNames = false
         var creativeSiphon = false

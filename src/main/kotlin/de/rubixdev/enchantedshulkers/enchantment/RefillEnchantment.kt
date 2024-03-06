@@ -50,8 +50,10 @@ class RefillEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
             }
         }
 
-        private fun refill(player: ServerPlayerEntity, slot: Int, itemType: ItemStack, amount: Int) {
-            if (amount <= 0) return
+        @JvmStatic
+        fun refill(player: ServerPlayerEntity, slot: Int, itemType: ItemStack, amount: Int): Boolean {
+            if (amount <= 0) return false
+            var didRefill = false
             var amount = amount
             val containerSlots = Utils.getContainers(player, Mod.REFILL_ENCHANTMENT)
             for (container in containerSlots) {
@@ -66,8 +68,12 @@ class RefillEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
                         if (amount <= 0) break
                     }
                 }
-                if (updateContainer) Utils.setContainerInventory(container, containerInventory)
+                if (updateContainer) {
+                    didRefill = true
+                    Utils.setContainerInventory(container, containerInventory)
+                }
             }
+            return didRefill
         }
 
         private fun tryRefillSlot(inventory: PlayerInventory, from: ItemStack, slot: Int, itemType: ItemStack, amount: Int): Int {
