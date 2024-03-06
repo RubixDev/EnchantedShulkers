@@ -91,6 +91,13 @@ class Props {
     val enderite: Boolean by prop
     val enderite_version: String by prop
     val architectury_version: String by prop
+
+    val things: Boolean by prop
+    val things_version: String by prop
+    val owo_version: String by prop
+    val reach_entity_attrs_version: String by prop
+    val lavender: Boolean by prop
+    val lavender_version: String by prop
 }
 val props: Props = Props()
 
@@ -100,25 +107,29 @@ val langDirData = "data/${props.mod_id}/lang"
 
 repositories {
     // Fabric ASM and MixinSquared
-    maven { url = uri("https://jitpack.io") }
+    maven("https://jitpack.io")
     // Cloth Config
-    maven { url = uri("https://maven.shedaniel.me/") }
+    maven("https://maven.shedaniel.me/")
     // Mod Menu and Trinkets
-    maven { url = uri("https://maven.terraformersmc.com/releases/") }
+    maven("https://maven.terraformersmc.com/releases/")
     // Polymer and Server Translations
-    maven { url = uri("https://maven.nucleoid.xyz") }
+    maven("https://maven.nucleoid.xyz")
     // Reinforced Core and Shulkers
-    maven { url = uri("https://raw.githubusercontent.com/Aton-Kish/mcmod/maven") }
+    maven("https://raw.githubusercontent.com/Aton-Kish/mcmod/maven")
     // Quick Shulker deps
-    maven { url = uri("https://maven.kyrptonaught.dev") }
+    maven("https://maven.kyrptonaught.dev")
     // Cardinal Components API (required by Trinkets)
-    maven { url = uri("https://maven.ladysnake.org/releases") }
+    maven("https://maven.ladysnake.org/releases")
     // Spectrelib (required by Shulker Box Slot)
-    maven { url = uri("https://maven.theillusivec4.top/") }
+    maven("https://maven.theillusivec4.top/")
     // Shulker Box Tooltip
-    maven { url = uri("https://maven.misterpemodder.com/libs-release") }
+    maven("https://maven.misterpemodder.com/libs-release")
+    // owo-lib and Lavender (required by Things)
+    maven("https://maven.wispforest.io/releases/")
+    // reach-entity-attributes (required by Things)
+    maven("https://maven.jamieswhiteshirt.com/libs-release")
     // Modrinth Maven for other compat tested mods
-    maven { url = uri("https://api.modrinth.com/maven") }
+    maven("https://api.modrinth.com/maven")
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783
@@ -197,13 +208,15 @@ dependencies {
     // - Shulker Box Slot
     if (props.shulker_slot) {
         modCompat("maven.modrinth:shulker-box-slot:${props.shulker_slot_version}")
-        modCompat("dev.emi:trinkets:${props.trinkets_version}") { exclude(group = "net.fabricmc.fabric-api") }
-        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${props.cca_version}") { exclude(group = "net.fabricmc.fabric-api") }
-        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${props.cca_version}") { exclude(group = "net.fabricmc.fabric-api") }
         modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${props.cca_version}") { exclude(group = "net.fabricmc.fabric-api") }
         if (props.spectrelib) {
             modCompat("com.illusivesoulworks.spectrelib:spectrelib-fabric:${props.spectrelib_version}") { exclude(group = "net.fabricmc.fabric-api") }
         }
+    }
+    if (props.shulker_slot || props.things) {
+        modCompat("dev.emi:trinkets:${props.trinkets_version}") { exclude(group = "net.fabricmc.fabric-api") }
+        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${props.cca_version}") { exclude(group = "net.fabricmc.fabric-api") }
+        modCompat("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${props.cca_version}") { exclude(group = "net.fabricmc.fabric-api") }
     }
     // - Click Opener
     if (props.clickopener) {
@@ -225,7 +238,16 @@ dependencies {
     // - Enderite Mod
     if (props.enderite) {
         modCompat("maven.modrinth:enderite-mod:${props.enderite_version}")
-        modRuntimeOnly("maven.modrinth:architectury-api:${props.architectury_version}")
+        modCompat("maven.modrinth:architectury-api:${props.architectury_version}")
+    }
+    // - Things
+    if (props.things) {
+        modCompat("maven.modrinth:things:${props.things_version}")
+        modCompat("maven.modrinth:owo-lib:${props.owo_version}")
+        modCompat("com.jamieswhiteshirt:reach-entity-attributes:${props.reach_entity_attrs_version}")
+        if (props.lavender) {
+            modCompat("io.wispforest:lavender:${props.lavender_version}")
+        }
     }
 }
 

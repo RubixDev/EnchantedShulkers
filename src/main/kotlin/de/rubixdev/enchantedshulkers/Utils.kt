@@ -2,6 +2,8 @@ package de.rubixdev.enchantedshulkers
 
 import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler
 import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock
+import com.glisco.things.Things
+import com.glisco.things.items.ThingsItems
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory
 import com.illusivesoulworks.shulkerboxslot.platform.Services
 import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity
@@ -68,6 +70,8 @@ object Utils {
     @JvmStatic
     fun ItemStack.isShulkerBox() = (this.item as? BlockItem)?.block is ShulkerBoxBlock
 
+    private fun ItemStack.isEnderChest() = this.isOf(Items.ENDER_CHEST) || (FabricLoader.getInstance().isModLoaded("things") && this.isOf(ThingsItems.ENDER_POUCH))
+
     @JvmStatic
     fun ServerPlayerEntity?.clientModVersion(): Int {
         //#if MC >= 12001
@@ -87,6 +91,10 @@ object Utils {
             // include the slot from Shulker Box Slot
             Services.INSTANCE.findShulkerBoxAccessory(player).ifPresent { playerInventory.add(it.left) }
         }
+        if (FabricLoader.getInstance().isModLoaded("things")) {
+            // include Ender Pouch in belt slot from Things
+            Things.getTrinkets(player).getEquipped { it.isEnderChest() }.forEach { playerInventory.add(it.right) }
+        }
         return getContainers(playerInventory, player, enchantment)
     }
 
@@ -105,9 +113,9 @@ object Utils {
             if (canEnchant(stack) && EnchantmentHelper.getLevel(
                     enchantment,
                     stack,
-                ) > 0 && !(visitedEnderChest && stack.isOf(Items.ENDER_CHEST))
+                ) > 0 && !(visitedEnderChest && stack.isEnderChest())
                 // in case some other mod allows shulkers to stack, ignore them to prevent duping
-                && (stack.isOf(Items.ENDER_CHEST) || stack.count == 1)
+                && (stack.isEnderChest() || stack.count == 1)
             ) {
                 out.add(stack)
                 if (recursionDepth < WorldConfig.nestedContainers) {
@@ -117,7 +125,7 @@ object Utils {
                             player,
                             enchantment,
                             recursionDepth + 1,
-                            visitedEnderChest || stack.isOf(Items.ENDER_CHEST),
+                            visitedEnderChest || stack.isEnderChest(),
                         ),
                     )
                 }
@@ -137,7 +145,7 @@ object Utils {
 
     @JvmStatic
     fun getContainerInventory(container: ItemStack, player: ServerPlayerEntity): DefaultedList<ItemStack> {
-        if (container.isOf(Items.ENDER_CHEST)) {
+        if (container.isEnderChest()) {
             return player.enderChestInventory.heldStacks
         }
         val screenHandlerInv = player.currentScreenHandler.getInventory()
@@ -197,7 +205,7 @@ object Utils {
     @JvmStatic
     fun setContainerInventory(container: ItemStack, inventory: DefaultedList<ItemStack>) {
         // no need to write any NBT on ender chests
-        if (container.isOf(Items.ENDER_CHEST)) return
+        if (container.isEnderChest()) return
 
         val nbt = container.getOrCreateSubNbt(BlockItem.BLOCK_ENTITY_TAG_KEY)
         Inventories.writeNbt(nbt, inventory)

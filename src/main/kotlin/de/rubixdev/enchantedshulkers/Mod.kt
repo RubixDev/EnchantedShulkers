@@ -80,13 +80,11 @@ object Mod : ModInitializer {
         //$$ PolymerServerNetworking.registerSendPacket(HANDSHAKE_PACKET_ID, 1)
         //#endif
 
-        // add enchanted_ender_chest data pack when enabled in config
+        // register optional data packs
         FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent {
-            ResourceManagerHelper.registerBuiltinResourcePack(
-                id("enchanted_ender_chest"),
-                it,
-                ResourcePackActivationType.NORMAL,
-            )
+            WorldConfig.OPTIONAL_PACKS.forEach { (name, _) ->
+                ResourceManagerHelper.registerBuiltinResourcePack(id(name), it, ResourcePackActivationType.NORMAL)
+            }
         }
 
         // register event hooks and command

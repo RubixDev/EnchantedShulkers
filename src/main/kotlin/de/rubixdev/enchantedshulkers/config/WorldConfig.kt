@@ -116,28 +116,33 @@ object WorldConfig {
     private fun getField(name: String) =
         Inner::class.declaredMemberProperties.first { it.name == name }.apply { isAccessible = true }
 
-    private val ENCHANTED_ENDER_CHEST_ID = let {
-        if (FabricLoader.getInstance().getModContainer("fabric-api")
-                .orElseThrow(::RuntimeException).metadata.version >= Version.parse("0.95.4")
-        ) {
-            "enchantedshulkers:enchanted_ender_chest_resourcepacks${File.separator}enchanted_ender_chest"
-        } else {
-            "enchantedshulkers:enchanted_ender_chest"
-        }
-    }
+    val OPTIONAL_PACKS = mapOf(
+        "enchanted_ender_chest" to { inner.enchantableEnderChest },
+        "enchanted_ender_pouch" to { inner.enchantableEnderChest && FabricLoader.getInstance().isModLoaded("things") },
+    )
+
+    private val NEW_FABRIC_API = FabricLoader.getInstance().getModContainer("fabric-api")
+        .orElseThrow(::RuntimeException).metadata.version >= Version.parse("0.95.4")
+    private fun packId(name: String) = "enchantedshulkers:${if (NEW_FABRIC_API) "${name}_resourcepacks${File.separator}$name" else name}"
 
     private fun updateResources() {
         val manager = server?.dataPackManager ?: return
-        val isEnderPackLoaded = manager.enabledNames.contains(ENCHANTED_ENDER_CHEST_ID)
-        if (isEnderPackLoaded == inner.enchantableEnderChest) return
-
         val loadedPacks = manager.enabledProfiles.toMutableList()
-        val enderPackProfile = manager.getProfile(ENCHANTED_ENDER_CHEST_ID)!!
-        if (inner.enchantableEnderChest) {
-            enderPackProfile.initialPosition.insert(loadedPacks, enderPackProfile, Function.identity(), false)
-        } else {
-            loadedPacks.remove(enderPackProfile)
+
+        for ((pack, predicate) in OPTIONAL_PACKS) {
+            val id = packId(pack)
+            val isLoaded = manager.enabledNames.contains(id)
+            val shouldBeLoaded = predicate()
+            if (isLoaded == shouldBeLoaded) continue
+
+            val packProfile = manager.getProfile(id)!!
+            if (shouldBeLoaded) {
+                packProfile.initialPosition.insert(loadedPacks, packProfile, Function.identity(), false)
+            } else {
+                loadedPacks.remove(packProfile)
+            }
         }
+
         server!!.reloadResources(loadedPacks.map { it.name }).exceptionally {
             Mod.LOGGER.warn("Failed to execute reload", it)
             null
