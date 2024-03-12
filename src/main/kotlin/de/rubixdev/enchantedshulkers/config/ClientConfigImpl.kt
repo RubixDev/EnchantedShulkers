@@ -1,11 +1,13 @@
 package de.rubixdev.enchantedshulkers.config
 
 import de.rubixdev.enchantedshulkers.Mod
+import java.lang.reflect.Field
 import me.shedaniel.autoconfig.AutoConfig
 import me.shedaniel.autoconfig.ConfigData
 import me.shedaniel.autoconfig.annotation.Config
 import me.shedaniel.autoconfig.annotation.ConfigEntry
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer
+import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 
@@ -18,7 +20,27 @@ object ClientConfigImpl {
         inner = AutoConfig.getConfigHolder(Inner::class.java).config
     }
 
-    fun init() {}
+    fun init() {
+        val registry = AutoConfig.getGuiRegistry(Inner::class.java)
+        var scrollScreen: BooleanListEntry? = null
+        registry.registerPredicateTransformer(
+            { guis, _, _, _, _, _ ->
+                scrollScreen = guis.firstNotNullOfOrNull { it as? BooleanListEntry }
+                guis
+            },
+            isField("scrollScreen"),
+        )
+        registry.registerPredicateTransformer(
+            { guis, _, _, _, _, _ ->
+                @Suppress("UnstableApiUsage")
+                guis.forEach { it.setRequirement { scrollScreen?.value ?: true } }
+                guis
+            },
+            isField("scrollScreenRows"),
+        )
+    }
+
+    private fun isField(name: String) = { field: Field -> field.declaringClass == Inner::class.java && field.name == name }
 
     @Config(name = Mod.MOD_ID)
     class Inner : ConfigData {
@@ -36,7 +58,6 @@ object ClientConfigImpl {
         var scrollScreen = ClientConfig.DEFAULT_SCROLL_SCREEN
             private set
 
-        // TODO: disable when `scrollScreen` is false
         @ConfigEntry.BoundedDiscrete(min = 6, max = 9)
         var scrollScreenRows = ClientConfig.DEFAULT_SCROLL_SCREEN_ROWS
             private set
