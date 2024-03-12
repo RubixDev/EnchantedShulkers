@@ -2,8 +2,8 @@ package de.rubixdev.enchantedshulkers.mixin.client.compat;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity;
-import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
@@ -64,7 +64,7 @@ public class SplitShulkers_ShulkerBoxBlockEntityRendererMixin {
         Function<Identifier, RenderLayer> layerFactory,
         ShulkerBoxBlockEntity shulkerBoxBlockEntity
     ) {
-        if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
+        if (!ClientConfig.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
             .getTextureSpecificVertexConsumer(

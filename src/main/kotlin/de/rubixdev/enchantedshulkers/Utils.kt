@@ -12,6 +12,7 @@ import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity
 import de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor
 import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor
 import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler
+import de.rubixdev.enchantedshulkers.screen.BigAugmentedScreenHandler
 import de.rubixdev.enchantedshulkers.screen.VanillaBigAugmentedGui
 import eu.pb4.sgui.virtual.inventory.VirtualScreenHandler
 import net.fabricmc.loader.api.FabricLoader
@@ -37,6 +38,7 @@ import net.minecraft.screen.ShulkerBoxScreenHandler
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.DyeColor
+import net.minecraft.util.Identifier
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
@@ -138,6 +140,7 @@ object Utils {
     fun ScreenHandler.getInventory(): Inventory? = when {
         this is ShulkerBoxScreenHandler -> this.inventory
         this is AugmentedShulkerBoxScreenHandler -> this.inventory
+        this is BigAugmentedScreenHandler -> this.inventory
         this is VirtualScreenHandler -> (this.gui as? VanillaBigAugmentedGui)?.shulkerInventory
         FabricLoader.getInstance().isModLoaded("reinfshulker") && this is ReinforcedStorageScreenHandler -> this.inventory
         else -> null
@@ -243,4 +246,7 @@ object Utils {
     @JvmStatic
     fun ItemStack.getShulkerColor(): DyeColor? =
         ((this.item as? BlockItem)?.block as? ShulkerBoxBlock)?.color
+
+    @JvmStatic
+    val String.id get() = Identifier(Mod.MOD_ID, this)
 }

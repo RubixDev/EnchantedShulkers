@@ -75,3 +75,5 @@ text.autoconfig.enchantedshulkers:
     customModels.@Tooltip[4]: Diese Einstellung hat keinen Effekt, wenn die obige Einstellung aus ist.
 
     refillInInventory: Nachfüllen bei offenem Inventar
+    scrollScreen: Nutze ein scrollbares Inventar für höhere Level der Erweitern Verzauberung
+    scrollScreenRows: Anzahl der Reihen für das scrollbare Inventar

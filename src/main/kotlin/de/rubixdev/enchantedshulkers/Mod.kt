@@ -1,10 +1,13 @@
 package de.rubixdev.enchantedshulkers
 
 import com.chocohead.mm.api.ClassTinkerers
+import de.rubixdev.enchantedshulkers.Utils.id
+import de.rubixdev.enchantedshulkers.config.ClientConfig
 import de.rubixdev.enchantedshulkers.config.ConfigCommand
 import de.rubixdev.enchantedshulkers.config.WorldConfig
 import de.rubixdev.enchantedshulkers.enchantment.*
 import de.rubixdev.enchantedshulkers.interfaces.InventoryState
+import de.rubixdev.enchantedshulkers.screen.ScreenHandlerTypes
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
@@ -19,7 +22,6 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.registry.tag.TagKey
-import net.minecraft.util.Identifier
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -43,8 +45,8 @@ object Mod : ModInitializer {
         MOD_VERSION = metadata.version
     }
 
-    @JvmField val PORTABLE_CONTAINER_TAG: TagKey<Item> = TagKey.of(RegistryKeys.ITEM, id("portable_container"))
-    @JvmField val AUGMENTABLE_CONTAINER_TAG: TagKey<Item> = TagKey.of(RegistryKeys.ITEM, id("augmentable_container"))
+    @JvmField val PORTABLE_CONTAINER_TAG: TagKey<Item> = TagKey.of(RegistryKeys.ITEM, "portable_container".id)
+    @JvmField val AUGMENTABLE_CONTAINER_TAG: TagKey<Item> = TagKey.of(RegistryKeys.ITEM, "augmentable_container".id)
 
     @JvmField val PORTABLE_CONTAINER_TARGET: EnchantmentTarget = ClassTinkerers.getEnum(
         EnchantmentTarget::class.java,
@@ -61,29 +63,27 @@ object Mod : ModInitializer {
     @JvmField val VOID_ENCHANTMENT = VoidEnchantment()
     @JvmField val AUGMENT_ENCHANTMENT = AugmentEnchantment()
 
-    @JvmField val HANDSHAKE_PACKET_ID = id("handshake")
-    @JvmField val CONFIG_SYNC_PACKET_ID = id("config_sync")
-    @JvmField val INVENTORY_OPEN_PACKET_ID = id("inventory_open")
-    @JvmField val INVENTORY_CLOSE_PACKET_ID = id("inventory_close")
-
-    fun id(path: String): Identifier = Identifier(MOD_ID, path)
+    @JvmField val HANDSHAKE_PACKET_ID = "handshake".id
+    @JvmField val CONFIG_SYNC_PACKET_ID = "config_sync".id
+    @JvmField val INVENTORY_OPEN_PACKET_ID = "inventory_open".id
+    @JvmField val INVENTORY_CLOSE_PACKET_ID = "inventory_close".id
 
     override fun onInitialize() {
-        Registry.register(Registries.ENCHANTMENT, id("siphon"), SIPHON_ENCHANTMENT)
-        Registry.register(Registries.ENCHANTMENT, id("refill"), REFILL_ENCHANTMENT)
-        Registry.register(Registries.ENCHANTMENT, id("vacuum"), VACUUM_ENCHANTMENT)
-        Registry.register(Registries.ENCHANTMENT, id("void"), VOID_ENCHANTMENT)
-        Registry.register(Registries.ENCHANTMENT, id("augment"), AUGMENT_ENCHANTMENT)
+        Registry.register(Registries.ENCHANTMENT, "siphon".id, SIPHON_ENCHANTMENT)
+        Registry.register(Registries.ENCHANTMENT, "refill".id, REFILL_ENCHANTMENT)
+        Registry.register(Registries.ENCHANTMENT, "vacuum".id, VACUUM_ENCHANTMENT)
+        Registry.register(Registries.ENCHANTMENT, "void".id, VOID_ENCHANTMENT)
+        Registry.register(Registries.ENCHANTMENT, "augment".id, AUGMENT_ENCHANTMENT)
 
         // handshake with modded clients
         //#if MC < 12001
-        //$$ PolymerServerNetworking.registerSendPacket(HANDSHAKE_PACKET_ID, 1)
+        //$$ PolymerServerNetworking.registerSendPacket(HANDSHAKE_PACKET_ID, 2)
         //#endif
 
         // register optional data packs
         FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent {
             WorldConfig.OPTIONAL_PACKS.forEach { (name, _) ->
-                ResourceManagerHelper.registerBuiltinResourcePack(id(name), it, ResourcePackActivationType.NORMAL)
+                ResourceManagerHelper.registerBuiltinResourcePack(name.id, it, ResourcePackActivationType.NORMAL)
             }
         }
 
@@ -101,6 +101,12 @@ object Mod : ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(INVENTORY_CLOSE_PACKET_ID) { _, player, _, _, _ ->
             (player as InventoryState).`enchantedShulkers$setClosed`()
         }
+
+        // register screen types
+        ScreenHandlerTypes.init()
+
+        // initialize client config
+        ClientConfig.init()
 
         LOGGER.info("$MOD_NAME v${MOD_VERSION.friendlyString} loaded")
     }

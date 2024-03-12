@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -83,7 +83,7 @@ public abstract class ChestBlockEntityRendererMixin<T extends BlockEntity> {
         int i,
         SpriteIdentifier spriteIdentifier
     ) {
-        if (!ClientMod.glintWhenPlaced() || !(entity instanceof EnderChestBlockEntity) || !Utils.shouldGlint(entity))
+        if (!ClientConfig.glintWhenPlaced() || !(entity instanceof EnderChestBlockEntity) || !Utils.shouldGlint(entity))
             return;
         VertexConsumer vertexConsumer = new SpriteTexturedVertexConsumer(
             ItemRenderer.getDirectItemGlintConsumer(
@@ -156,7 +156,7 @@ public abstract class ChestBlockEntityRendererMixin<T extends BlockEntity> {
         int i
     ) {
         if (
-            !ClientMod.customModels()
+            !ClientConfig.customModels()
                 || !(entity instanceof EnderChestBlockEntity)
                 || !Utils.shouldGlint(entity)
                 || g > 0.01f

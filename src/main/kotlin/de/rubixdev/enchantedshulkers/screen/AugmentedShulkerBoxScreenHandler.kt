@@ -1,6 +1,7 @@
 package de.rubixdev.enchantedshulkers.screen
 
 import de.rubixdev.enchantedshulkers.Utils
+import de.rubixdev.enchantedshulkers.Utils.clientModVersion
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
 import net.minecraft.screen.GenericContainerScreenHandler
@@ -46,12 +47,15 @@ class AugmentedShulkerBoxScreenHandler private constructor(
             ScreenHandler.checkSize(inventory, 9 * rows)
             val player = playerInventory.player
             if (enchantmentLevel > 3 && player is ServerPlayerEntity) {
-                // TODO: modded clients should have a better UI
-                return VanillaBigAugmentedGui(player, inventory, rows, title, color).openAsScreenHandler(
-                    syncId,
-                    playerInventory,
-                    player,
-                )
+                return if (player.clientModVersion() >= 2) {
+                    BigAugmentedScreenHandler(syncId, playerInventory, inventory, enchantmentLevel, true, null)
+                } else {
+                    VanillaBigAugmentedGui(player, inventory, rows, title, color).openAsScreenHandler(
+                        syncId,
+                        playerInventory,
+                        player,
+                    )
+                }
             }
             return AugmentedShulkerBoxScreenHandler(syncId, playerInventory, inventory, enchantmentLevel)
         }

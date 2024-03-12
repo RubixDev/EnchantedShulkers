@@ -6,3 +6,5 @@ accessible field net/minecraft/block/EnderChestBlock CONTAINER_NAME Lnet/minecra
 accessible field net/minecraft/inventory/SimpleInventory stacks Lnet/minecraft/util/collection/DefaultedList;
 accessible field net/minecraft/screen/ShulkerBoxScreenHandler inventory Lnet/minecraft/inventory/Inventory;
 accessible field net/minecraft/screen/GrindstoneScreenHandler input Lnet/minecraft/inventory/Inventory;
+mutable field net/minecraft/screen/slot/Slot x I
+mutable field net/minecraft/screen/slot/Slot y I

@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers.mixin.client.compat;
 
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,7 +9,6 @@ import atonkish.reinfshulker.block.entity.ReinforcedShulkerBoxBlockEntity;
 import atonkish.reinfshulker.client.render.block.entity.ReinforcedShulkerBoxBlockEntityRenderer;
 import atonkish.reinfshulker.util.ReinforcingMaterialSettings;
 import com.google.common.collect.ImmutableList;
-import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
 import net.minecraft.client.render.RenderLayer;
@@ -86,8 +86,9 @@ public class ReinforcedShulkerBoxBlockEntityRendererMixin {
         ReinforcedShulkerBoxBlockEntity shulkerBox,
         float f
     ) {
-        if (!ClientMod.customModels() || !Utils.shouldGlint(shulkerBox) || shulkerBox.getAnimationProgress(f) > 0.01f)
-            return value;
+        if (
+            !ClientConfig.customModels() || !Utils.shouldGlint(shulkerBox) || shulkerBox.getAnimationProgress(f) > 0.01f
+        ) return value;
         DyeColor dyeColor;
         return (dyeColor = shulkerBox.getColor()) == null
             ? REINFORCED_CLOSED_SHULKER_TEXTURE_ID_MAP.get(shulkerBox.getMaterial().getName())
@@ -108,7 +109,7 @@ public class ReinforcedShulkerBoxBlockEntityRendererMixin {
         Function<Identifier, RenderLayer> layerFactory,
         ReinforcedShulkerBoxBlockEntity shulkerBoxBlockEntity
     ) {
-        if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
+        if (!ClientConfig.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
             .getTextureSpecificVertexConsumer(
@@ -137,7 +138,9 @@ public class ReinforcedShulkerBoxBlockEntityRendererMixin {
         ReinforcedShulkerBoxBlockEntity shulkerBox,
         float f
     ) {
-        if (!ClientMod.customModels() || !Utils.shouldGlint(shulkerBox) || shulkerBox.getAnimationProgress(f) > 0.01f) {
+        if (
+            !ClientConfig.customModels() || !Utils.shouldGlint(shulkerBox) || shulkerBox.getAnimationProgress(f) > 0.01f
+        ) {
             instance.render(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);
         } else {
             CLOSED_BOX.render(matrixStack, vertexConsumer, light, overlay, red, green, blue, alpha);

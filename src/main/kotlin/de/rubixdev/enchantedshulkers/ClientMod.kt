@@ -1,14 +1,16 @@
 package de.rubixdev.enchantedshulkers
 
-import de.rubixdev.enchantedshulkers.config.ClientConfig
+import de.rubixdev.enchantedshulkers.Utils.id
 import de.rubixdev.enchantedshulkers.config.InvalidOptionValueException
 import de.rubixdev.enchantedshulkers.config.WorldConfig
+import de.rubixdev.enchantedshulkers.screen.BigAugmentedScreen
+import de.rubixdev.enchantedshulkers.screen.ScreenHandlerTypes
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
-import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.client.gui.screen.ingame.HandledScreens
 import net.minecraft.client.model.*
 import net.minecraft.client.render.TexturedRenderLayers
 import net.minecraft.client.util.SpriteIdentifier
@@ -22,10 +24,10 @@ import net.minecraft.nbt.NbtInt
 
 @Environment(EnvType.CLIENT)
 object ClientMod : ClientModInitializer {
-    @JvmField val CLOSED_ENDER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, Mod.id("entity/chest/closed_ender"))
+    @JvmField val CLOSED_ENDER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_ender".id)
     @JvmField val COLORS = DyeColor.values().sortedBy { it.id }.map { it.getName() }
-    @JvmField val CLOSED_SHULKER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, Mod.id("entity/shulker/closed_shulker"))
-    @JvmField val CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS = COLORS.map { SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, Mod.id("entity/shulker/closed_shulker_$it")) }
+    @JvmField val CLOSED_SHULKER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, "entity/shulker/closed_shulker".id)
+    @JvmField val CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS = COLORS.map { SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, "entity/shulker/closed_shulker_$it".id) }
     @JvmField val CLOSED_BOX: ModelPart = let {
         val modelData = ModelData()
         val modelPartData = modelData.root
@@ -37,12 +39,10 @@ object ClientMod : ClientModInitializer {
         TexturedModelData.of(modelData, 64, 32).createModel()
     }
 
-    private var hasCloth = false
-
     override fun onInitializeClient() {
         // let the server know that we have the client mod installed
         //#if MC >= 12001
-        PolymerClientNetworking.setClientMetadata(Mod.HANDSHAKE_PACKET_ID, NbtInt.of(1))
+        PolymerClientNetworking.setClientMetadata(Mod.HANDSHAKE_PACKET_ID, NbtInt.of(2))
         //#endif
 
         // receive config updates from server
@@ -68,18 +68,9 @@ object ClientMod : ClientModInitializer {
         }
         ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> WorldConfig.detachServer() }
 
-        if (!FabricLoader.getInstance().isModLoaded("cloth-config")) return
-        hasCloth = true
-        ClientConfig.init()
+        // screens
+        ScreenHandlerTypes.SHULKER_LIST.forEach { HandledScreens.register(it, ::BigAugmentedScreen) }
+        ScreenHandlerTypes.GENERIC_LIST.forEach { HandledScreens.register(it, ::BigAugmentedScreen) }
+        ScreenHandlerTypes.GENERIC_DOUBLE_MAP.values.forEach { HandledScreens.register(it, ::BigAugmentedScreen) }
     }
-
-    @JvmStatic
-    @get:JvmName("glintWhenPlaced")
-    val glintWhenPlaced: Boolean get() = if (!hasCloth) true else ClientConfig.inner.glintWhenPlaced
-    @JvmStatic
-    @get:JvmName("customModels")
-    val customModels: Boolean get() = if (!hasCloth) true else glintWhenPlaced && ClientConfig.inner.customModels
-    @JvmStatic
-    @get:JvmName("refillInInventory")
-    val refillInInventory: Boolean get() = if (!hasCloth) false else ClientConfig.inner.refillInInventory
 }

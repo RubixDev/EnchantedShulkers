@@ -1,8 +1,8 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Utils;
 import java.util.function.Function;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -34,7 +34,7 @@ public class ShulkerBoxBlockEntityRendererMixin {
         Function<Identifier, RenderLayer> layerFactory,
         ShulkerBoxBlockEntity shulkerBoxBlockEntity
     ) {
-        if (!ClientMod.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
+        if (!ClientConfig.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
             .getTextureSpecificVertexConsumer(
@@ -64,7 +64,7 @@ public class ShulkerBoxBlockEntityRendererMixin {
         float f
     ) {
         if (
-            !ClientMod.customModels()
+            !ClientConfig.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)
                 || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f
         ) {

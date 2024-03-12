@@ -75,3 +75,5 @@ text.autoconfig.enchantedshulkers:
     customModels.@Tooltip[4]: This option only has effect when the above option is on
 
     refillInInventory: Refill while inventory is open
+    scrollScreen: Use a scrolling screen for higher Augment levels
+    scrollScreenRows: Number of rows for the scrolling screen

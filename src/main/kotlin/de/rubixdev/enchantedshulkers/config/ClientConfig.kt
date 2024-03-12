@@ -1,35 +1,35 @@
 package de.rubixdev.enchantedshulkers.config
 
-import de.rubixdev.enchantedshulkers.Mod
-import me.shedaniel.autoconfig.AutoConfig
-import me.shedaniel.autoconfig.ConfigData
-import me.shedaniel.autoconfig.annotation.Config
-import me.shedaniel.autoconfig.annotation.ConfigEntry
-import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer
 import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
+import net.fabricmc.loader.api.FabricLoader
 
-@Environment(EnvType.CLIENT)
 object ClientConfig {
-    lateinit var inner: Inner
-        private set
+    private val canViewConfig = FabricLoader.getInstance().let { it.environmentType == EnvType.CLIENT && it.isModLoaded("cloth-config") }
+
+    const val DEFAULT_GLINT_WHEN_PLACED = true
+    const val DEFAULT_CUSTOM_MODELS = true
+    const val DEFAULT_REFILL_IN_INVENTORY = false
+    const val DEFAULT_SCROLL_SCREEN = false
+    const val DEFAULT_SCROLL_SCREEN_ROWS = 6
 
     fun init() {
-        AutoConfig.register(Inner::class.java, ::Toml4jConfigSerializer)
-        inner = AutoConfig.getConfigHolder(Inner::class.java).config
+        if (!canViewConfig) return
+        ClientConfigImpl.init()
     }
 
-    @Config(name = Mod.MOD_ID)
-    class Inner : ConfigData {
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        var glintWhenPlaced = true
-            private set
-
-        @ConfigEntry.Gui.Tooltip(count = 5)
-        var customModels = true
-            private set
-
-        var refillInInventory = false
-            private set
-    }
+    @JvmStatic
+    @get:JvmName("glintWhenPlaced")
+    val glintWhenPlaced: Boolean get() = if (!canViewConfig) DEFAULT_GLINT_WHEN_PLACED else ClientConfigImpl.inner.glintWhenPlaced
+    @JvmStatic
+    @get:JvmName("customModels")
+    val customModels: Boolean get() = if (!canViewConfig) DEFAULT_CUSTOM_MODELS else glintWhenPlaced && ClientConfigImpl.inner.customModels
+    @JvmStatic
+    @get:JvmName("refillInInventory")
+    val refillInInventory: Boolean get() = if (!canViewConfig) DEFAULT_REFILL_IN_INVENTORY else ClientConfigImpl.inner.refillInInventory
+    @JvmStatic
+    @get:JvmName("scrollScreen")
+    val scrollScreen: Boolean get() = if (!canViewConfig) DEFAULT_SCROLL_SCREEN else ClientConfigImpl.inner.scrollScreen
+    @JvmStatic
+    @get:JvmName("scrollScreenRows")
+    val scrollScreenRows: Int get() = if (!canViewConfig) DEFAULT_SCROLL_SCREEN_ROWS else ClientConfigImpl.inner.scrollScreenRows
 }

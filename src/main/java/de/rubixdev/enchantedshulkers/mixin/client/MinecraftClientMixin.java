@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Mod;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +21,7 @@ public class MinecraftClientMixin {
 
     @Inject(method = "setScreen", at = @At("HEAD"))
     private void sendScreenChangePacket(Screen screen, CallbackInfo ci) {
-        if (ClientMod.refillInInventory() || MinecraftClient.getInstance().getNetworkHandler() == null) return;
+        if (ClientConfig.refillInInventory() || MinecraftClient.getInstance().getNetworkHandler() == null) return;
         if (screen != null) {
             if (!(screen instanceof AbstractInventoryScreen<?>)) return;
             ClientPlayNetworking.send(Mod.INVENTORY_OPEN_PACKET_ID, PacketByteBufs.empty());

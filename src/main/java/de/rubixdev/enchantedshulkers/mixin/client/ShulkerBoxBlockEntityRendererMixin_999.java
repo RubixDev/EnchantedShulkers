@@ -1,7 +1,7 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.ClientMod;
 import de.rubixdev.enchantedshulkers.Utils;
+import de.rubixdev.enchantedshulkers.config.ClientConfig;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.render.block.entity.ShulkerBoxBlockEntityRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -29,7 +29,7 @@ public class ShulkerBoxBlockEntityRendererMixin_999 {
         float f
     ) {
         if (
-            !ClientMod.customModels()
+            !ClientConfig.customModels()
                 || !Utils.shouldGlint(shulkerBoxBlockEntity)
                 || shulkerBoxBlockEntity.getAnimationProgress(f) > 0.01f
                 || Utils.hasTwoColors(shulkerBoxBlockEntity)
