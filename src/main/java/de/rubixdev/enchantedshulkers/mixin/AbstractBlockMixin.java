@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import java.util.List;
@@ -12,6 +13,7 @@ import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.util.shape.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,7 +46,7 @@ public class AbstractBlockMixin {
 
         for (ItemStack drop : drops) {
             if (!(drop.getItem() instanceof BlockItem blockItem)) continue;
-            if (!Utils.canEnchant(blockItem)) continue;
+            if (!Utils.canEnchant(blockItem) && !Utils.canAugment(blockItem)) continue;
             NbtCompound existing = drop.getNbt();
             if (existing == null) {
                 // Don't set empty Enchantments
@@ -63,5 +65,10 @@ public class AbstractBlockMixin {
                 drop.setNbt(nbt.copyFrom(existing));
             }
         }
+    }
+
+    @ModifyReturnValue(method = "getCullingShape", at = @At("RETURN"))
+    protected VoxelShape getCullingShape(VoxelShape original) {
+        return original;
     }
 }

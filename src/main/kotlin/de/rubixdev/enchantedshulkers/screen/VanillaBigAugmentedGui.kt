@@ -9,6 +9,7 @@ import net.minecraft.inventory.Inventory
 import net.minecraft.item.Items
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.ShulkerBoxSlot
+import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.sound.SoundCategory
@@ -27,10 +28,11 @@ import net.minecraft.util.Formatting
 
 class VanillaBigAugmentedGui private constructor(
     player: ServerPlayerEntity,
-    val shulkerInventory: Inventory,
+    val inventory: Inventory,
     private val rows: Int,
     title: Text?,
     private val color: DyeColor?,
+    private val isShulkerBox: Boolean,
     private val maximized: Boolean,
     onInventoryOpen: Boolean,
 ) : SimpleGui(ScreenHandlerType.GENERIC_9X6, player, maximized) {
@@ -49,16 +51,18 @@ class VanillaBigAugmentedGui private constructor(
 
     internal constructor(
         player: ServerPlayerEntity,
-        shulkerInventory: Inventory,
+        inventory: Inventory,
         rows: Int,
         title: Text,
         color: DyeColor?,
+        isShulkerBox: Boolean,
     ) : this(
         player,
-        shulkerInventory,
+        inventory,
         rows,
         title,
         color,
+        isShulkerBox,
         maximized = false,
         onInventoryOpen = true,
     )
@@ -79,7 +83,7 @@ class VanillaBigAugmentedGui private constructor(
         }
 
         updateSlots()
-        if (onInventoryOpen) shulkerInventory.onOpen(player)
+        if (onInventoryOpen) inventory.onOpen(player)
     }
 
     private val actionsRow get() = 9 * (if (maximized) 9 else 5)
@@ -87,8 +91,14 @@ class VanillaBigAugmentedGui private constructor(
 
     private fun updateSlots() {
         for (i in 0 until actionsRow) {
-            if (i < shulkerInventory.size()) {
-                setSlotRedirect(i, ShulkerBoxSlot(shulkerInventory, i + 9 * scroll, 0, 0))
+            if (i < inventory.size()) {
+                setSlotRedirect(
+                    i,
+                    when (isShulkerBox) {
+                        true -> ShulkerBoxSlot(inventory, i + 9 * scroll, 0, 0)
+                        false -> Slot(inventory, i + 9 * scroll, 0, 0)
+                    },
+                )
             } else {
                 setSlot(i, GuiElementBuilder.from(Items.GRAY_STAINED_GLASS_PANE.defaultStack).setName(Text.empty()))
             }
@@ -126,7 +136,16 @@ class VanillaBigAugmentedGui private constructor(
                 )
                 .setCallback { ->
                     click()
-                    VanillaBigAugmentedGui(player, shulkerInventory, rows, title, color, !maximized, false).open()
+                    VanillaBigAugmentedGui(
+                        player,
+                        inventory,
+                        rows,
+                        title,
+                        color,
+                        isShulkerBox,
+                        !maximized,
+                        false,
+                    ).open()
                 },
         )
     }
@@ -161,7 +180,7 @@ class VanillaBigAugmentedGui private constructor(
 
     override fun onClose() {
         super.onClose()
-        shulkerInventory.onClose(player)
+        inventory.onClose(player)
     }
 
     override fun onAnyClick(index: Int, type: ClickType?, action: SlotActionType?): Boolean = !maximized

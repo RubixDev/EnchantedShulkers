@@ -1,12 +1,13 @@
 package de.rubixdev.enchantedshulkers.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import de.rubixdev.enchantedshulkers.screen.AugmentedScreenHandler;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
+import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -21,10 +22,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,39 +34,33 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.stream.IntStream;
-
-@Mixin(ShulkerBoxBlockEntity.class)
-public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
+@Mixin(ChestBlockEntity.class)
+public abstract class ChestBlockEntityMixin extends BlockEntityMixin
     implements EnchantableBlockEntity, NamedScreenHandlerFactory {
     @Shadow
     private DefaultedList<ItemStack> inventory;
-
-    @Shadow
-    @Nullable public abstract DyeColor getColor();
-
     @Unique private NbtList enchantments = new NbtList();
 
-    @Override
-    public @NotNull NbtList enchantedShulkers$getEnchantments() {
-        return this.enchantments;
+    @NotNull @Override
+    public NbtList enchantedShulkers$getEnchantments() {
+        return enchantments;
     }
 
     @Override
     public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
         this.enchantments = enchantments;
-        this.updateInventorySize();
+        updateInventorySize();
     }
 
     @Unique private void updateInventorySize() {
-        int newSize = 9 * Utils.getInvRows(Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments));
-        if (this.inventory.size() >= newSize) return;
+        int newSize = 9 * Utils.getInvRows(Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, enchantments));
+        if (inventory.size() >= newSize) return;
 
         DefaultedList<ItemStack> newInv = DefaultedList.ofSize(newSize, ItemStack.EMPTY);
-        for (int i = 0; i < this.inventory.size(); i++) {
-            newInv.set(i, this.inventory.get(i));
+        for (int i = 0; i < inventory.size(); i++) {
+            newInv.set(i, inventory.get(i));
         }
-        this.inventory = newInv;
+        inventory = newInv;
     }
 
     @Inject(method = "readNbt", at = @At("HEAD"))
@@ -77,28 +70,28 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
         }
     }
 
-    @Inject(method = "writeNbt", at = @At("TAIL"))
+    @Inject(method = "writeNbt", at = @At("HEAD"))
     public void writeNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.put("Enchantments", this.enchantments);
+        nbt.put("Enchantments", enchantments);
     }
 
     @Override
-    public void toInitialChunkDataNbt(CallbackInfoReturnable<NbtCompound> cir) {
-        cir.setReturnValue(this.enchantedShulkers$toClientNbt());
+    protected void toInitialChunkDataNbt(CallbackInfoReturnable<NbtCompound> cir) {
+        cir.setReturnValue(enchantedShulkers$toClientNbt());
     }
 
     @Override
-    public void toUpdatePacket(CallbackInfoReturnable<@Nullable Packet<ClientPlayPacketListener>> cir) {
+    protected void toUpdatePacket(CallbackInfoReturnable<@Nullable Packet<ClientPlayPacketListener>> cir) {
         cir.setReturnValue(BlockEntityUpdateS2CPacket.create((BlockEntity) (Object) this));
     }
 
-    @Inject(method = "getContainerName", at = @At(value = "RETURN"), cancellable = true)
-    public void getContainerName(CallbackInfoReturnable<Text> cir) {
-        MutableText text = cir.getReturnValue().copy();
+    @ModifyReturnValue(method = "getContainerName", at = @At("RETURN"))
+    private Text getContainerName(Text original) {
+        MutableText text = original.copy();
         if (WorldConfig.coloredNames() && !enchantments.isEmpty()) {
             text.setStyle(Style.EMPTY.withFormatting(Formatting.AQUA));
         }
-        cir.setReturnValue(text);
+        return text;
     }
 
     @Inject(method = "createScreenHandler", at = @At("HEAD"), cancellable = true)
@@ -107,28 +100,17 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
         PlayerInventory playerInventory,
         CallbackInfoReturnable<ScreenHandler> cir
     ) {
-        int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
+        int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, enchantments);
         if (level != 0) {
             cir.setReturnValue(
-                AugmentedScreenHandler.create(
-                    syncId,
-                    playerInventory,
-                    (Inventory) this,
-                    level,
-                    this.getDisplayName(),
-                    this.getColor(),
-                    true,
-                    null
-                )
+                AugmentedScreenHandler
+                    .create(syncId, playerInventory, (Inventory) this, level, getDisplayName(), null, false, null)
             );
         }
     }
 
-    @Inject(method = "getAvailableSlots", at = @At("HEAD"), cancellable = true)
-    private void augmentedInvSize(Direction side, CallbackInfoReturnable<int[]> cir) {
-        int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
-        if (level != 0) {
-            cir.setReturnValue(IntStream.range(0, 9 * Utils.getInvRows(level)).toArray());
-        }
+    @Inject(method = "size", at = @At("HEAD"), cancellable = true)
+    private void augmentInvSize(CallbackInfoReturnable<Integer> cir) {
+        cir.setReturnValue(inventory.size());
     }
 }

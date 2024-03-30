@@ -11,7 +11,6 @@ import de.rubixdev.enchantedshulkers.config.WorldConfig
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity
 import de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor
 import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxSlot_ShulkerBoxAccessoryInventoryAccessor
-import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler
 import de.rubixdev.enchantedshulkers.screen.BigAugmentedScreenHandler
 import de.rubixdev.enchantedshulkers.screen.VanillaBigAugmentedGui
 import eu.pb4.sgui.virtual.inventory.VirtualScreenHandler
@@ -52,6 +51,7 @@ import megaminds.clickopener.api.BlockEntityInventory
 
 //#if MC >= 12002
 import eu.pb4.polymer.networking.api.server.PolymerServerNetworking
+import net.minecraft.screen.GenericContainerScreenHandler
 //#else
 //$$ import eu.pb4.polymer.networking.api.PolymerServerNetworking
 //#endif
@@ -139,9 +139,9 @@ object Utils {
     @JvmStatic
     fun ScreenHandler.getInventory(): Inventory? = when {
         this is ShulkerBoxScreenHandler -> this.inventory
-        this is AugmentedShulkerBoxScreenHandler -> this.inventory
+        this is GenericContainerScreenHandler -> this.inventory
         this is BigAugmentedScreenHandler -> this.inventory
-        this is VirtualScreenHandler -> (this.gui as? VanillaBigAugmentedGui)?.shulkerInventory
+        this is VirtualScreenHandler -> (this.gui as? VanillaBigAugmentedGui)?.inventory
         FabricLoader.getInstance().isModLoaded("reinfshulker") && this is ReinforcedStorageScreenHandler -> this.inventory
         else -> null
     }

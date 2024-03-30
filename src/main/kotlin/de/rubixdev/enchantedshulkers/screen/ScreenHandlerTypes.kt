@@ -11,8 +11,8 @@ import net.minecraft.screen.ScreenHandlerType
 object ScreenHandlerTypes {
     val SHULKER_LIST = (4..10).map { level -> register(level, null, isShulkerBox = true) }
     val GENERIC_LIST = (4..10).map { level -> register(level, null, isShulkerBox = false) }
-    val GENERIC_DOUBLE_MAP = (4..10).flatMap { level1 ->
-        (4..10).map { level2 -> Pair(level1, level2) to register(level1, level2, isShulkerBox = false) }
+    val GENERIC_DOUBLE_MAP = (0..10).flatMap { level1 ->
+        (0..10).filter { level1 + it >= 1 }.map { level2 -> Pair(level1, level2) to register(level1, level2, isShulkerBox = false) }
     }.toMap()
 
     fun init() {}
@@ -25,7 +25,7 @@ object ScreenHandlerTypes {
                 BigAugmentedScreenHandler(
                     syncId,
                     playerInventory,
-                    SimpleInventory((augmentLevel + 3) * 9),
+                    SimpleInventory((augmentLevel + 3 + (augmentLevel2?.let { it + 3 } ?: 0)) * 9),
                     augmentLevel,
                     isShulkerBox,
                     augmentLevel2,

@@ -1,6 +1,7 @@
 package de.rubixdev.enchantedshulkers
 
 import de.rubixdev.enchantedshulkers.Utils.id
+import de.rubixdev.enchantedshulkers.client.BarrelBlockEntityRenderer
 import de.rubixdev.enchantedshulkers.config.InvalidOptionValueException
 import de.rubixdev.enchantedshulkers.config.WorldConfig
 import de.rubixdev.enchantedshulkers.screen.BigAugmentedScreen
@@ -10,9 +11,11 @@ import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.client.gui.screen.ingame.HandledScreens
 import net.minecraft.client.model.*
 import net.minecraft.client.render.TexturedRenderLayers
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories
 import net.minecraft.client.util.SpriteIdentifier
 import net.minecraft.nbt.NbtByte
 import net.minecraft.util.DyeColor
@@ -25,6 +28,16 @@ import net.minecraft.nbt.NbtInt
 @Environment(EnvType.CLIENT)
 object ClientMod : ClientModInitializer {
     @JvmField val CLOSED_ENDER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_ender".id)
+    @JvmField val CLOSED_NORMAL_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_normal".id)
+    @JvmField val CLOSED_NORMAL_LEFT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_normal_left".id)
+    @JvmField val CLOSED_NORMAL_RIGHT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_normal_right".id)
+    @JvmField val CLOSED_TRAPPED_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_trapped".id)
+    @JvmField val CLOSED_TRAPPED_LEFT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_trapped_left".id)
+    @JvmField val CLOSED_TRAPPED_RIGHT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_trapped_right".id)
+    @JvmField val CLOSED_CHRISTMAS_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_christmas".id)
+    @JvmField val CLOSED_CHRISTMAS_LEFT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_christmas_left".id)
+    @JvmField val CLOSED_CHRISTMAS_RIGHT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_christmas_right".id)
+
     @JvmField val COLORS = DyeColor.values().sortedBy { it.id }.map { it.getName() }
     @JvmField val CLOSED_SHULKER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, "entity/shulker/closed_shulker".id)
     @JvmField val CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS = COLORS.map { SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, "entity/shulker/closed_shulker_$it".id) }
@@ -72,5 +85,7 @@ object ClientMod : ClientModInitializer {
         ScreenHandlerTypes.SHULKER_LIST.forEach { HandledScreens.register(it, ::BigAugmentedScreen) }
         ScreenHandlerTypes.GENERIC_LIST.forEach { HandledScreens.register(it, ::BigAugmentedScreen) }
         ScreenHandlerTypes.GENERIC_DOUBLE_MAP.values.forEach { HandledScreens.register(it, ::BigAugmentedScreen) }
+
+        BlockEntityRendererFactories.register(BlockEntityType.BARREL, ::BarrelBlockEntityRenderer)
     }
 }

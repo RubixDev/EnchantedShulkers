@@ -119,6 +119,7 @@ object WorldConfig {
     val OPTIONAL_PACKS = mapOf(
         "enchanted_ender_chest" to { inner.enchantableEnderChest },
         "enchanted_ender_pouch" to { inner.enchantableEnderChest && FabricLoader.getInstance().isModLoaded("things") },
+        "augmented_chests_and_barrels" to { inner.augmentableChestsAndBarrels },
     )
 
     private val NEW_FABRIC_API = FabricLoader.getInstance().getModContainer("fabric-api")
@@ -252,6 +253,9 @@ object WorldConfig {
     @JvmStatic
     @get:JvmName("maxAugmentLevel")
     val maxAugmentLevel get() = inner.maxAugmentLevel
+    @JvmStatic
+    @get:JvmName("augmentableChestsAndBarrels")
+    val augmentableChestsAndBarrels get() = inner.augmentableChestsAndBarrels
 
     private class Inner {
         var refillOffhand = true
@@ -274,5 +278,6 @@ object WorldConfig {
         var weakerVacuum = false
         @IntOption(min = 1, max = 10, suggestions = ["1", "2", "3", "6", "9", "10"])
         var maxAugmentLevel = 3
+        var augmentableChestsAndBarrels = false
     }
 }

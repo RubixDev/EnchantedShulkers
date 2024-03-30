@@ -5,8 +5,8 @@ import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.config.WorldConfig;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import de.rubixdev.enchantedshulkers.screen.AugmentedScreenHandler;
+import net.minecraft.block.entity.BarrelBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -21,10 +21,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,16 +33,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.stream.IntStream;
-
-@Mixin(ShulkerBoxBlockEntity.class)
-public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
+@Mixin(BarrelBlockEntity.class)
+public abstract class BarrelBlockEntityMixin extends BlockEntityMixin
     implements EnchantableBlockEntity, NamedScreenHandlerFactory {
     @Shadow
     private DefaultedList<ItemStack> inventory;
-
-    @Shadow
-    @Nullable public abstract DyeColor getColor();
 
     @Unique private NbtList enchantments = new NbtList();
 
@@ -56,7 +49,7 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
     @Override
     public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
         this.enchantments = enchantments;
-        this.updateInventorySize();
+        updateInventorySize();
     }
 
     @Unique private void updateInventorySize() {
@@ -110,25 +103,14 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntityMixin
         int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
         if (level != 0) {
             cir.setReturnValue(
-                AugmentedScreenHandler.create(
-                    syncId,
-                    playerInventory,
-                    (Inventory) this,
-                    level,
-                    this.getDisplayName(),
-                    this.getColor(),
-                    true,
-                    null
-                )
+                AugmentedScreenHandler
+                    .create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName(), null, false, null)
             );
         }
     }
 
-    @Inject(method = "getAvailableSlots", at = @At("HEAD"), cancellable = true)
-    private void augmentedInvSize(Direction side, CallbackInfoReturnable<int[]> cir) {
-        int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
-        if (level != 0) {
-            cir.setReturnValue(IntStream.range(0, 9 * Utils.getInvRows(level)).toArray());
-        }
+    @Inject(method = "size", at = @At("HEAD"), cancellable = true)
+    private void augmentInvSize(CallbackInfoReturnable<Integer> cir) {
+        cir.setReturnValue(this.inventory.size());
     }
 }

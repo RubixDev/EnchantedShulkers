@@ -10,7 +10,6 @@ interface EnchantableBlockEntity {
     fun `enchantedShulkers$setEnchantments`(enchantments: NbtList)
 
     fun `enchantedShulkers$toClientNbt`() = NbtCompound().apply {
-        // don't include the shulker inventory to reduce packet size
         put("Enchantments", `enchantedShulkers$getEnchantments`())
     }
 }

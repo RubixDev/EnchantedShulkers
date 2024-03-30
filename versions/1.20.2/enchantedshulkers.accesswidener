@@ -9,3 +9,4 @@ mutable field net/minecraft/village/TradeOffers$EnchantBookFactory possibleEncha
 accessible field net/minecraft/screen/GrindstoneScreenHandler input Lnet/minecraft/inventory/Inventory;
 mutable field net/minecraft/screen/slot/Slot x I
 mutable field net/minecraft/screen/slot/Slot y I
+accessible field net/minecraft/client/render/block/BlockRenderManager blockColors Lnet/minecraft/client/color/block/BlockColors;

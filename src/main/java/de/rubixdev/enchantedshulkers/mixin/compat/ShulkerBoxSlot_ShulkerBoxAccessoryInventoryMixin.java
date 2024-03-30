@@ -3,7 +3,7 @@ package de.rubixdev.enchantedshulkers.mixin.compat;
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory;
 import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.Utils;
-import de.rubixdev.enchantedshulkers.screen.AugmentedShulkerBoxScreenHandler;
+import de.rubixdev.enchantedshulkers.screen.AugmentedScreenHandler;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -48,13 +48,15 @@ public abstract class ShulkerBoxSlot_ShulkerBoxAccessoryInventoryMixin {
         int level = EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, this.shulkerBox);
         if (level != 0) {
             cir.setReturnValue(
-                AugmentedShulkerBoxScreenHandler.create(
+                AugmentedScreenHandler.create(
                     i,
                     playerInventory,
                     (Inventory) this,
                     level,
                     getDisplayName(),
-                    Utils.getShulkerColor(this.shulkerBox)
+                    Utils.getShulkerColor(this.shulkerBox),
+                    true,
+                    null
                 )
             );
         }

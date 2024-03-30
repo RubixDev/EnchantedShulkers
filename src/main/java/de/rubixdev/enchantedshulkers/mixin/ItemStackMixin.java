@@ -26,7 +26,7 @@ public abstract class ItemStackMixin {
 
     @Inject(method = "addEnchantment", at = @At("TAIL"))
     public void addEnchantment(Enchantment enchantment, int level, CallbackInfo ci) {
-        if (!Utils.canEnchant(this.getItem())) return;
+        if (!Utils.canEnchant(this.getItem()) && !Utils.canAugment(this.getItem())) return;
         NbtCompound tag = getOrCreateSubNbt("BlockEntityTag");
         tag.put("Enchantments", Objects.requireNonNull(this.getNbt()).get("Enchantments"));
     }

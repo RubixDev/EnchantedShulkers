@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class EnchantmentHelperMixin {
     @Inject(method = "set", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void set(Map<Enchantment, Integer> enchantments, ItemStack stack, CallbackInfo ci, NbtList nbtList) {
-        if (!Utils.canEnchant(stack)) return;
+        if (!Utils.canEnchant(stack) && !Utils.canAugment(stack)) return;
         NbtCompound tag = stack.getOrCreateSubNbt("BlockEntityTag");
         if (nbtList.isEmpty()) {
             tag.remove("Enchantments");

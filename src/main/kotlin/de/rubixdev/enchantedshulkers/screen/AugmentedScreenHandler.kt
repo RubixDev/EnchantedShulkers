@@ -12,25 +12,26 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.DyeColor
 
-class AugmentedShulkerBoxScreenHandler private constructor(
+class AugmentedScreenHandler private constructor(
     syncId: Int,
     playerInventory: PlayerInventory,
     inventory: Inventory,
-    enchantmentLevel: Int,
+    augmentLevel: Int,
+    isShulkerBox: Boolean,
 ) : GenericContainerScreenHandler(
     when {
-        enchantmentLevel == 1 -> ScreenHandlerType.GENERIC_9X4
-        enchantmentLevel == 2 -> ScreenHandlerType.GENERIC_9X5
-        enchantmentLevel >= 3 -> ScreenHandlerType.GENERIC_9X6
+        augmentLevel == 1 -> ScreenHandlerType.GENERIC_9X4
+        augmentLevel == 2 -> ScreenHandlerType.GENERIC_9X5
+        augmentLevel >= 3 -> ScreenHandlerType.GENERIC_9X6
         else -> ScreenHandlerType.GENERIC_9X3
     },
     syncId,
     playerInventory,
     inventory,
-    Utils.getInvRows(enchantmentLevel),
+    Utils.getInvRows(augmentLevel),
 ) {
     init {
-        convertSlots()
+        if (isShulkerBox) convertSlots()
     }
 
     companion object {
@@ -39,25 +40,27 @@ class AugmentedShulkerBoxScreenHandler private constructor(
             syncId: Int,
             playerInventory: PlayerInventory,
             inventory: Inventory,
-            enchantmentLevel: Int,
+            augmentLevel: Int,
             title: Text,
             color: DyeColor?,
+            isShulkerBox: Boolean,
+            augmentLevel2: Int?,
         ): ScreenHandler? {
-            val rows = Utils.getInvRows(enchantmentLevel)
+            val rows = Utils.getInvRows(augmentLevel)
             ScreenHandler.checkSize(inventory, 9 * rows)
             val player = playerInventory.player
-            if (enchantmentLevel > 3 && player is ServerPlayerEntity) {
+            if (player is ServerPlayerEntity && (augmentLevel > 3 || (augmentLevel2 != null && augmentLevel + augmentLevel2 > 0))) {
                 return if (player.clientModVersion() >= 2) {
-                    BigAugmentedScreenHandler(syncId, playerInventory, inventory, enchantmentLevel, true, null)
+                    BigAugmentedScreenHandler(syncId, playerInventory, inventory, augmentLevel, isShulkerBox, augmentLevel2)
                 } else {
-                    VanillaBigAugmentedGui(player, inventory, rows, title, color).openAsScreenHandler(
+                    VanillaBigAugmentedGui(player, inventory, rows, title, color, isShulkerBox).openAsScreenHandler(
                         syncId,
                         playerInventory,
                         player,
                     )
                 }
             }
-            return AugmentedShulkerBoxScreenHandler(syncId, playerInventory, inventory, enchantmentLevel)
+            return AugmentedScreenHandler(syncId, playerInventory, inventory, augmentLevel, isShulkerBox)
         }
     }
 
