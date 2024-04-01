@@ -74,6 +74,7 @@ text.autoconfig.enchantedshulkers:
     customModels.@Tooltip[3]: so you should disable this when using a custom resource pack.
     customModels.@Tooltip[4]: This option only has effect when the above option is on
 
+    unobtrusiveGlint: Unobtrusive Glint
     refillInInventory: Refill while inventory is open
     scrollScreen: Use a scrolling screen for higher Augment levels
     scrollScreenRows: Number of rows for the scrolling screen

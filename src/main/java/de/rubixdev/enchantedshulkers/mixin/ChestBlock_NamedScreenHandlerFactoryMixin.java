@@ -16,18 +16,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@SuppressWarnings({ "UnresolvedMixinReference", "MixinAnnotationTarget" }) // the
-                                                                           // Minecraft
-                                                                           // Dev
-                                                                           // plugin
-                                                                           // doesn't
-                                                                           // seem
-                                                                           // to
-                                                                           // like
-                                                                           // double
-                                                                           // nested
-                                                                           // anonymous
-                                                                           // classes
+// the Minecraft Dev plugin doesn't seem to like double nested anonymous classes
+@SuppressWarnings({ "UnresolvedMixinReference", "MixinAnnotationTarget" })
 @Mixin(targets = "net.minecraft.block.ChestBlock$2$1")
 public abstract class ChestBlock_NamedScreenHandlerFactoryMixin {
     @Shadow

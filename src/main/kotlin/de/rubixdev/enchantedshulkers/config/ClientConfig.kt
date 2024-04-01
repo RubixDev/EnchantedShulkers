@@ -8,6 +8,7 @@ object ClientConfig {
 
     const val DEFAULT_GLINT_WHEN_PLACED = true
     const val DEFAULT_CUSTOM_MODELS = true
+    const val DEFAULT_UNOBTRUSIVE_GLINT = false
     const val DEFAULT_REFILL_IN_INVENTORY = false
     const val DEFAULT_SCROLL_SCREEN = false
     const val DEFAULT_SCROLL_SCREEN_ROWS = 6
@@ -23,6 +24,9 @@ object ClientConfig {
     @JvmStatic
     @get:JvmName("customModels")
     val customModels: Boolean get() = if (!canViewConfig) DEFAULT_CUSTOM_MODELS else glintWhenPlaced && ClientConfigImpl.inner.customModels
+    @JvmStatic
+    @get:JvmName("unobtrusiveGlint")
+    val unobtrusiveGlint: Boolean get() = if (!canViewConfig) DEFAULT_UNOBTRUSIVE_GLINT else ClientConfigImpl.inner.unobtrusiveGlint
     @JvmStatic
     @get:JvmName("refillInInventory")
     val refillInInventory: Boolean get() = if (!canViewConfig) DEFAULT_REFILL_IN_INVENTORY else ClientConfigImpl.inner.refillInInventory

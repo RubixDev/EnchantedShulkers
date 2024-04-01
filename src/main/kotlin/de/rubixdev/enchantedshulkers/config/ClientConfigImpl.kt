@@ -52,6 +52,9 @@ object ClientConfigImpl {
         var customModels = ClientConfig.DEFAULT_CUSTOM_MODELS
             private set
 
+        var unobtrusiveGlint = ClientConfig.DEFAULT_UNOBTRUSIVE_GLINT
+            private set
+
         var refillInInventory = ClientConfig.DEFAULT_REFILL_IN_INVENTORY
             private set
 

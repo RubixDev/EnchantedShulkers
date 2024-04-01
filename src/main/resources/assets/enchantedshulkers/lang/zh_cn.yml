@@ -74,6 +74,7 @@ text.autoconfig.enchantedshulkers:
     customModels.@Tooltip[3]: 此在使用自定义资源包时禁用此功能。
     customModels.@Tooltip[4]: 此选项只在上述选项打开的情况下生效。
 
+    # unobtrusiveGlint: Unobtrusive Glint
     refillInInventory: 在物品栏打开时补充
     # scrollScreen: Use a scrolling screen for higher Augment levels
     # scrollScreenRows: Number of rows for the scrolling screen

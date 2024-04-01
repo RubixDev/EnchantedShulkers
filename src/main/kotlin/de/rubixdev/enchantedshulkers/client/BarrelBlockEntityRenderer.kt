@@ -1,5 +1,6 @@
 package de.rubixdev.enchantedshulkers.client
 
+import de.rubixdev.enchantedshulkers.Utils
 import de.rubixdev.enchantedshulkers.Utils.shouldGlint
 import de.rubixdev.enchantedshulkers.config.ClientConfig
 import de.rubixdev.enchantedshulkers.config.WorldConfig
@@ -29,14 +30,10 @@ class BarrelBlockEntityRenderer(
         matrices.push()
 
         val client = MinecraftClient.getInstance() ?: return
-        val world = client.world ?: return
         val state = entity.cachedState
         val model = client.blockRenderManager.getModel(state)
         val vertices = if (entity.shouldGlint()) {
-            VertexConsumers.union(
-                vertexConsumers.getBuffer(RenderLayer.getDirectEntityGlint()),
-                vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(model.particleSprite.atlasId)),
-            )
+            Utils.getGlintVertexConsumer(vertexConsumers, RenderLayer.getEntityCutoutNoCull(model.particleSprite.atlasId), matrices)
         } else {
             vertexConsumers.getBuffer(RenderLayers.getEntityBlockLayer(state, false))
         }

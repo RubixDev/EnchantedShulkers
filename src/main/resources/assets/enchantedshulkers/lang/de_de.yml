@@ -74,6 +74,7 @@ text.autoconfig.enchantedshulkers:
     customModels.@Tooltip[3]: dies also ausschalten, wenn du ein anderes Ressourcenpaket benutzt.
     customModels.@Tooltip[4]: Diese Einstellung hat keinen Effekt, wenn die obige Einstellung aus ist.
 
+    unobtrusiveGlint: Unaufdringliches Schimmern
     refillInInventory: Nachfüllen bei offenem Inventar
     scrollScreen: Nutze ein scrollbares Inventar für höhere Level der Erweitern Verzauberung
     scrollScreenRows: Anzahl der Reihen für das scrollbare Inventar

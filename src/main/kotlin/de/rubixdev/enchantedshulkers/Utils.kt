@@ -7,6 +7,7 @@ import com.glisco.things.items.ThingsItems
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory
 import com.illusivesoulworks.shulkerboxslot.platform.Services
 import cursedflames.splitshulkers.SplitShulkerBoxBlockEntity
+import de.rubixdev.enchantedshulkers.config.ClientConfig
 import de.rubixdev.enchantedshulkers.config.WorldConfig
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity
 import de.rubixdev.enchantedshulkers.mixin.compat.QuickShulker_ItemStackInventoryAccessor
@@ -51,6 +52,15 @@ import megaminds.clickopener.api.BlockEntityInventory
 
 //#if MC >= 12002
 import eu.pb4.polymer.networking.api.server.PolymerServerNetworking
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
+import net.minecraft.client.render.OverlayVertexConsumer
+import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.VertexConsumer
+import net.minecraft.client.render.VertexConsumerProvider
+import net.minecraft.client.render.VertexConsumers
+import net.minecraft.client.render.item.ItemRenderer
+import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.screen.GenericContainerScreenHandler
 //#else
 //$$ import eu.pb4.polymer.networking.api.PolymerServerNetworking
@@ -249,4 +259,26 @@ object Utils {
 
     @JvmStatic
     val String.id get() = Identifier(Mod.MOD_ID, this)
+
+    @Environment(EnvType.CLIENT)
+    @JvmStatic
+    fun getGlintVertexConsumer(
+        vertexConsumers: VertexConsumerProvider,
+        layer: RenderLayer,
+        matrices: MatrixStack,
+    ): VertexConsumer {
+        if (ClientConfig.unobtrusiveGlint) {
+            return ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, layer, false, true)
+        }
+        val entry = matrices.peek()
+        return VertexConsumers.union(
+            OverlayVertexConsumer(
+                vertexConsumers.getBuffer(RenderLayer.getDirectGlint()),
+                entry.positionMatrix,
+                entry.normalMatrix,
+                0.02f,
+            ),
+            vertexConsumers.getBuffer(layer),
+        )
+    }
 }

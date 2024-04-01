@@ -11,7 +11,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.ShulkerBoxBlockEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -62,14 +61,15 @@ public class SplitShulkers_ShulkerBoxBlockEntityRendererMixin {
         SpriteIdentifier instance,
         VertexConsumerProvider vertexConsumers,
         Function<Identifier, RenderLayer> layerFactory,
-        ShulkerBoxBlockEntity shulkerBoxBlockEntity
+        ShulkerBoxBlockEntity shulkerBoxBlockEntity,
+        float tickDelta,
+        MatrixStack matrices
     ) {
         if (!ClientConfig.glintWhenPlaced() || !Utils.shouldGlint(shulkerBoxBlockEntity))
             return instance.getVertexConsumer(vertexConsumers, layerFactory);
         return instance.getSprite()
             .getTextureSpecificVertexConsumer(
-                ItemRenderer
-                    .getDirectItemGlintConsumer(vertexConsumers, instance.getRenderLayer(layerFactory), false, true)
+                Utils.getGlintVertexConsumer(vertexConsumers, instance.getRenderLayer(layerFactory), matrices)
             );
     }
 }

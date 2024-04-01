@@ -13,7 +13,6 @@ import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.ChestBlockEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -66,11 +65,10 @@ public abstract class ChestBlockEntityRendererMixin<T extends BlockEntity> {
                 case RIGHT -> CLOSED_NORMAL_RIGHT_TEXTURE_ID;
             };
         return new SpriteTexturedVertexConsumer(
-            ItemRenderer.getDirectItemGlintConsumer(
+            Utils.getGlintVertexConsumer(
                 vertexConsumers,
                 spriteIdentifier.getRenderLayer(RenderLayer::getEntityCutout),
-                false,
-                true
+                matrices
             ),
             spriteIdentifier.getSprite()
         );
