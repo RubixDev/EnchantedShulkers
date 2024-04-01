@@ -50,6 +50,7 @@ class Props {
 
     val minecraft_dependency: String by prop
 
+    val early_loading_screen_version: String by prop
     val fabric_version: String by prop
     val cloth_version: String by prop
     val modmenu_version: String by prop
@@ -144,6 +145,9 @@ dependencies {
     minecraft("com.mojang:minecraft:${props.minecraft_version}")
     mappings("net.fabricmc:yarn:${props.yarn_mappings}:v2")
     modImplementation("net.fabricmc:fabric-loader:${props.loader_version}")
+
+    // local runtime
+    modLocalRuntime("maven.modrinth:early-loading-screen:${props.early_loading_screen_version}")
 
     // dependencies
     modImplementation("net.fabricmc.fabric-api:fabric-api:${props.fabric_version}")
