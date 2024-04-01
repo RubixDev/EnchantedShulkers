@@ -256,7 +256,7 @@ loom {
     runConfigs.all {
         // to make sure it generates all "Minecraft Client (:subproject_name)" applications
         isIdeConfigGenerated = true
-        runDir = "../../run"
+        runDir = "../../run" + (if (mcVersion == 11904) "-1.19" else "")
         vmArg("-Dmixin.debug.export=true")
     }
 }

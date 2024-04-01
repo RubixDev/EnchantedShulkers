@@ -15,12 +15,21 @@ import de.rubixdev.enchantedshulkers.mixin.compat.ShulkerBoxSlot_ShulkerBoxAcces
 import de.rubixdev.enchantedshulkers.screen.BigAugmentedScreenHandler
 import de.rubixdev.enchantedshulkers.screen.VanillaBigAugmentedGui
 import eu.pb4.sgui.virtual.inventory.VirtualScreenHandler
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import net.fabricmc.loader.api.FabricLoader
 import net.kyrptonaught.shulkerutils.ItemStackInventory
 import net.minecraft.block.BlockWithEntity
 import net.minecraft.block.ShulkerBoxBlock
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.ShulkerBoxBlockEntity
+import net.minecraft.client.render.OverlayVertexConsumer
+import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.VertexConsumer
+import net.minecraft.client.render.VertexConsumerProvider
+import net.minecraft.client.render.VertexConsumers
+import net.minecraft.client.render.item.ItemRenderer
+import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.inventory.Inventories
@@ -32,6 +41,7 @@ import net.minecraft.item.Items
 import net.minecraft.nbt.NbtElement
 import net.minecraft.nbt.NbtList
 import net.minecraft.registry.Registries
+import net.minecraft.screen.GenericContainerScreenHandler
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ShulkerBoxScreenHandler
@@ -52,16 +62,6 @@ import megaminds.clickopener.api.BlockEntityInventory
 
 //#if MC >= 12002
 import eu.pb4.polymer.networking.api.server.PolymerServerNetworking
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
-import net.minecraft.client.render.OverlayVertexConsumer
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.VertexConsumer
-import net.minecraft.client.render.VertexConsumerProvider
-import net.minecraft.client.render.VertexConsumers
-import net.minecraft.client.render.item.ItemRenderer
-import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.screen.GenericContainerScreenHandler
 //#else
 //$$ import eu.pb4.polymer.networking.api.PolymerServerNetworking
 //#endif
