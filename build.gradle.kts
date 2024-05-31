@@ -2,14 +2,14 @@ import com.diffplug.gradle.spotless.BaseKotlinExtension
 
 plugins {
     id("maven-publish")
-    id("fabric-loom") version "1.5-SNAPSHOT" apply false
+    id("fabric-loom") version "1.6-SNAPSHOT" apply false
     // TODO: the preprocessor doesn't yet work with Kotlin 1.9
     // https://github.com/ReplayMod/remap/pull/17
     kotlin("jvm") version "1.8.22" apply false
 
     // https://github.com/ReplayMod/preprocessor
     // https://github.com/Fallen-Breath/preprocessor
-    id("com.replaymod.preprocess") version "ce1aeb2b"
+    id("com.replaymod.preprocess") version "88169fc"
 
     // https://github.com/Fallen-Breath/yamlang
     id("me.fallenbreath.yamlang") version "1.3.1" apply false
