@@ -2,7 +2,6 @@ package de.rubixdev.enchantedshulkers.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import de.rubixdev.enchantedshulkers.Mod;
-import de.rubixdev.enchantedshulkers.Utils;
 import de.rubixdev.enchantedshulkers.interfaces.EnchantableBlockEntity;
 import de.rubixdev.enchantedshulkers.screen.AugmentedScreenHandler;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -15,6 +14,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+
+//#if MC < 12006
+//$$ import de.rubixdev.enchantedshulkers.Utils;
+//#endif
 
 // the Minecraft Dev plugin doesn't seem to like double nested anonymous classes
 @SuppressWarnings({ "UnresolvedMixinReference", "MixinAnnotationTarget" })
@@ -41,10 +44,18 @@ public abstract class ChestBlock_NamedScreenHandlerFactoryMixin {
         PlayerEntity playerEntity
     ) {
         int level1 = field_17358 instanceof EnchantableBlockEntity e
-            ? Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
+            //#if MC >= 12006
+            ? e.enchantedShulkers$getEnchantments().getLevel(Mod.AUGMENT_ENCHANTMENT)
+            //#else
+            //$$ ? Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
+            //#endif
             : 0;
         int level2 = field_17359 instanceof EnchantableBlockEntity e
-            ? Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
+            //#if MC >= 12006
+            ? e.enchantedShulkers$getEnchantments().getLevel(Mod.AUGMENT_ENCHANTMENT)
+            //#else
+            //$$ ? Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
+            //#endif
             : 0;
         if (level1 != 0 || level2 != 0) {
             return AugmentedScreenHandler

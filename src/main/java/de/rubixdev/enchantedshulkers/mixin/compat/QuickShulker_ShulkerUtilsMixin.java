@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,6 +15,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+//#if MC < 12006
+//$$ import net.minecraft.item.BlockItem;
+//#endif
 
 @Restriction(require = @Condition("shulkerutils"))
 @Mixin(ShulkerUtils.class)
@@ -36,7 +39,12 @@ public class QuickShulker_ShulkerUtilsMixin {
         if (shulker instanceof BlockWithEntity bwe) {
             BlockEntity blockEntity = bwe.createBlockEntity(BlockPos.ORIGIN, null);
             if (blockEntity instanceof ShulkerBoxBlockEntity shulkerEntity) {
-                blockEntity.readNbt(BlockItem.getBlockEntityNbt(stack));
+                //#if MC >= 12006
+                // TODO: is this correct?
+                blockEntity.readComponents(stack);
+                //#else
+                //$$ blockEntity.readNbt(BlockItem.getBlockEntityNbt(stack));
+                //#endif
                 cir.setReturnValue(new ItemStackInventory(stack, shulkerEntity.size()));
             }
         }

@@ -2,7 +2,6 @@ package de.rubixdev.enchantedshulkers
 
 import atonkish.reinfcore.screen.ReinforcedStorageScreenHandler
 import atonkish.reinfshulker.block.ReinforcedShulkerBoxBlock
-import com.glisco.things.Things
 import com.glisco.things.items.ThingsItems
 import com.illusivesoulworks.shulkerboxslot.ShulkerBoxAccessoryInventory
 import com.illusivesoulworks.shulkerboxslot.platform.Services
@@ -32,14 +31,11 @@ import net.minecraft.client.render.item.ItemRenderer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.nbt.NbtElement
-import net.minecraft.nbt.NbtList
 import net.minecraft.registry.Registries
 import net.minecraft.screen.GenericContainerScreenHandler
 import net.minecraft.screen.NamedScreenHandlerFactory
@@ -64,6 +60,17 @@ import megaminds.clickopener.api.BlockEntityInventory
 import eu.pb4.polymer.networking.api.server.PolymerServerNetworking
 //#else
 //$$ import eu.pb4.polymer.networking.api.PolymerServerNetworking
+//#endif
+
+//#if MC >= 12006
+import net.minecraft.component.DataComponentTypes
+import net.minecraft.component.type.ContainerComponent
+import net.minecraft.component.type.ItemEnchantmentsComponent
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtElement
+//#else
+//$$ import net.minecraft.inventory.Inventories
+//$$ import net.minecraft.nbt.NbtElement
 //#endif
 
 object Utils {
@@ -103,10 +110,13 @@ object Utils {
             // include the slot from Shulker Box Slot
             Services.INSTANCE.findShulkerBoxAccessory(player).ifPresent { playerInventory.add(it.left) }
         }
-        if (FabricLoader.getInstance().isModLoaded("things")) {
-            // include Ender Pouch in belt slot from Things
-            Things.getTrinkets(player).getEquipped { it.isEnderChest() }.forEach { playerInventory.add(it.right) }
-        }
+        // TODO: Things integration for 1.20.6
+        //#if MC < 12006
+        //$$ if (FabricLoader.getInstance().isModLoaded("things")) {
+        //$$     // include Ender Pouch in belt slot from Things
+        //$$     Things.getTrinkets(player).getEquipped { it.isEnderChest() }.forEach { playerInventory.add(it.right) }
+        //$$ }
+        //#endif
         return getContainers(playerInventory, player, enchantment)
     }
 
@@ -121,7 +131,7 @@ object Utils {
         val out = mutableListOf<ItemStack>()
         for (stack in inventory) {
             // TODO: technically a vacuum shulker box inside a siphon ender chest should also be returned here,
-            // but unless someone complains i can't be bothered :P
+            //  but unless someone complains i can't be bothered :P
             if (canEnchant(stack) && EnchantmentHelper.getLevel(
                     enchantment,
                     stack,
@@ -208,10 +218,14 @@ object Utils {
         }
         val inventory = DefaultedList.ofSize(size, ItemStack.EMPTY)
 
-        val nbt = container.getSubNbt(BlockItem.BLOCK_ENTITY_TAG_KEY)
-        if (nbt != null && nbt.contains("Items", NbtElement.LIST_TYPE.toInt())) {
-            Inventories.readNbt(nbt, inventory)
-        }
+        //#if MC >= 12006
+        container.get(DataComponentTypes.CONTAINER)?.copyTo(inventory)
+        //#else
+        //$$ val nbt = container.getSubNbt(BlockItem.BLOCK_ENTITY_TAG_KEY)
+        //$$ if (nbt != null && nbt.contains("Items", NbtElement.LIST_TYPE.toInt())) {
+        //$$     Inventories.readNbt(nbt, inventory)
+        //$$ }
+        //#endif
         return inventory
     }
 
@@ -220,13 +234,17 @@ object Utils {
         // no need to write any NBT on ender chests
         if (container.isEnderChest()) return
 
-        val nbt = container.getOrCreateSubNbt(BlockItem.BLOCK_ENTITY_TAG_KEY)
-        Inventories.writeNbt(nbt, inventory)
+        //#if MC >= 12006
+        container.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(inventory))
+        //#else
+        //$$ val nbt = container.getOrCreateSubNbt(BlockItem.BLOCK_ENTITY_TAG_KEY)
+        //$$ Inventories.writeNbt(nbt, inventory)
+        //#endif
     }
 
     @JvmStatic
     fun <T : BlockEntity> T.shouldGlint() =
-        this is EnchantableBlockEntity && !this.`enchantedShulkers$getEnchantments`().isEmpty()
+        this is EnchantableBlockEntity && !this.`enchantedShulkers$getEnchantments`().isEmpty
 
     // for compat with Split Shulker Boxes
     @JvmStatic
@@ -236,9 +254,30 @@ object Utils {
         return splitShulker.color != splitShulker.splitshulkers_getSecondaryColor()
     }
 
+    //#if MC < 12006
     @JvmStatic
-    fun getLevelFromNbt(enchantment: Enchantment, nbt: NbtList): Int =
-        EnchantmentHelper.fromNbt(nbt).getOrDefault(enchantment, 0)
+    fun getLevel(enchantment: Enchantment, enchantments: ItemEnchantmentsComponent): Int =
+        enchantments.getLevel(enchantment)
+    //#else
+    //$$ @JvmStatic
+    //$$ fun getLevel(enchantment: Enchantment, nbt: NbtList): Int =
+    //$$     EnchantmentHelper.fromNbt(nbt).getOrDefault(enchantment, 0)
+    //#endif
+
+    //#if MC >= 12006
+    @JvmStatic
+    fun readEnchantmentsFromNbt(nbt: NbtCompound): ItemEnchantmentsComponent {
+        val enchantsNbt = nbt.getList("Enchantments", NbtElement.COMPOUND_TYPE.toInt())
+        val enchants = ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT)
+        for (i in 0..<enchantsNbt.size) {
+            val nbtCompound = enchantsNbt.getCompound(i)
+            Registries.ENCHANTMENT.getOrEmpty(Identifier.tryParse(nbtCompound.getString("id")))
+                .ifPresent { enchants.set(it, nbtCompound.getInt("lvl").coerceIn(0..255)) }
+        }
+        nbt.remove("Enchantments")
+        return enchants.build()
+    }
+    //#endif
 
     @JvmStatic
     fun getInvRows(augmentLevel: Int): Int =
@@ -274,8 +313,12 @@ object Utils {
         return VertexConsumers.union(
             OverlayVertexConsumer(
                 vertexConsumers.getBuffer(RenderLayer.getDirectGlint()),
-                entry.positionMatrix,
-                entry.normalMatrix,
+                //#if MC >= 12006
+                entry,
+                //#else
+                //$$ entry.positionMatrix,
+                //$$ entry.normalMatrix,
+                //#endif
                 0.02f,
             ),
             vertexConsumers.getBuffer(layer),

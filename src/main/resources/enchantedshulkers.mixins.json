@@ -24,6 +24,7 @@
     "ItemStackMixin",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
+    "RangedWeaponItemMixin",
     "ServerPlayerEntityMixin",
     "ShulkerBoxBlockEntityMixin",
     "ShulkerBoxBlockMixin",

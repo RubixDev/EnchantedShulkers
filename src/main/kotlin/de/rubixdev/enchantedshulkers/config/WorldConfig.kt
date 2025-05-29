@@ -8,13 +8,11 @@ import de.rubixdev.enchantedshulkers.Mod.MOD_ID
 import de.rubixdev.enchantedshulkers.Utils.clientModVersion
 import java.io.File
 import java.io.IOException
-import java.util.function.Function
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.starProjectedType
 import kotlin.reflect.jvm.isAccessible
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.Version
@@ -26,6 +24,13 @@ import net.minecraft.server.MinecraftServer
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.WorldSavePath
+
+//#if MC >= 12006
+import de.rubixdev.enchantedshulkers.network.ConfigSyncS2CPacket
+//#else
+//$$ import java.util.function.Function
+//$$ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
+//#endif
 
 object WorldConfig {
     private var server: MinecraftServer? = null
@@ -122,9 +127,11 @@ object WorldConfig {
         "augmented_chests_and_barrels" to { inner.augmentableChestsAndBarrels },
     )
 
-    private val NEW_FABRIC_API = FabricLoader.getInstance().getModContainer("fabric-api")
-        .orElseThrow(::RuntimeException).metadata.version >= Version.parse("0.95.4")
-    private fun packId(name: String) = "enchantedshulkers:${if (NEW_FABRIC_API) "${name}_resourcepacks${File.separator}$name" else name}"
+    private val PATH_IN_PACK_ID = FabricLoader.getInstance().getModContainer("fabric-api")
+        .orElseThrow(::RuntimeException).metadata.version
+        // TODO: test with fabric api version in this range
+        .let { Version.parse("0.95.4").rangeUntil(Version.parse("0.96.11")).contains(it) }
+    private fun packId(name: String) = "enchantedshulkers:${if (PATH_IN_PACK_ID) "${name}_resourcepacks${File.separator}$name" else name}"
 
     private fun updateResources() {
         val manager = server?.dataPackManager ?: return
@@ -132,19 +139,28 @@ object WorldConfig {
 
         for ((pack, predicate) in OPTIONAL_PACKS) {
             val id = packId(pack)
-            val isLoaded = manager.enabledNames.contains(id)
+            val isLoaded = manager.enabledIds.contains(id)
             val shouldBeLoaded = predicate()
             if (isLoaded == shouldBeLoaded) continue
 
             val packProfile = manager.getProfile(id)!!
             if (shouldBeLoaded) {
-                packProfile.initialPosition.insert(loadedPacks, packProfile, Function.identity(), false)
+                packProfile.initialPosition.insert(
+                    loadedPacks,
+                    packProfile,
+                    //#if MC >= 12006
+                    { it.position },
+                    //#else
+                    //$$ Function.identity(),
+                    //#endif
+                    false,
+                )
             } else {
                 loadedPacks.remove(packProfile)
             }
         }
 
-        server!!.reloadResources(loadedPacks.map { it.name }).exceptionally {
+        server!!.reloadResources(loadedPacks.map { it.id }).exceptionally {
             Mod.LOGGER.warn("Failed to execute reload", it)
             null
         }
@@ -196,7 +212,7 @@ object WorldConfig {
                 }
                 config.put(it, value)
             }
-            ServerPlayNetworking.send(player, Mod.CONFIG_SYNC_PACKET_ID, PacketByteBufs.create().writeNbt(config))
+            ServerPlayNetworking.send(player, ConfigSyncS2CPacket(config))
         } else {
             Mod.LOGGER.info("Not sending config to ${player.nameForScoreboard}")
         }

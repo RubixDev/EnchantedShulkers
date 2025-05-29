@@ -1,9 +1,9 @@
 package de.rubixdev.enchantedshulkers.mixin.client;
 
-import de.rubixdev.enchantedshulkers.Mod;
 import de.rubixdev.enchantedshulkers.config.ClientConfig;
+import de.rubixdev.enchantedshulkers.network.InventoryCloseC2SPacket;
+import de.rubixdev.enchantedshulkers.network.InventoryOpenC2SPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
@@ -24,10 +24,10 @@ public class MinecraftClientMixin {
         if (ClientConfig.refillInInventory() || MinecraftClient.getInstance().getNetworkHandler() == null) return;
         if (screen != null) {
             if (!(screen instanceof AbstractInventoryScreen<?>)) return;
-            ClientPlayNetworking.send(Mod.INVENTORY_OPEN_PACKET_ID, PacketByteBufs.empty());
+            ClientPlayNetworking.send(InventoryOpenC2SPacket.INSTANCE);
         } else {
             if (currentScreen == null) return;
-            ClientPlayNetworking.send(Mod.INVENTORY_CLOSE_PACKET_ID, PacketByteBufs.empty());
+            ClientPlayNetworking.send(InventoryCloseC2SPacket.INSTANCE);
         }
     }
 }

@@ -5,7 +5,11 @@ import de.rubixdev.enchantedshulkers.config.WorldConfig
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 
-class VacuumEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#if MC >= 12006
+class VacuumEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TAG) {
+//#else
+//$$ class VacuumEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#endif
     override fun generate() = WorldConfig.generateVacuum
 
     companion object {

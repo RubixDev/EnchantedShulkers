@@ -12,9 +12,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Restriction(require = @Condition("shulkerboxtooltip"))
-//#if MC >= 12004
+//#if MC >= 12006
 @SuppressWarnings("UnstableApiUsage")
-@Mixin(com.misterpemodder.shulkerboxtooltip.impl.provider.BlockEntityAwarePreviewRenderer.class)
+@Mixin(com.misterpemodder.shulkerboxtooltip.impl.provider.InventoryAwarePreviewProvider.class)
+//#elseif MC >= 12004
+//$$ @SuppressWarnings("UnstableApiUsage")
+//$$ @Mixin(com.misterpemodder.shulkerboxtooltip.impl.provider.BlockEntityAwarePreviewRenderer.class)
 //#else
 //$$ @Mixin(com.misterpemodder.shulkerboxtooltip.api.provider.BlockEntityPreviewProvider.class)
 //#endif
@@ -27,4 +30,5 @@ public class ShulkerBoxTooltip_BlockEntityAwarePreviewProviderMixin {
             cir.setReturnValue(9 * Utils.getInvRows(level));
         }
     }
+    // TODO: need to inject getInventory too?
 }

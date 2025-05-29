@@ -6,7 +6,11 @@ import de.rubixdev.enchantedshulkers.config.WorldConfig
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 
-class VoidEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#if MC >= 12006
+class VoidEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TAG) {
+//#else
+//$$ class VoidEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#endif
     override fun generate() = WorldConfig.generateVoid
 
     companion object {

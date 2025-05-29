@@ -4,6 +4,7 @@ import de.rubixdev.enchantedshulkers.Utils.id
 import de.rubixdev.enchantedshulkers.client.BarrelBlockEntityRenderer
 import de.rubixdev.enchantedshulkers.config.InvalidOptionValueException
 import de.rubixdev.enchantedshulkers.config.WorldConfig
+import de.rubixdev.enchantedshulkers.network.ConfigSyncS2CPacket
 import de.rubixdev.enchantedshulkers.screen.BigAugmentedScreen
 import de.rubixdev.enchantedshulkers.screen.ScreenHandlerTypes
 import net.fabricmc.api.ClientModInitializer
@@ -59,15 +60,30 @@ object ClientMod : ClientModInitializer {
         //#endif
 
         // receive config updates from server
-        ClientPlayNetworking.registerGlobalReceiver(Mod.CONFIG_SYNC_PACKET_ID) { _, _, buf, _ ->
+//        ClientPlayNetworking.registerGlobalReceiver(Mod.CONFIG_SYNC_PACKET_ID) { _, _, buf, _ ->
+//            Mod.LOGGER.info("Received world config from server")
+//            val config = buf.readNbt()
+//            if (config == null) {
+//                Mod.LOGGER.warn("Received server config is null")
+//                return@registerGlobalReceiver
+//            }
+//            for (option in config.keys) {
+//                val nbtValue = config.get(option)!!
+//                var value = nbtValue.asString()
+//                if (nbtValue is NbtByte) {
+//                    value = (nbtValue.byteValue() != 0.toByte()).toString()
+//                }
+//                try {
+//                    WorldConfig.setOption(option, value)
+//                } catch (e: InvalidOptionValueException) {
+//                    Mod.LOGGER.error("Received server config value for '$option' is invalid: ${e.message}")
+//                }
+//            }
+//        }
+        ClientPlayNetworking.registerGlobalReceiver(ConfigSyncS2CPacket.ID) { payload, _ ->
             Mod.LOGGER.info("Received world config from server")
-            val config = buf.readNbt()
-            if (config == null) {
-                Mod.LOGGER.warn("Received server config is null")
-                return@registerGlobalReceiver
-            }
-            for (option in config.keys) {
-                val nbtValue = config.get(option)!!
+            for (option in payload.config.keys) {
+                val nbtValue = payload.config.get(option)!!
                 var value = nbtValue.asString()
                 if (nbtValue is NbtByte) {
                     value = (nbtValue.byteValue() != 0.toByte()).toString()

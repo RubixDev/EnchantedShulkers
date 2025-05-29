@@ -18,7 +18,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+//#if MC < 12006
+//$$ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+//#endif
 
 @Mixin(GrindstoneScreenHandler.class)
 public abstract class GrindstoneScreenHandlerMixin extends ScreenHandler {
@@ -35,23 +38,28 @@ public abstract class GrindstoneScreenHandlerMixin extends ScreenHandler {
         super(type, syncId);
     }
 
-    @Inject(
-        method = "grind",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/item/ItemStack;removeSubNbt(Ljava/lang/String;)V",
-            ordinal = 0,
-            shift = At.Shift.BEFORE
-        ),
-        locals = LocalCapture.CAPTURE_FAILHARD
-    )
-    private void trimAugmentedInv(
-        ItemStack item,
-        int damage,
-        int amount,
-        CallbackInfoReturnable<ItemStack> cir,
-        ItemStack itemStack
-    ) {
+    //#if MC >= 12006
+    @Inject(method = "grind", at = @At("HEAD"))
+    private void trimAugmentedInv(ItemStack itemStack, CallbackInfoReturnable<ItemStack> cir) {
+    //#else
+    //$$ @Inject(
+    //$$     method = "grind",
+    //$$     at = @At(
+    //$$         value = "INVOKE",
+    //$$         target = "Lnet/minecraft/item/ItemStack;removeSubNbt(Ljava/lang/String;)V",
+    //$$         ordinal = 0,
+    //$$         shift = At.Shift.BEFORE
+    //$$     ),
+    //$$     locals = LocalCapture.CAPTURE_FAILHARD
+    //$$ )
+    //$$ private void trimAugmentedInv(
+    //$$     ItemStack item,
+    //$$     int damage,
+    //$$     int amount,
+    //$$     CallbackInfoReturnable<ItemStack> cir,
+    //$$     ItemStack itemStack
+    //$$ ) {
+    //#endif
         if (Utils.canAugment(itemStack) && EnchantmentHelper.getLevel(Mod.AUGMENT_ENCHANTMENT, itemStack) > 0) {
             DefaultedList<ItemStack> inv = Utils.getContainerInventory(itemStack);
             if (inv.size() > ShulkerBoxBlockEntity.INVENTORY_SIZE) {
