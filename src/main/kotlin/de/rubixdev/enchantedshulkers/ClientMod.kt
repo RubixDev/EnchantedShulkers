@@ -25,6 +25,10 @@ import eu.pb4.polymer.networking.api.client.PolymerClientNetworking
 import net.minecraft.nbt.NbtInt
 //#endif
 
+//#if MC >= 12006
+import de.rubixdev.enchantedshulkers.network.ConfigSyncS2CPacket
+//#endif
+
 @Environment(EnvType.CLIENT)
 object ClientMod : ClientModInitializer {
     @JvmField val CLOSED_ENDER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_ender".id)
@@ -38,7 +42,7 @@ object ClientMod : ClientModInitializer {
     @JvmField val CLOSED_CHRISTMAS_LEFT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_christmas_left".id)
     @JvmField val CLOSED_CHRISTMAS_RIGHT_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.CHEST_ATLAS_TEXTURE, "entity/chest/closed_christmas_right".id)
 
-    @JvmField val COLORS = DyeColor.values().sortedBy { it.id }.map { it.getName() }
+    @JvmField val COLORS = DyeColor.entries.sortedBy { it.id }.map { it.name }
     @JvmField val CLOSED_SHULKER_TEXTURE_ID = SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, "entity/shulker/closed_shulker".id)
     @JvmField val CLOSED_COLORED_SHULKER_BOXES_TEXTURE_IDS = COLORS.map { SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE, "entity/shulker/closed_shulker_$it".id) }
     @JvmField val CLOSED_BOX: ModelPart = let {
@@ -59,15 +63,11 @@ object ClientMod : ClientModInitializer {
         //#endif
 
         // receive config updates from server
-        ClientPlayNetworking.registerGlobalReceiver(Mod.CONFIG_SYNC_PACKET_ID) { _, _, buf, _ ->
+        //#if MC > 12006
+        ClientPlayNetworking.registerGlobalReceiver(ConfigSyncS2CPacket.ID) { payload, _ ->
             Mod.LOGGER.info("Received world config from server")
-            val config = buf.readNbt()
-            if (config == null) {
-                Mod.LOGGER.warn("Received server config is null")
-                return@registerGlobalReceiver
-            }
-            for (option in config.keys) {
-                val nbtValue = config.get(option)!!
+            for (option in payload.config.keys) {
+                val nbtValue = payload.config.get(option)!!
                 var value = nbtValue.asString()
                 if (nbtValue is NbtByte) {
                     value = (nbtValue.byteValue() != 0.toByte()).toString()
@@ -79,6 +79,28 @@ object ClientMod : ClientModInitializer {
                 }
             }
         }
+        //#else
+        //$$ ClientPlayNetworking.registerGlobalReceiver(Mod.CONFIG_SYNC_PACKET_ID) { _, _, buf, _ ->
+        //$$     Mod.LOGGER.info("Received world config from server")
+        //$$     val config = buf.readNbt()
+        //$$     if (config == null) {
+        //$$         Mod.LOGGER.warn("Received server config is null")
+        //$$         return@registerGlobalReceiver
+        //$$     }
+        //$$     for (option in config.keys) {
+        //$$         val nbtValue = config.get(option)!!
+        //$$         var value = nbtValue.asString()
+        //$$         if (nbtValue is NbtByte) {
+        //$$             value = (nbtValue.byteValue() != 0.toByte()).toString()
+        //$$         }
+        //$$         try {
+        //$$             WorldConfig.setOption(option, value)
+        //$$         } catch (e: InvalidOptionValueException) {
+        //$$             Mod.LOGGER.error("Received server config value for '$option' is invalid: ${e.message}")
+        //$$         }
+        //$$     }
+        //$$ }
+        //#endif
         ClientPlayConnectionEvents.DISCONNECT.register { _, _ -> WorldConfig.detachServer() }
 
         // screens

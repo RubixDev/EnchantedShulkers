@@ -9,7 +9,11 @@ import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.collection.DefaultedList
 
-class SiphonEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#if MC >= 12006
+class SiphonEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TAG) {
+//#else
+//$$ class SiphonEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#endif
     override fun generate() = WorldConfig.generateSiphon
 
     companion object {
@@ -107,7 +111,7 @@ class SiphonEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
                 return true
             }
 
-            if (!ItemStack.canCombine(from, to)) return false
+            if (!ItemStack.areItemsAndComponentsEqual(from, to)) return false
             val transferCount = min(to.maxCount - to.count, from.count)
             if (transferCount <= 0) return false
 

@@ -12,7 +12,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -33,51 +32,97 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+//#if MC >= 12006
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.registry.RegistryWrapper;
+//#else
+//$$ import net.minecraft.nbt.NbtList;
+//#endif
+
 @Mixin(BarrelBlockEntity.class)
 public abstract class BarrelBlockEntityMixin extends BlockEntityMixin
     implements EnchantableBlockEntity, NamedScreenHandlerFactory {
     @Shadow
     private DefaultedList<ItemStack> inventory;
 
-    @Unique private NbtList enchantments = new NbtList();
+    //#if MC >= 12006
+    @Unique private ItemEnchantmentsComponent enchantments = ItemEnchantmentsComponent.DEFAULT;
 
     @Override
-    public @NotNull NbtList enchantedShulkers$getEnchantments() {
-        return this.enchantments;
+    public @NotNull ItemEnchantmentsComponent enchantedShulkers$getEnchantments() {
+        return enchantments;
     }
 
     @Override
-    public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
+    public void enchantedShulkers$setEnchantments(@NotNull ItemEnchantmentsComponent enchantments) {
         this.enchantments = enchantments;
         updateInventorySize();
     }
+    //#else
+    //$$ @Unique private NbtList enchantments = new NbtList();
+    //$$
+    //$$ @Override
+    //$$ public @NotNull NbtList enchantedShulkers$getEnchantments() {
+    //$$     return this.enchantments;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
+    //$$     this.enchantments = enchantments;
+    //$$     updateInventorySize();
+    //$$ }
+    //#endif
 
     @Unique private void updateInventorySize() {
-        int newSize = 9 * Utils.getInvRows(Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments));
-        if (this.inventory.size() >= newSize) return;
+        int newSize = 9 * Utils.getInvRows(Utils.getLevel(Mod.AUGMENT_ENCHANTMENT, enchantments));
+        if (inventory.size() >= newSize) return;
 
         DefaultedList<ItemStack> newInv = DefaultedList.ofSize(newSize, ItemStack.EMPTY);
-        for (int i = 0; i < this.inventory.size(); i++) {
-            newInv.set(i, this.inventory.get(i));
+        for (int i = 0; i < inventory.size(); i++) {
+            newInv.set(i, inventory.get(i));
         }
-        this.inventory = newInv;
+        inventory = newInv;
     }
 
+    //#if MC >= 12006
     @Inject(method = "readNbt", at = @At("HEAD"))
-    public void readNbt(NbtCompound nbt, CallbackInfo ci) {
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup, CallbackInfo ci) {
+        // read from NBT from old world saves
         if (nbt.contains("Enchantments", NbtElement.LIST_TYPE)) {
-            enchantedShulkers$setEnchantments(nbt.getList("Enchantments", NbtElement.COMPOUND_TYPE));
+            var enchants = Utils.readEnchantmentsFromNbt(nbt);
+            enchantedShulkers$setEnchantments(enchants);
+            BlockEntity.Components.CODEC.encodeStart(
+                    NbtOps.INSTANCE,
+                    ComponentMap.builder().addAll(getComponents()).add(DataComponentTypes.ENCHANTMENTS, enchants).build()
+            ).resultOrPartial().ifPresent(newNbt -> {
+                var newNbtCmp = (NbtCompound) newNbt;
+                for (var key : newNbtCmp.getKeys()) {
+                    nbt.put(key, newNbtCmp.get(key));
+                }
+            });
         }
     }
-
-    @Inject(method = "writeNbt", at = @At("TAIL"))
-    public void writeNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.put("Enchantments", this.enchantments);
-    }
+    //#else
+    //$$ @Inject(method = "readNbt", at = @At("HEAD"))
+    //$$ public void readNbt(NbtCompound nbt, CallbackInfo ci) {
+    //$$     if (nbt.contains("Enchantments", NbtElement.LIST_TYPE)) {
+    //$$         NbtList enchantments = nbt.getList("Enchantments", NbtElement.COMPOUND_TYPE);
+    //$$         enchantedShulkers$setEnchantments(enchantments);
+    //$$     }
+    //$$ }
+    //$$
+    //$$ @Inject(method = "writeNbt", at = @At("TAIL"))
+    //$$ public void writeNbt(NbtCompound nbt, CallbackInfo ci) {
+    //$$     nbt.put("Enchantments", this.enchantments);
+    //$$ }
+    //#endif
 
     @Override
     public void toInitialChunkDataNbt(CallbackInfoReturnable<NbtCompound> cir) {
-        cir.setReturnValue(this.enchantedShulkers$toClientNbt());
+        cir.setReturnValue(enchantedShulkers$toClientNbt());
     }
 
     @Override
@@ -100,17 +145,17 @@ public abstract class BarrelBlockEntityMixin extends BlockEntityMixin
         PlayerInventory playerInventory,
         CallbackInfoReturnable<ScreenHandler> cir
     ) {
-        int level = Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, this.enchantments);
+        int level = Utils.getLevel(Mod.AUGMENT_ENCHANTMENT, enchantments);
         if (level != 0) {
             cir.setReturnValue(
                 AugmentedScreenHandler
-                    .create(syncId, playerInventory, (Inventory) this, level, this.getDisplayName(), null, false, null)
+                    .create(syncId, playerInventory, (Inventory) this, level, getDisplayName(), null, false, null)
             );
         }
     }
 
     @Inject(method = "size", at = @At("HEAD"), cancellable = true)
     private void augmentInvSize(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(this.inventory.size());
+        cir.setReturnValue(inventory.size());
     }
 }

@@ -41,10 +41,10 @@ public abstract class ChestBlock_NamedScreenHandlerFactoryMixin {
         PlayerEntity playerEntity
     ) {
         int level1 = field_17358 instanceof EnchantableBlockEntity e
-            ? Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
+            ? Utils.getLevel(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
             : 0;
         int level2 = field_17359 instanceof EnchantableBlockEntity e
-            ? Utils.getLevelFromNbt(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
+            ? Utils.getLevel(Mod.AUGMENT_ENCHANTMENT, e.enchantedShulkers$getEnchantments())
             : 0;
         if (level1 != 0 || level2 != 0) {
             return AugmentedScreenHandler

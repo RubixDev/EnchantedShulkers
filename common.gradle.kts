@@ -1,6 +1,5 @@
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.starProjectedType
-import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -107,8 +106,10 @@ val langDir = "assets/${props.mod_id}/lang"
 val langDirData = "data/${props.mod_id}/lang"
 
 repositories {
-    // Fabric ASM and MixinSquared
+    // Fabric ASM
     maven("https://jitpack.io")
+    // MixinSquared
+    maven("https://maven.bawnorton.com/releases")
     // Cloth Config
     maven("https://maven.shedaniel.me/")
     // Mod Menu and Trinkets
@@ -160,7 +161,7 @@ dependencies {
     modApi("com.terraformersmc:modmenu:${props.modmenu_version}")
 
     // libraries
-    include(modImplementation("com.github.Fallen-Breath:conditional-mixin:${props.conditionalmixin_version}")!!)
+    include(modImplementation("com.github.Fallen-Breath.conditional-mixin:conditional-mixin-fabric:${props.conditionalmixin_version}")!!)
     include(modImplementation("com.github.Chocohead:Fabric-ASM:${props.fabric_asm_version}")!!)
     include(
         modApi("io.hotmoka:toml4j:${props.toml4j_version}") {
@@ -265,10 +266,6 @@ loom {
     }
 }
 
-tasks.named<RemapJarTask>("remapJar") {
-    remapperIsolation = true
-}
-
 val javaCompatibility = when {
     mcVersion >= 11800 -> JavaVersion.VERSION_17
     mcVersion >= 11700 -> JavaVersion.VERSION_16
@@ -349,6 +346,7 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
+    // TODO: migrate
     kotlinOptions.jvmTarget = javaCompatibility.toString()
     kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=all")
 }

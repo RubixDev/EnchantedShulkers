@@ -176,7 +176,7 @@ class VanillaBigAugmentedGui private constructor(
         updateSlots()
     }
 
-    private fun click() = player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), SoundCategory.MASTER, 0.2f, 1f)
+    private fun click() = player.playSoundToPlayer(SoundEvents.UI_BUTTON_CLICK.value(), SoundCategory.MASTER, 0.2f, 1f)
 
     override fun onClose() {
         super.onClose()
