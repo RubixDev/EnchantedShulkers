@@ -74,6 +74,11 @@ object Mod : ModInitializer {
     @JvmField val AUGMENT_ENCHANTMENT = AugmentEnchantment()
 
     @JvmField val HANDSHAKE_PACKET_ID = "handshake".id
+    //#if MC < 12006
+    //$$ @JvmField val CONFIG_SYNC_PACKET_ID = "config_sync".id
+    //$$ @JvmField val INVENTORY_OPEN_PACKET_ID = "inventory_open".id
+    //$$ @JvmField val INVENTORY_CLOSE_PACKET_ID = "inventory_close".id
+    //#endif
 
     override fun onInitialize() {
         // register enchantments
@@ -84,9 +89,11 @@ object Mod : ModInitializer {
         Registry.register(Registries.ENCHANTMENT, "augment".id, AUGMENT_ENCHANTMENT)
 
         // register packets
+        //#if MC >= 12006
         PayloadTypeRegistry.playS2C().register(ConfigSyncS2CPacket.ID, ConfigSyncS2CPacket.CODEC)
         PayloadTypeRegistry.playC2S().register(InventoryOpenC2SPacket.ID, InventoryOpenC2SPacket.CODEC)
         PayloadTypeRegistry.playC2S().register(InventoryCloseC2SPacket.ID, InventoryCloseC2SPacket.CODEC)
+        //#endif
 
         // handshake with modded clients
         //#if MC < 12001
@@ -108,18 +115,21 @@ object Mod : ModInitializer {
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ -> ConfigCommand.register(dispatcher) }
 
         // register packet listeners
-//        ServerPlayNetworking.registerGlobalReceiver(INVENTORY_OPEN_PACKET_ID) { _, player, _, _, _ ->
-//            (player as InventoryState).`enchantedShulkers$setOpen`()
-//        }
-//        ServerPlayNetworking.registerGlobalReceiver(INVENTORY_CLOSE_PACKET_ID) { _, player, _, _, _ ->
-//            (player as InventoryState).`enchantedShulkers$setClosed`()
-//        }
+        //#if MC >= 12006
         ServerPlayNetworking.registerGlobalReceiver(InventoryOpenC2SPacket.ID) { _, ctx ->
             (ctx.player() as InventoryState).`enchantedShulkers$setOpen`()
         }
         ServerPlayNetworking.registerGlobalReceiver(InventoryCloseC2SPacket.ID) { _, ctx ->
             (ctx.player() as InventoryState).`enchantedShulkers$setClosed`()
         }
+        //#else
+        //$$ ServerPlayNetworking.registerGlobalReceiver(INVENTORY_OPEN_PACKET_ID) { _, player, _, _, _ ->
+        //$$     (player as InventoryState).`enchantedShulkers$setOpen`()
+        //$$ }
+        //$$ ServerPlayNetworking.registerGlobalReceiver(INVENTORY_CLOSE_PACKET_ID) { _, player, _, _, _ ->
+        //$$     (player as InventoryState).`enchantedShulkers$setClosed`()
+        //$$ }
+        //#endif
 
         // register screen types
         ScreenHandlerTypes.init()

@@ -1,12 +1,15 @@
 package de.rubixdev.enchantedshulkers.network
 
+//#if MC >= 12006
 import de.rubixdev.enchantedshulkers.Utils.id
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.network.RegistryByteBuf
 import net.minecraft.network.codec.PacketCodec
 import net.minecraft.network.codec.PacketCodecs
 import net.minecraft.network.packet.CustomPayload
+//#endif
 
+//#if MC >= 12006
 data class ConfigSyncS2CPacket(val config: NbtCompound) : CustomPayload {
     companion object {
         val ID = CustomPayload.Id<ConfigSyncS2CPacket>("config_sync".id)
@@ -32,3 +35,4 @@ object InventoryCloseC2SPacket : CustomPayload {
 
     override fun getId(): CustomPayload.Id<out CustomPayload> = ID
 }
+//#endif

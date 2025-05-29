@@ -212,7 +212,11 @@ object WorldConfig {
                 }
                 config.put(it, value)
             }
+            //#if MC >= 12006
             ServerPlayNetworking.send(player, ConfigSyncS2CPacket(config))
+            //#else
+            //$$ ServerPlayNetworking.send(player, Mod.CONFIG_SYNC_PACKET_ID, PacketByteBufs.create().writeNbt(config))
+            //#endif
         } else {
             Mod.LOGGER.info("Not sending config to ${player.nameForScoreboard}")
         }

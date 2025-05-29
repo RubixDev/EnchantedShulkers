@@ -7,8 +7,11 @@ import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 
-@Suppress("NAME_SHADOWING")
+//#if MC >= 12006
 class RefillEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TAG) {
+//#else
+//$$ class RefillEnchantment : ContainerEnchantment(Mod.PORTABLE_CONTAINER_TARGET) {
+//#endif
     override fun generate() = WorldConfig.generateRefill
 
     companion object {

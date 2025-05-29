@@ -15,9 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //#if MC >= 12006
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(com.misterpemodder.shulkerboxtooltip.impl.provider.InventoryAwarePreviewProvider.class)
-//#elseif MC >= 12004
-//$$ @SuppressWarnings("UnstableApiUsage")
-//$$ @Mixin(com.misterpemodder.shulkerboxtooltip.impl.provider.BlockEntityAwarePreviewRenderer.class)
 //#else
 //$$ @Mixin(com.misterpemodder.shulkerboxtooltip.api.provider.BlockEntityPreviewProvider.class)
 //#endif

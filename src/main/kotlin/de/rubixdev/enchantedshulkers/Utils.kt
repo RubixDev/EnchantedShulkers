@@ -69,8 +69,10 @@ import net.minecraft.component.type.ItemEnchantmentsComponent
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 //#else
+//$$ import com.glisco.things.Things
 //$$ import net.minecraft.inventory.Inventories
 //$$ import net.minecraft.nbt.NbtElement
+//$$ import net.minecraft.nbt.NbtList
 //#endif
 
 object Utils {
@@ -254,7 +256,7 @@ object Utils {
         return splitShulker.color != splitShulker.splitshulkers_getSecondaryColor()
     }
 
-    //#if MC < 12006
+    //#if MC >= 12006
     @JvmStatic
     fun getLevel(enchantment: Enchantment, enchantments: ItemEnchantmentsComponent): Int =
         enchantments.getLevel(enchantment)

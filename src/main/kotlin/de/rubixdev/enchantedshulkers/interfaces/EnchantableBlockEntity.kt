@@ -12,9 +12,15 @@ import net.minecraft.nbt.NbtOps
 
 @Suppress("FunctionName")
 interface EnchantableBlockEntity {
+    //#if MC >= 12006
     fun `enchantedShulkers$getEnchantments`(): ItemEnchantmentsComponent
 
     fun `enchantedShulkers$setEnchantments`(enchantments: ItemEnchantmentsComponent)
+    //#else
+    //$$ fun `enchantedShulkers$getEnchantments`(): NbtList
+
+    //$$ fun `enchantedShulkers$setEnchantments`(enchantments: NbtList)
+    //#endif
 
     fun `enchantedShulkers$toClientNbt`() =
         //#if MC >= 12006

@@ -52,7 +52,6 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntityMixin implem
     //$$ @Override
     //$$ public void enchantedShulkers$setEnchantments(@NotNull NbtList enchantments) {
     //$$     this.enchantments = enchantments;
-    //$$     updateInventorySize();
     //$$ }
     //#endif
 

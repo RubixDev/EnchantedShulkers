@@ -14,3 +14,4 @@ package de.rubixdev.enchantedshulkers.asm;
 //$$     @Shadow
 //$$     public abstract boolean isAcceptableItem(Item item);
 //$$ }
+//#endif
