@@ -1,0 +1,9 @@
+accessWidener v2 official
+
+# TODO: not yet ported. The 1.20.4 accesswidener (versions/1.20.4/enchantedshulkers.accesswidener)
+# widens: EnchantmentTarget (extendable - obsolete, see report), EnderChestBlock.CONTAINER_NAME,
+# SimpleInventory.heldStacks, ShulkerBoxScreenHandler.inventory,
+# TradeOffers$EnchantBookFactory.possibleEnchantments, GrindstoneScreenHandler.input, Slot.x/y,
+# BlockRenderManager.blockColors. Each needs its current 26.2 Mojmap owner class/member name
+# looked up and re-verified against the actual 26.2 field/method shape (some of these classes'
+# internals have changed - not a mechanical rename) once the core redesign work above is done.
