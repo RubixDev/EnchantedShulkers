@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.rubixdev.enchantedshulkers.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AbstractBlockMixin",
+    "ChestBlockEntityMixin",
+    "GrindstoneMenuMixin",
+    "PlayerInventoryMixin",
+    "ServerPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

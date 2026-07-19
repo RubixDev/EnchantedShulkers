@@ -1,44 +1,49 @@
 package de.rubixdev.enchantedshulkers
 
 import net.fabricmc.api.ModInitializer
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.enchantment.Enchantment
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * TOOLCHAIN SCAFFOLD ONLY - this is NOT the ported mod.
+ * 26.2 port - core pass: enchantment registry keys + item tags only.
  *
- * This proves the 26.2 build (JDK 25 + fabric-loom 1.17 + official Mojang mappings +
- * fabric-language-kotlin) resolves and compiles/assembles correctly end to end. The real
- * `Mod.kt`/`ClientMod.kt` and all gameplay logic (enchantments, mixins, screens) have NOT been
- * ported - see the port-26.2 branch's commit message / the implementer's final report for the
- * two verified architectural blockers that need a design decision before that work can start:
+ * The five custom enchantments (Siphon/Refill/Vacuum/Void/Augment) are no longer Java objects
+ * registered here: `Enchantment` is a non-subclassable `final record` in 26.2, so they are now
+ * datapack-defined at `data/enchantedshulkers/enchantment/<name>.json` and resolved at the point of use
+ * via [ResourceKey] + the world's registry access (see `Utils.enchantmentHolder`). This also
+ * removes the old Fabric-ASM `ClassTinkerers` enum-injection machinery (former EnumInjector.kt,
+ * asm/PortableContainerTarget.kt, asm/AugmentableContainerTarget.kt, EnchantmentTargetMixin.java)
+ * that added PORTABLE_CONTAINER/AUGMENTABLE_CONTAINER constants to the old `EnchantmentTarget`
+ * enum - 26.2's `EnchantmentTarget` is now an unrelated, small combat-effect-targeting enum, and
+ * item applicability is expressed via `supported_items` tag predicates in the enchantment JSON
+ * instead.
  *
- *   1. `net.minecraft.world.item.enchantment.Enchantment` is now a `final` `Record` in 26.2 - it
- *      can no longer be subclassed the way this mod's six custom enchantments
- *      (Siphon/Refill/Vacuum/Void/Augment/ContainerEnchantment) currently are. Custom
- *      enchantments must now be defined as datapack JSON (`data/<ns>/enchantment/<name>.json`) with
- *      `supported_items`/`primary_items` item-tag predicates, looked up at runtime via
- *      `Holder<Enchantment>`/`ResourceKey<Enchantment>` instead of a Java singleton object. This
- *      also replaces the old `EnchantmentTarget`-enum + Fabric-ASM `ClassTinkerers` enum
- *      injection this mod currently uses to define which items count as "portable container" /
- *      "augmentable container" (that mechanism is gone: 26.2's `EnchantmentTarget` is now a
- *      small 3-value enum for combat-effect targeting only, unrelated to item applicability).
- *
- *   2. `ItemStack` has no NBT API at all in 26.2 (no `getSubNbt`/`getOrCreateSubNbt`,
- *      `BlockItem.BLOCK_ENTITY_TAG_KEY` does not exist) - it's fully `DataComponent`-based now.
- *      This mod stores an entire nested inventory inside a single ItemStack's NBT
- *      (`Utils.getContainerInventory`/`setContainerInventory`), which is the core mechanism
- *      behind portable/augmentable containers. It needs to be rewritten against
- *      `net.minecraft.world.item.component.ItemContainerContents` (confirmed present in the
- *      26.2 jar), which has a different value shape (immutable list of stack+slot pairs, not an
- *      NBT compound), and every mixin that reads/writes container contents on an ItemStack needs
- *      to change accordingly.
+ * TODO(26.2): the rest of the original Mod.onInitialize() (config load/sync, packet listeners,
+ * screen handler type registration, config command, optional resource-pack registration) depends
+ * on subsystems (config/, screen/, networking) not yet ported for 26.2.
  */
 object Mod : ModInitializer {
     const val MOD_ID = "enchantedshulkers"
     val LOGGER: Logger = LoggerFactory.getLogger(MOD_ID)
 
+    @JvmField val PORTABLE_CONTAINER_TAG: TagKey<Item> = TagKey.create(Registries.ITEM, "portable_container".id)
+    @JvmField val AUGMENTABLE_CONTAINER_TAG: TagKey<Item> = TagKey.create(Registries.ITEM, "augmentable_container".id)
+
+    @JvmField val SIPHON_KEY: ResourceKey<Enchantment> = ResourceKey.create(Registries.ENCHANTMENT, "siphon".id)
+    @JvmField val REFILL_KEY: ResourceKey<Enchantment> = ResourceKey.create(Registries.ENCHANTMENT, "refill".id)
+    @JvmField val VACUUM_KEY: ResourceKey<Enchantment> = ResourceKey.create(Registries.ENCHANTMENT, "vacuum".id)
+    @JvmField val VOID_KEY: ResourceKey<Enchantment> = ResourceKey.create(Registries.ENCHANTMENT, "void".id)
+    @JvmField val AUGMENT_KEY: ResourceKey<Enchantment> = ResourceKey.create(Registries.ENCHANTMENT, "augment".id)
+
+    val String.id: Identifier get() = Identifier.fromNamespaceAndPath(MOD_ID, this)
+
     override fun onInitialize() {
-        LOGGER.info("EnchantedShulkers 26.2 toolchain scaffold loaded (core gameplay not yet ported)")
+        LOGGER.info("EnchantedShulkers 26.2 (core port: enchantment registry + container storage) loaded")
     }
 }

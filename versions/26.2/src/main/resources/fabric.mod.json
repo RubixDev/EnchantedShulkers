@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "${name}",
-  "description": "Adds some helpful enchantments for Shulker Boxes (MC 26.2 port - WORK IN PROGRESS, core gameplay not yet ported, see the port-26.2 branch commit message and Mod.kt)",
+  "description": "Adds some helpful enchantments for Shulker Boxes (MC 26.2 port - WORK IN PROGRESS: core enchantment registry + container storage ported, compat mixins/renderers/config/screens not yet ported, see the port-26.2 branch commit history and Mod.kt)",
   "authors": [
     "RubixDev"
   ],
@@ -23,6 +23,9 @@
       "adapter": "kotlin"
     }]
   },
+  "mixins": [
+    "enchantedshulkers.mixins.json"
+  ],
   "accessWidener": "${id}.accesswidener",
 
   "depends": {
