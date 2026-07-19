@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractBlockMixin",
+    "BarrelBlockEntityMixin",
     "ChestBlockEntityMixin",
     "GrindstoneMenuMixin",
     "PlayerInventoryMixin",
